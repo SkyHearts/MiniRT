@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector3.h                                          :+:      :+:    :+:   */
+/*   object.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/05 10:28:55 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/05 10:36:19 by jyim             ###   ########.fr       */
+/*   Created: 2023/07/05 09:37:39 by jyim              #+#    #+#             */
+/*   Updated: 2023/07/05 09:39:05 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VECTOR3_H
-# define VECTOR3_H
+#ifndef OBJECT_H
+# define OBJECT_H
 
-# include <math.h>
-# include <stdlib.h>
-
-typedef struct s_vec3
+typedef struct s_sphere
 {
-	float	x;
-	float	y;
-	float	z;
-}				t_vec3;
-
-t_vec3	*create_vec3(float _x, float _y, float _z);
-t_vec3	add_vec3(t_vec3 vector1, t_vec3 vector2);
-
-
+	float	a;
+	float	b;
+	float	c;
+	float	t1;
+	float	t2;
+}				t_sphere;
 #endif
