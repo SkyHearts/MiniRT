@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   scene.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: jyim <jyim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:13:12 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/05 11:17:37 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/18 22:33:38 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SCENE_H
 # define SCENE_H
 
-# include "mlx.h"
 # include "camera.h"
 
 
@@ -22,7 +21,6 @@ typedef struct s_ambient
 	float			ratio;
 	t_vec3			color;
 	float			ratio;
-	struct s_light	*next;
 }				t_ambient;
 
 typedef struct s_light
@@ -40,6 +38,8 @@ typedef struct s_object
 	t_vec3			position;
 	t_vec3			normal;
 	t_vec3			color;
+	float			diameter;
+	float			height;
 	struct s_object	*next;
 }				t_object;
 
