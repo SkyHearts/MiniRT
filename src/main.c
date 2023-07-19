@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "minirt.h"
+#include "../inc/minirt.h"
 #include "../inc/scene.h"
 #include <fcntl.h>
 #include <errno.h>
@@ -72,17 +72,126 @@ int ft_strcmp_wlist(char *line, char **cmp)
 	}
 	return (0);
 }
+
+float ft_atof(char *num)
+{
+	int		sign;
+	float	whole;
+	float	decimal;
+	char	*tmp;
+
+	tmp = num;
+	sign = 1;
+	if (tmp[0] == '-')
+	{
+		sign *= -1;
+		tmp++;
+	}
+	whole = atoi(tmp);
+	while (*tmp != '.' && *tmp)
+		tmp++;
+	decimal = atoi(++tmp);
+	while (decimal > 1)
+		decimal /= 10;
+	return (sign * (whole + decimal));
+}
+
+int str_has_aplha(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!isalpha(str[i]))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+void free_darray(char **array)
+{
+	int	i;
+
+	i = -1;
+	while (array[++i])
+		free(array[i]);
+	free(array);
+}
+
+/* 
+Check each element for correct number of arugment/parameter
+if incorrect number, return 1
+Check if each parameter has alphabets
+if alphabet exit, return 1
+ */
+int	check_format(char **split)
+{
+	int	len;
+	int	i;
+
+	i = 0;
+	len = split_len(split);
+	if (!strcmp(split[0], "A"))
+	// print error then return 1, Wrong number of element for A
+		if (len != 3)
+			return (1);
+	else if (!strcmp(split[0], "cy"))
+	// print error then return 1, Wrong number of element for cy
+		if (len != 6)
+			return (1);
+	else if (len != 4)
+	// print error then return 1, Wrong number of element for split[0]
+		return (1);
+	while (split[i])
+	{
+		if (str_has_aplha(split[i]))
+		// print error then return 1, Element split[0] has alphabet in parameter
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+/* 
+Add ambient input into scene
+Only 1 input is allowed
+if additional input, return 1
+ */
 int	add_ambient(char **split, t_mlx *rt)
 {
-	t_scene s;
-	int	len;
+	t_scene	s;
+	char	**color;
 
 	s = rt->scene;
-	len = split_len(split);
-	if (len != 3)
-		return (1)
-	s.ambient = 
+	
+	if (check_format(split))
+		return (1);		// print error then return 1, element format wrong @goto int	check_format(char **split)
+	if (s.ambient.filled == 1)
+		return (1); 	// print error then return 1, Multiple ambient input
+	s.ambient.ratio = ft_atof(split[1]);
+	color = ft_split(split[2], ',');
+	s.ambient.color.x = atoi(color[0]);
+	s.ambient.color.y = atoi(color[1]);
+	s.ambient.color.z = atoi(color[2]);
+	s.ambient.filled = 1;
+	return (free_darray(split), free_darray(color), 0);
 }
+
+int	add_camera(char **split, t_mlx *rt)
+{
+	t_scene	s;
+	char	**color;
+
+	s = rt->scene;
+	
+	if (check_format(split))
+		return (1);		// print error then return 1, element format wrong @goto int	check_format(char **split)
+
+	return (0);
+}
+
 // "A C L sp pl cy"
 int	parse_line (t_mlx *rt, char *line)
 {
@@ -95,7 +204,7 @@ int	parse_line (t_mlx *rt, char *line)
 	if (!ft_strcmp(split[0], "A"))
 		ret = add_ambient(split, rt);
 	else if (!ft_strcmp(split[0], "C"))
-		ret = add_camera();
+		ret = add_camera(split, rt);
 	else if (!ft_strcmp(split[0], "L"))
 		ret = add_light();
 	else if (!ft_strcmp(split[0], "sp"))
@@ -122,12 +231,19 @@ int	parse_scene(char *file, t_mlx *rt)
 			break ;
 		line = get_next_line(fd);
 	}
+	return (ret);
 }
 void	init_mlx(t_mlx *rt)
 {
 	rt->element = ft_split("A C L sp pl cy", ' ');
 	rt->win_height = 720;
 	rt->win_width = 1080;
+	rt->scene.camera = NULL;
+	rt->scene.active_camera = NULL;
+	rt->scene.light = NULL;
+	rt->scene.object = NULL;
+	rt->scene.active_object = NULL;
+	rt->scene.ambient.filled = 0;
 }
 
 int main(int argc, char **argv)
@@ -142,5 +258,5 @@ int main(int argc, char **argv)
 
 	}
 	else
-		printf("Wrong number of argument/format! ./minirt <filename>")
+		printf("Wrong number of argument/format! ./minirt <filename>");
 }

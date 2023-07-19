@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:13:12 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/18 22:33:38 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/19 08:30:40 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 
 typedef struct s_ambient
 {
+	int				filled;
 	float			ratio;
 	t_vec3			color;
-	float			ratio;
 }				t_ambient;
 
 typedef struct s_light
@@ -45,7 +45,7 @@ typedef struct s_object
 
 typedef struct s_scene
 {
-	t_ambient	*ambient;			//NULL first, if != NULL when parsing, return error
+	t_ambient	ambient;			//NULL first, if != NULL when parsing, return error
 	t_object	*object;			//a list of objects to be iterated through to calculate closest hit
 	t_camera	*camera;			//a list of camera to allow iterating through different views 
 	t_light		*light;				//a list of light to be iterate to obtain brightess colour

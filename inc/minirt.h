@@ -13,6 +13,8 @@
 #ifndef MINIRT_H
 # define MINIRT_H
 
+#include "scene.h"
+
 typedef struct s_mlx
 {
 	void		*mlx;
@@ -20,5 +22,6 @@ typedef struct s_mlx
 	int			win_width;
 	int			win_height;
 	t_scene		scene;
+	char 		**element;
 }				t_mlx;
 #endif
