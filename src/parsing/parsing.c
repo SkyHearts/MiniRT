@@ -81,7 +81,7 @@ int	add_light(char **split, t_mlx *rt)
 	return (free_darray(split), 0);
 }
 
-int	add_sphere(char **split, t_mlx *rt)
+int	add_obj(char **split, t_mlx *rt)
 {
 	t_object *obj;
 
@@ -91,7 +91,7 @@ int	add_sphere(char **split, t_mlx *rt)
 	if (!obj)
 		obj = ft_newobj(split);
 	else
-		ft_lightadd_back(obj, ft_newlight(split));
+		ft_objadd_back(obj, ft_newobj(split));
 	return (free_darray(split), 0);
 }
 
@@ -110,12 +110,14 @@ int	parse_line (t_mlx *rt, char *line)
 		ret = add_camera(split, rt);
 	else if (!ft_strcmp(split[0], "L"))
 		ret = add_light(split, rt);
-	else if (!ft_strcmp(split[0], "sp"))
-		ret = add_sphere(split, rt);
-	else if (!ft_strcmp(split[0], "pl"))
-		ret = add_plane();
-	else if (!ft_strcmp(split[0], "cy"))
-		ret = add_cylinder();
+	else
+		ret = add_obj(split, rt);
+	// else if (!ft_strcmp(split[0], "sp")) // or ret = add_obj(split, rt)
+	// 	ret = add_sphere(split, rt);
+	// else if (!ft_strcmp(split[0], "pl"))
+	// 	ret = add_plane();
+	// else if (!ft_strcmp(split[0], "cy"))
+	// 	ret = add_cylinder();
 	return (ret);
 }
 
@@ -137,6 +139,7 @@ int	parse_scene(char *file, t_mlx *rt)
 	char *line;
 
 	if (check_ext(file));
+		// Wrong extension error, return 1
 		return (1);
 	fd = open_file(file);
 	line = get_next_line(fd);
