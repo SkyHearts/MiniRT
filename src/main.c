@@ -13,6 +13,8 @@
 #include <stdlib.h>
 #include "../inc/minirt.h"
 #include "../inc/scene.h"
+#include "../utils/libft/libft.h"
+#include "../utils/libft/ft_printf.h"
 #include <fcntl.h>
 #include <errno.h>
 #include <stdio.h>
@@ -165,7 +167,6 @@ int	add_ambient(char **split, t_mlx *rt)
 	char	**color;
 
 	s = rt->scene;
-	
 	if (check_format(split))
 		return (1);		// print error then return 1, element format wrong @goto int	check_format(char **split)
 	if (s.ambient.filled == 1)
@@ -182,14 +183,40 @@ int	add_ambient(char **split, t_mlx *rt)
 int	add_camera(char **split, t_mlx *rt)
 {
 	t_scene	s;
-	char	**color;
-
-	s = rt->scene;
+	t_camera cam;
+	char **pos;
+	char **ori;
 	
+	s = rt->scene;
+	cam = rt->scene.camera;
 	if (check_format(split))
 		return (1);		// print error then return 1, element format wrong @goto int	check_format(char **split)
+	if (cam.filled == 1)
+		return (1); 	// print error then return 1, Multiple camera input
+	pos = ft_split(split[1], ',');
+	cam.position.x = atof(pos[0]);
+	cam.position.y = atof(pos[1]);
+	cam.position.z = atof(pos[2]);
+	ori = ft_split(split[2], ',');
+	cam.direction.x = atof(ori[0]);
+	cam.direction.y = atof(ori[1]);
+	cam.direction.z = atof(ori[2]);
+	cam.filled = 1;
+	return (free_darray(split), free_darray(pos), free_darray(ori), 0);
+}
 
-	return (0);
+int	add_light(char **split, t_mlx *rt)
+{
+	t_light *lights;
+
+	lights = rt->scene.light;
+	if (check_format(split))
+		return (1);		// print error then return 1, element format wrong @goto int	check_format(char **split)
+	if (!lights)
+		lights = ft_newlight(split);
+	else
+		ft_lightadd_back(lights, ft_newlight(split));
+	return (free_darray(split), 0);
 }
 
 // "A C L sp pl cy"
@@ -198,7 +225,7 @@ int	parse_line (t_mlx *rt, char *line)
 	char **split;
 	int ret;
 
-	split = ft_split(line);
+	split = ft_split(line, ' ');
 	if (!ft_strcmp_wlist(split[0], rt->element))
 		return (1);
 	if (!ft_strcmp(split[0], "A"))
@@ -206,7 +233,7 @@ int	parse_line (t_mlx *rt, char *line)
 	else if (!ft_strcmp(split[0], "C"))
 		ret = add_camera(split, rt);
 	else if (!ft_strcmp(split[0], "L"))
-		ret = add_light();
+		ret = add_light(split, rt);
 	else if (!ft_strcmp(split[0], "sp"))
 		ret = add_sphere();
 	else if (!ft_strcmp(split[0], "pl"))
@@ -224,6 +251,8 @@ int	parse_scene(char *file, t_mlx *rt)
 
 	fd = open_file(file);
 	line = get_next_line(fd);
+	if (!line)
+		// error empty file, return 1
 	while (line)
 	{
 		ret = parse_line(rt, line);
@@ -238,7 +267,7 @@ void	init_mlx(t_mlx *rt)
 	rt->element = ft_split("A C L sp pl cy", ' ');
 	rt->win_height = 720;
 	rt->win_width = 1080;
-	rt->scene.camera = NULL;
+	rt->scene.camera.filled = 0;
 	rt->scene.active_camera = NULL;
 	rt->scene.light = NULL;
 	rt->scene.object = NULL;
@@ -254,6 +283,9 @@ int main(int argc, char **argv)
 		int ret;
 		init_mlx(&rt);
 		ret = parse_scene(argv[1], &rt);
+		// if (parse_scene(argv[1], &rt))
+		//		//free scene
+		//		//parse error exit(1)
 
 
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: jyim <jyim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:21:05 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/05 11:16:30 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/19 18:40:56 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,9 @@ typedef struct s_camera
 	t_vec3			position;
 	t_vec3			direction;
 	t_camvar		vars;
-	struct s_camera	*next;
-	struct s_camera	*previous;	//to allow two keypress events to iterate through the caamera list
+	int				filled;
+	// struct s_camera	*next;		//not needed by subject
+	// struct s_camera	*previous;	//to allow two keypress events to iterate through the caamera list
 }				t_camera;
 
 #endif
