@@ -12,8 +12,6 @@
 
 #include <stdlib.h>
 #include "../../inc/minirt.h"
-#include "../../inc/scene.h"
-#include "../../inc/camera.h"
 #include <fcntl.h>
 #include <errno.h>
 #include <stdio.h>
@@ -67,8 +65,13 @@ int ft_strcmp_wlist(char *line, char **cmp)
 	i = 0;
 	while (cmp[i])
 	{
-		if (!ft_strcmp(line, cmp[i]))
-			return (1);
+		j = 0;
+		while (cmp[j])
+		{
+			if (!ft_strcmp(line, cmp[j]))
+				return (1);
+			j++;
+		}
 		i++;
 	}
 	return (0);
@@ -104,7 +107,7 @@ int str_has_aplha(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (!isalpha(str[i]))
+		if (!ft_isalpha(str[i]))
 			return (1);
 		i++;
 	}
@@ -134,14 +137,18 @@ int	check_format(char **split)
 
 	i = 0;
 	len = split_len(split);
-	if (!strcmp(split[0], "A"))
+	if (!ft_strcmp(split[0], "A"))
+	{
 	// print error then return 1, Wrong number of element for A
 		if (len != 3)
 			return (1);
-	else if (!strcmp(split[0], "cy"))
+	}
+	else if (!ft_strcmp(split[0], "cy"))
+	{
 	// print error then return 1, Wrong number of element for cy
 		if (len != 6)
 			return (1);
+	}
 	else if (len != 4)
 	// print error then return 1, Wrong number of element for split[0]
 		return (1);

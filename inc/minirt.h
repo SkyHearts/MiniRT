@@ -17,6 +17,8 @@
 #include "../utils/libft/libft.h"
 #include "../utils/libft/ft_printf.h"
 
+#define DEFAULT_VAL 10
+
 typedef struct s_mlx
 {
 	void		*mlx;
@@ -28,6 +30,7 @@ typedef struct s_mlx
 }				t_mlx;
 
 // Parsing
+int		parse_scene(char *file, t_mlx *rt);
 int		parse_line (t_mlx *rt, char *line);
 int		add_ambient(char **split, t_mlx *rt);
 int		add_light(char **split, t_mlx *rt);
@@ -36,6 +39,8 @@ int		add_camera(char **split, t_mlx *rt);
 // Parsing light
 t_light		*ft_newlight(char **split);
 void		ft_lightadd_back(t_light **lst, t_light *new);
+t_object	*ft_newobj(char **split);
+void	ft_objadd_back(t_object **lst, t_object *new);
 
 //Parsing Utils
 int		split_len(char **split);
@@ -46,5 +51,9 @@ float	ft_atof(char *num);
 int		str_has_aplha(char *str);
 void	free_darray(char **array);
 int		check_format(char **split);
-
+t_vec3 	get_coordinate(char *split);
+t_vec3	get_color(char *split);
+t_vec3	get_normal(char *split);
+int		check_col_range(t_vec3 col);
+int		check_range(float value, int type);
 #endif
