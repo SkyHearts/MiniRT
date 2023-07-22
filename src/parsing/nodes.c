@@ -31,7 +31,7 @@ t_vec3 get_coordinate(char *split)
 	
 }
 
-int	check_range(float value, int type)
+int	check_range(double value, int type)
 {
 	if (type == 1)
 	{
@@ -158,7 +158,7 @@ void	ft_objadd_back(t_object **lst, t_object *new)
 	t_object	*tmp;
 	int			i;
 
-	i = 0;
+	i = 1;
 	if (!*lst)
 	{
 		*lst = new;
@@ -171,7 +171,7 @@ void	ft_objadd_back(t_object **lst, t_object *new)
 		i++;
 	}
 	tmp->next = new;
-	tmp->index += i;
+	new->index += i;
 }
 
 t_light	*ft_newlight(char **split)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scene.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jyim <jyim@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:13:12 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/20 12:53:51 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/22 16:39:48 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef enum s_objtype
 typedef struct s_ambient
 {
 	int				filled;
-	float			ratio;
+	double			ratio;
 	t_vec3			color;
 }				t_ambient;
 
@@ -33,7 +33,7 @@ typedef struct s_light
 {
 	t_vec3			position;
 	t_vec3			color;
-	float			ratio;
+	double			ratio;
 	struct s_light	*next;
 }				t_light;
 
@@ -44,8 +44,8 @@ typedef struct s_object
 	t_vec3			position;
 	t_vec3			normal;
 	t_vec3			color;
-	float			diameter;
-	float			height;
+	double			diameter;
+	double			height;
 	struct s_object	*next;
 }				t_object;
 

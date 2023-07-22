@@ -25,6 +25,11 @@ typedef struct s_mlx
 	void		*win;
 	int			win_width;
 	int			win_height;
+	void		*img;
+	void		*addr;
+	int			bpp;
+	int			line_length;
+	int			endian;
 	t_scene		scene;
 	char 		**element;
 }				t_mlx;
@@ -47,7 +52,7 @@ int		split_len(char **split);
 int		open_file(char *file);
 int		ft_strcmp_clist(char *line, char *cmp);
 int		ft_strcmp_wlist(char *line, char **cmp);
-float	ft_atof(char *num);
+double	ft_atof(char *num);
 int		str_has_aplha(char *str);
 void	free_darray(char **array);
 int		check_format(char **split);
@@ -55,5 +60,15 @@ t_vec3 	get_coordinate(char *split);
 t_vec3	get_color(char *split);
 t_vec3	get_normal(char *split);
 int		check_col_range(t_vec3 col);
-int		check_range(float value, int type);
+int		check_range(double value, int type);
+int		isempty(char *str);
+char	**isspace_split(const char *str);
+
+//Print scene
+void	print_vec(t_vec3 a);
+void	print_ambient(t_mlx	rt);
+void	print_cam(t_mlx	rt);
+void	print_light(t_mlx	rt);
+void	print_obj(t_mlx	rt);
+void	ft_printscene(t_mlx	rt);
 #endif

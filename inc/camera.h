@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jyim <jyim@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:21:05 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/19 18:40:56 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/22 16:39:25 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ typedef struct s_camvar
 	t_vec3			up;
 	t_vec3			right;
 	t_vec3			forward;
-	float			height;
-	float			width;
-	float			aspect_r;
-	float			theta;
-	float			fov;
+	double			height;
+	double			width;
+	double			aspect_r;
+	double			theta;
+	double			fov;
 }				t_camvar;
 
 typedef struct s_camera

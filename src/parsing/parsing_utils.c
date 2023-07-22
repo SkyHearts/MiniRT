@@ -77,11 +77,11 @@ int ft_strcmp_wlist(char *line, char **cmp)
 	return (0);
 }
 
-float ft_atof(char *num)
+double ft_atof(char *num)
 {
 	int		sign;
-	float	whole;
-	float	decimal;
+	double	whole;
+	double	decimal;
 	char	*tmp;
 
 	tmp = num;
@@ -94,9 +94,14 @@ float ft_atof(char *num)
 	whole = atoi(tmp);
 	while (*tmp != '.' && *tmp)
 		tmp++;
-	decimal = atoi(++tmp);
-	while (decimal > 1)
-		decimal /= 10;
+	if ((*tmp))
+	{
+		decimal = ft_atoi(++tmp);
+		while (decimal > 1)
+			decimal /= 10;
+	}
+	else 
+		decimal = 0.0;
 	return (sign * (whole + decimal));
 }
 
@@ -107,7 +112,7 @@ int str_has_aplha(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (!ft_isalpha(str[i]))
+		if (ft_isalpha(str[i]))
 			return (1);
 		i++;
 	}
@@ -135,29 +140,45 @@ int	check_format(char **split)
 	int	len;
 	int	i;
 
-	i = 0;
+	i = 1;
 	len = split_len(split);
 	if (!ft_strcmp(split[0], "A"))
 	{
 	// print error then return 1, Wrong number of element for A
 		if (len != 3)
-			return (1);
+			return (printf("Incorrect number of parameters\n"),1);
 	}
 	else if (!ft_strcmp(split[0], "cy"))
 	{
 	// print error then return 1, Wrong number of element for cy
 		if (len != 6)
-			return (1);
+			return (printf("Incorrect number of parameters\n"),1);
 	}
 	else if (len != 4)
 	// print error then return 1, Wrong number of element for split[0]
-		return (1);
+		return (printf("Incorrect number of parameters\n"), 1);
 	while (split[i])
 	{
 		if (str_has_aplha(split[i]))
 		// print error then return 1, Element split[0] has alphabet in parameter
-			return (1);
+			return (printf("Element %s has an alphabet\n", split[0]), 1);
 		i++;
 	}
 	return (0);
+}
+
+int	isempty(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (1);
+	while (str[i])
+	{
+		if (str[i] != ' ' && str[i] != '\t' && str[i] != '\n')
+			return (0);
+		i++;
+	}
+	return (1);
 }
