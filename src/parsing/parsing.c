@@ -53,6 +53,7 @@ int	add_camera(char **split, t_mlx *rt)
 	cam->direction = get_coordinate(split[2]);
 	cam->vars.fov = ft_atoi(split[3]);
 	cam->filled = 1;
+	init_cam(rt);
 	if (check_range(cam->vars.fov, 3))
 		return (1);  // print error then return 1, Input range incorrect
 	return (0);

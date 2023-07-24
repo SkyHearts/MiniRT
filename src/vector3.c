@@ -6,11 +6,11 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:17:04 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/22 16:39:25 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/24 14:40:10 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector3.h"
+#include "minirt.h"
 
 t_vec3	*create_vec3(double _x, double _y, double _z)
 {
@@ -20,6 +20,16 @@ t_vec3	*create_vec3(double _x, double _y, double _z)
 	new_vec3->x = _x;
 	new_vec3->y = _y;
 	new_vec3->y = _y;
+	return (new_vec3);
+}
+
+t_vec3	vec3(double _x, double _y, double _z)
+{
+	t_vec3	new_vec3;
+
+	new_vec3.x = _x;
+	new_vec3.y = _y;
+	new_vec3.y = _y;
 	return (new_vec3);
 }
 
@@ -74,4 +84,131 @@ t_vec3	*pnormalize(t_vec3 vec)
 	ret->y = vec.y / w;
 	ret->z = vec.z / w;
 	return (ret);
+}
+
+t_vec3	normalize(t_vec3 vec)
+{
+	t_vec3	ret;
+	double	w;
+
+	w = sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+	ret.x = vec.x / w;
+	ret.y = vec.y / w;
+	ret.z = vec.z / w;
+	return (ret);
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+void set_zero(t_mat44 *matrix)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	while (i < 4)
+	{
+		j = 0;
+		while (j < 4)
+		{
+			matrix->data[i][j] = 0.0;
+			j++;
+		}
+		i++;
+	}
+    return matrix;
+}
+
+void set_identity(t_mat44 *matrix)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	while (i < 4)
+	{
+		j = 0;
+		while (j < 4)
+		{
+			if (i == j)
+				matrix->data[i][j] = 1.0;
+			else
+				matrix->data[i][j] = 0.0;
+			j++;
+		}
+		i++;
+	}
+    return matrix;
+}
+
+void	get_translation(t_vec3 position, t_mat44 *translation)
+{
+	set_zero(translation);
+	translation->data[0][3] = position.x;
+	translation->data[1][3] = position.y;
+	translation->data[2][3] = position.z;
+}
+
+void	get_rotation(t_camera *camray, t_mat44 *rotation)
+{
+	set_identity(rotation);
+	rotation->data[0][0] = camray->vars.right.x;
+	rotation->data[0][1] = camray->vars.right.y;
+	rotation->data[0][2] = camray->vars.right.z;
+	rotation->data[1][0] = camray->vars.up.x;
+	rotation->data[1][1] = camray->vars.up.y;
+	rotation->data[1][2] = camray->vars.up.z;
+	rotation->data[2][0] = camray->vars.forward.x;
+	rotation->data[2][1] = camray->vars.forward.y;
+	rotation->data[2][2] = camray->vars.forward.z;
+}
+
+t_mat44	add_mat(t_mat44 matrix_a, t_mat44 matrix_b)
+{
+	t_mat44 result;
+
+	result.data[0][0] = matrix_a.data[0][0] + matrix_b.data[0][0];
+	result.data[0][1] = matrix_a.data[0][1] + matrix_b.data[0][1];
+	result.data[0][2] = matrix_a.data[0][2] + matrix_b.data[0][2];
+	result.data[0][3] = matrix_a.data[0][3] + matrix_b.data[0][3];
+	result.data[1][0] = matrix_a.data[1][0] + matrix_b.data[1][0];
+	result.data[1][1] = matrix_a.data[1][1] + matrix_b.data[1][1];
+	result.data[1][2] = matrix_a.data[1][2] + matrix_b.data[1][2];
+	result.data[1][3] = matrix_a.data[1][3] + matrix_b.data[1][3];
+	result.data[2][0] = matrix_a.data[2][0] + matrix_b.data[2][0];
+	result.data[2][1] = matrix_a.data[2][1] + matrix_b.data[2][1];
+	result.data[2][2] = matrix_a.data[2][2] + matrix_b.data[2][2];
+	result.data[2][3] = matrix_a.data[2][3] + matrix_b.data[2][3];
+	result.data[3][0] = matrix_a.data[3][0] + matrix_b.data[3][0];
+	result.data[3][1] = matrix_a.data[3][1] + matrix_b.data[3][1];
+	result.data[3][2] = matrix_a.data[3][2] + matrix_b.data[3][2];
+	result.data[3][3] = matrix_a.data[3][3] + matrix_b.data[3][3];
+	return (result);
+}
+
+t_mat44	worldtocam(t_mat44 ctw)
+{
+	t_mat44 wtc;
+	t_vec3 right = vec3(ctw.data[0][0],ctw.data[1][0],ctw.data[2][0]);
+	t_vec3 up = vec3(ctw.data[0][1],ctw.data[1][1],ctw.data[2][1]);
+	t_vec3 forward = vec3(ctw.data[0][2],ctw.data[1][2],ctw.data[2][2]);
+	t_vec3 trans = vec3(ctw.data[0][3],ctw.data[1][3],ctw.data[2][3]);
+	wtc.data[0][0] = ctw.data[0][0];
+	wtc.data[0][1] = ctw.data[1][0];
+	wtc.data[0][2] = ctw.data[2][0];
+	wtc.data[0][3] = -dot_vec3(right, trans);
+	wtc.data[1][0] = ctw.data[0][1];
+	wtc.data[1][1] = ctw.data[1][1];
+	wtc.data[1][2] = ctw.data[2][1];
+	wtc.data[1][3] = -dot_vec3(up, trans);
+	wtc.data[2][0] = ctw.data[0][2];
+	wtc.data[2][1] = ctw.data[1][2];
+	wtc.data[2][2] = ctw.data[2][2];
+	wtc.data[2][3] = -dot_vec3(forward, trans);
+	wtc.data[3][0] = 0;
+	wtc.data[3][1] = 0;
+	wtc.data[3][2] = 0;
+	wtc.data[3][3] = 1;
+	return (wtc);
 }

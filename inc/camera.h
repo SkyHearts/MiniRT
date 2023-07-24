@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:21:05 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/22 16:39:25 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/24 15:26:12 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,22 @@ typedef struct s_camera
 	t_vec3			position;
 	t_vec3			direction;
 	t_camvar		vars;
+	t_mat44			camtoworld;
 	int				filled;
-	// struct s_camera	*next;		//not needed by subject
-	// struct s_camera	*previous;	//to allow two keypress events to iterate through the caamera list
 }				t_camera;
+
+typedef struct s_ray
+{
+	t_vec3			origin;
+	t_vec3			direction;
+}				t_ray;
+
+//matrix
+void	set_zero(t_mat44 *matrix);
+void	set_identity(t_mat44 *matrix);
+void	get_translation(t_vec3 position, t_mat44 *translation);
+void	get_rotation(t_camera *camray, t_mat44 *rotation);
+t_mat44	add_mat(t_mat44 matrix_a, t_mat44 matrix_b);
+t_mat44	worldtocam(t_mat44 camtoworld);
 
 #endif

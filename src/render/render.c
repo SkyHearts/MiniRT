@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/22 18:34:25 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/24 16:07:14 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,26 @@ void	destroy_img(t_mlx *rt)
 	rt->img = NULL;
 }	
 
+t_vec3 get_up(t_vec3 orientation)
+{
+	if (orientation.y == 1.0)
+		return(vec3(0,0,1));
+	return (vec3(0, 1, 0));
+}
+
 void	init_cam(t_mlx *rt)
 {
 	t_camera *camray;
+	t_mat44 translation;
+	t_mat44 rotation;
 	camray = &(rt->scene.camera);
 	camray->vars.aspect_r = (double)rt->win_width / (double)rt->win_height;
-	camray->vars.
+	camray->vars.forward = normalize(camray->direction);
+	camray->vars.right = cross_vec3(get_up(camray->vars.forward), camray->vars.forward);
+	camray->vars.up = cross_vec3(camray->vars.right, camray->vars.forward);
+	get_translation(camray->position, &translation);
+	get_rotation(&camray, &rotation);
+	camray->camtoworld = add_mat(translation, rotation);
 }
 
 void	render(t_mlx *rt)
@@ -76,16 +90,17 @@ void	render(t_mlx *rt)
 
 	y = 0;
 	init_img(rt);
-	init_cam(&rt);
+	
 	while (y < rt->win_height)
 	{
 		x = 0;
 		while (x < rt->win_width)
 		{
-			t_camera *camray;
-			camray = &(rt->scene.camera);
-			_x = (x / rt->win_width) * 2.0f - 1.0f;
-			_y = (y / rt->win_height) * 2.0f - 1.0f;;
+			t_ray camray;
+			camray = getray()
+
+			color = 
+			img_mlx_pixel_put(t_mlx *rt, _x, _y, color)
 			x++;
 		}
 		y++;

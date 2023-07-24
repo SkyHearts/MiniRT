@@ -40,12 +40,13 @@ int		parse_line (t_mlx *rt, char *line);
 int		add_ambient(char **split, t_mlx *rt);
 int		add_light(char **split, t_mlx *rt);
 int		add_camera(char **split, t_mlx *rt);
+void	init_cam(t_mlx *rt);
 
 // Parsing light
 t_light		*ft_newlight(char **split);
 void		ft_lightadd_back(t_light **lst, t_light *new);
 t_object	*ft_newobj(char **split);
-void	ft_objadd_back(t_object **lst, t_object *new);
+void		ft_objadd_back(t_object **lst, t_object *new);
 
 //Parsing Utils
 int		split_len(char **split);
