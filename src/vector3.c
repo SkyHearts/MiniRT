@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: jyim <jyim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:17:04 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/24 14:40:10 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/25 01:24:06 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,36 @@ t_vec3	sub_vec3(t_vec3 vec1, t_vec3 vec2)
 	result.x = vec1.x - vec2.x;
 	result.y = vec1.y - vec2.y;
 	result.z = vec1.z - vec2.z;
+	return (result);
+}
+
+t_vec3	mul_vec3(t_vec3 vec1, t_vec3 vec2)
+{
+	t_vec3	result;
+
+	result.x = vec1.x * vec2.x;
+	result.y = vec1.y * vec2.y;
+	result.z = vec1.z * vec2.z;
+	return (result);
+}
+
+t_vec3	mul_double_vec3(double num, t_vec3 vec)
+{
+	t_vec3	result;
+
+	result.x = vec.x * num;
+	result.y = vec.y * num;
+	result.z = vec.z * num;
+	return (result);
+}
+
+t_vec3	div_double_vec3(double num, t_vec3 vec)
+{
+	t_vec3	result;
+
+	result.x = vec.x / num;
+	result.y = vec.y / num;
+	result.z = vec.z / num;
 	return (result);
 }
 
