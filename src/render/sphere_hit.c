@@ -6,12 +6,12 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 13:08:57 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/25 14:34:29 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/25 16:33:52 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "../inc/minirt.h"
+#include "../../inc/minirt.h"
 #include <fcntl.h>
 #include <errno.h>
 #include <stdio.h>

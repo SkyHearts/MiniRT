@@ -3,8 +3,9 @@ CC		= gcc
 FSAN	= -fsanitize=address
 CFLAGS	= -Wall -Wextra -Werror $(INCLUDES) -g3
 INCLUDES = -I inc -I ${LIBFT_DIR}  ${FSAN}
-
-MINIRT_SRCS	=	main.c print_scene.c
+MINILIB = -lmlx -framework OpenGL -framework AppKit
+ 
+MINIRT_SRCS	=	main.c print_scene.c vector3.c
 MINIRT_SRCS_DIR	= src/
 MINIRT_OBJS = $(addprefix $(MINIRT_SRCS_DIR), $(MINIRT_SRCS:.c=.o))
 
@@ -13,7 +14,7 @@ PARSE_DIR = src/parsing/
 PARSE_OBJS = $(addprefix $(PARSE_DIR), $(PARSE_SRC:.c=.o))
 
 RENDER_SRC = render.c sphere_hit.c
-RENDER_DIR = src/parsing/
+RENDER_DIR = src/render/
 RENDER_OBJS = $(addprefix $(RENDER_DIR), $(RENDER_SRC:.c=.o))
 
 
@@ -29,7 +30,7 @@ all:  ${NAME}
 
 ${NAME}:	${LIBFT_DIR}/${LIBFT_LIB} ${MINIRT_OBJS} ${PARSE_OBJS} ${RENDER_OBJS}
 	@echo "Compiling minishell"
-	${CC} ${CFLAGS} ${MINIRT_OBJS} ${PARSE_OBJS} ${RENDER_OBJS} -o ${NAME} ${LIB} 
+	${CC} ${CFLAGS} ${MINIRT_OBJS} ${PARSE_OBJS} ${RENDER_OBJS} -o ${NAME} ${LIB} ${MINILIB}
 	
 ${LIBFT_DIR}/${LIBFT_LIB}:
 	@make -C ${LIBFT_DIR}

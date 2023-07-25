@@ -76,4 +76,7 @@ void	ft_printscene(t_mlx	rt);
 
 //hit interaction
 double hit_sphere(t_object *obj, t_ray r);
+
+
+void	render(t_mlx *rt);
 #endif

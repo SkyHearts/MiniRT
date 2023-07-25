@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jyim <jyim@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:17:04 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/25 01:24:06 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/25 16:26:19 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_vec3	*create_vec3(double _x, double _y, double _z)
 	new_vec3 = malloc (sizeof(t_vec3) * 1);
 	new_vec3->x = _x;
 	new_vec3->y = _y;
-	new_vec3->y = _y;
+	new_vec3->z = _z;
 	return (new_vec3);
 }
 
@@ -29,7 +29,7 @@ t_vec3	vec3(double _x, double _y, double _z)
 
 	new_vec3.x = _x;
 	new_vec3.y = _y;
-	new_vec3.y = _y;
+	new_vec3.z = _z;
 	return (new_vec3);
 }
 
@@ -147,7 +147,6 @@ void set_zero(t_mat44 *matrix)
 		}
 		i++;
 	}
-    return matrix;
 }
 
 void set_identity(t_mat44 *matrix)
@@ -169,7 +168,6 @@ void set_identity(t_mat44 *matrix)
 		}
 		i++;
 	}
-    return matrix;
 }
 
 void	get_translation(t_vec3 position, t_mat44 *translation)

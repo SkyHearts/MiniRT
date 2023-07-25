@@ -28,6 +28,8 @@ void	init_mlx(t_mlx *rt)
 	rt->scene.object = NULL;
 	rt->scene.active_object = NULL;
 	rt->scene.ambient.filled = 0;
+	rt->mlx = mlx_init();
+	rt->win = mlx_new_window(rt->mlx,rt->win_width,rt->win_height, "minirt");
 }
 
 int main(int argc, char **argv)
@@ -44,8 +46,8 @@ int main(int argc, char **argv)
 			return (1);
 		}
 		ft_printscene(rt); //to check parse inputs
-		//render(rt);
-
+		render(&rt);
+		mlx_loop(rt.mlx);
 	}
 	else
 		printf("Wrong number of argument/format! ./minirt <filename>");

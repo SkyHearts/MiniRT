@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector3.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jyim <jyim@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:28:55 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/25 01:25:52 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/25 16:26:54 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # include <math.h>
 # include <stdlib.h>
 
-#define M_PI		3.14159265358979323846
-#define M_PI_2		1.57079632679489661923
+//#define M_PI		3.14159265358979323846
+//#define M_PI_2		1.57079632679489661923
 
 typedef struct s_vec3
 {
@@ -44,10 +44,5 @@ double	dot_vec3(t_vec3 vec1, t_vec3 vec2);
 t_vec3	cross_vec3(t_vec3 vec1, t_vec3 vec2);
 t_vec3	*pnormalize(t_vec3 vec);
 t_vec3	normalize(t_vec3 vec);
-
-//matrix
-void	set_identity(t_mat44 *matrix);
-void	get_translation(t_vec3 position, t_mat44 *translation);
-void	get_rotation(t_camera *camray, t_mat44 *rotation);
 
 #endif

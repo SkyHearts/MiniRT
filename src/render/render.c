@@ -6,21 +6,21 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/25 14:27:46 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/25 17:03:05 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "../inc/minirt.h"
+#include "../../inc/minirt.h"
 #include <fcntl.h>
 #include <errno.h>
 #include <stdio.h>
 
 unsigned int	RGBtoColor(t_vec3 color)
 {
-		unsigned int r = (unsigned int)(color.x * 255.0f);
-		unsigned int g = (unsigned int)(color.y * 255.0f);
-		unsigned int b = (unsigned int)(color.z * 255.0f);
+		unsigned int r = (unsigned int)(color.x);
+		unsigned int g = (unsigned int)(color.y);
+		unsigned int b = (unsigned int)(color.z);
 
 		unsigned int result = (r << 16) | (g << 8) | b;
 		return result;
@@ -40,12 +40,14 @@ void	img_mlx_pixel_put(t_mlx *rt, int x, int y, int color)
 
 int	init_img(t_mlx *rt)
 {
-	rt->img = mlx_new_image(rt->win, rt->win_width, rt->win_height);
+	rt->img = mlx_new_image(rt->mlx, rt->win_width, rt->win_height);
 	if (!rt->img)
+		return (1);
 		//exit_program(MLX_ERROR);
 	rt->addr = mlx_get_data_addr(rt->img, &rt->bpp,
 			&rt->line_length, &rt->endian);
 	if (!rt->addr)
+		return (1);
 		//exit_program(MLX_ERROR);
 	return (0);
 }
@@ -90,7 +92,7 @@ void	init_cam(t_mlx *rt)
 	camray->vars.vertical = mul_double_vec3(camray->vars.view_h, camray->vars.up);
 	camray->vars.llc = sub_vec3(sub_vec3(sub_vec3(camray->position, div_double_vec3(2.0, camray->vars.horizontal)), div_double_vec3(2.0, camray->vars.vertical)), camray->vars.forward);
 	get_translation(camray->position, &translation);
-	get_rotation(&camray, &rotation);
+	get_rotation(camray, &rotation);
 	camray->camtoworld = add_mat(translation, rotation);
 }
 
@@ -106,9 +108,12 @@ t_ray	get_ray(double u, double v, t_mlx *rt)
 color ray_color(t_object *object, t_ray camray)
 {
 	color pixel_color;
-	pixel_color.color = vec3(255,255,255);
+	pixel_color.color = vec3(1,0,0);
 	if (hit_sphere(object, camray) > 0)
-		pixel_color.color = vec3(1,0,0);
+	{
+		printf("Hit something\n");
+		pixel_color.color = vec3(255,0,0);
+	}
 	return (pixel_color);
 }
 
@@ -134,7 +139,8 @@ void	render(t_mlx *rt)
 
 			camray = get_ray(u, v, rt);
 			color pixel_color = ray_color(obj, camray);
-			// img_mlx_pixel_put(rt, x, y, color);
+			img_mlx_pixel_put(rt, x, y, RGBtoColor(pixel_color.color));
+			//img_mlx_pixel_put(rt, x, y, 0xffffff);
 			x++;
 		}
 		y--;
