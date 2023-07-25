@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 13:08:57 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/25 16:33:52 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/25 17:05:28 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 double hit_sphere(t_object *obj, t_ray r)
 {
 	//center = sphere centre, radius = sphere radius
+	//write data for debug
 	t_vec3 oc = sub_vec3(r.origin, obj->position);
 	double a = dot_vec3(r.direction, r.direction);
 	double b = 2.0 * dot_vec3(oc, r.direction);
