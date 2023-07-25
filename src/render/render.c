@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jyim <jyim@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/25 01:38:46 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/25 14:27:46 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "../inc/minirt.h"
-#include "../inc/scene.h"
 #include <fcntl.h>
 #include <errno.h>
 #include <stdio.h>
@@ -104,27 +103,38 @@ t_ray	get_ray(double u, double v, t_mlx *rt)
 	return (camray);
 }
 
+color ray_color(t_object *object, t_ray camray)
+{
+	color pixel_color;
+	pixel_color.color = vec3(255,255,255);
+	if (hit_sphere(object, camray) > 0)
+		pixel_color.color = vec3(1,0,0);
+	return (pixel_color);
+}
+
 void	render(t_mlx *rt)
 {
 	int		x;
 	int		y;
+	t_object *obj;
 
 	y = rt->win_height - 1;
 	init_img(rt);
-	// init_cam(rt);
+	init_cam(rt);
+	obj = rt->scene.object;
 	while (y >= 0)
 	{
 		x = 0;
 		while (x < rt->win_width)
 		{
 			t_ray camray;
-			// camray = getray();
 
 			double u = (double)x / (rt->win_width - 1);
 			double v = (double)y / (rt->win_height - 1);
 
 			camray = get_ray(u, v, rt);
-			// img_mlx_pixel_put(rt, _x, _y, color);
+			color pixel_color = ray_color(obj, camray);
+			// img_mlx_pixel_put(rt, x, y, color);
 			x++;
 		}
 		y--;

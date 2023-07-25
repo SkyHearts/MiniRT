@@ -14,6 +14,7 @@
 # define MINIRT_H
 
 #include "scene.h"
+#include <mlx.h>
 #include "../utils/libft/libft.h"
 #include "../utils/libft/ft_printf.h"
 
@@ -72,4 +73,7 @@ void	print_cam(t_mlx	rt);
 void	print_light(t_mlx	rt);
 void	print_obj(t_mlx	rt);
 void	ft_printscene(t_mlx	rt);
+
+//hit interaction
+double hit_sphere(t_object *obj, t_ray r);
 #endif

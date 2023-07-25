@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:13:12 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/22 16:39:48 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/25 13:42:39 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ typedef enum s_objtype
 	PLANE = 1,
 	CYLINDER = 2,
 }	t_objtype;
+
+typedef struct col
+{
+	t_vec3 color;
+}				color;
 
 typedef struct s_ambient
 {
