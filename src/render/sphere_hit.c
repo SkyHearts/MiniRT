@@ -6,14 +6,11 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 13:08:57 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/25 17:05:28 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/26 15:38:48 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "../../inc/minirt.h"
-#include <fcntl.h>
-#include <errno.h>
 #include <stdio.h>
 
 double hit_sphere(t_object *obj, t_ray r)
@@ -25,9 +22,16 @@ double hit_sphere(t_object *obj, t_ray r)
 	double b = 2.0 * dot_vec3(oc, r.direction);
 	double c = dot_vec3(oc, oc) - ((obj->diameter) * (obj->diameter))/4;
 	double discriminant = b * b - 4 * a * c;
-	if (discriminant < 0) {
+	//printf("Discriminant: %f\n", discriminant);
+	//return (discriminant > 0);
+	if (discriminant < 0)
+	{
 		return -1.0;
-	} else {
-		return (-b - sqrt(discriminant) ) / (2.0 * a);
+	}
+	else
+	{
+		double ret = (-b - sqrt(discriminant) ) / (2.0 * a);
+		printf("T: %f\n", ret);
+		return (ret);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/25 17:04:55 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/26 15:30:38 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,14 @@ void	init_cam(t_mlx *rt)
 	t_mat44 rotation;
 	camray = &(rt->scene.camera);
 	camray->vars.forward = normalize(camray->direction);
+	//printf("Direction(Init Cam): ");
+	//printvec_nl((*rt).scene.camera.direction);
+	//printf("Forward(Init Cam): ");
+	//printvec_nl(rt->scene.camera.vars.forward);
 	camray->vars.right = cross_vec3(get_up(camray->vars.forward), camray->vars.forward);
 	camray->vars.up = cross_vec3(camray->vars.right, camray->vars.forward);
 	camray->vars.aspect_r = (double)rt->win_width / (double)rt->win_height;
-	camray->vars.h = tan(degtorad(camray->vars.theta)/2);
+	camray->vars.h = tan((degtorad(camray->vars.fov)/2));
 	camray->vars.view_h = 2.0 * camray->vars.h;
 	camray->vars.view_w = camray->vars.aspect_r * camray->vars.view_h;
 	camray->vars.horizontal = mul_double_vec3(camray->vars.view_w, camray->vars.right);
@@ -94,6 +98,28 @@ void	init_cam(t_mlx *rt)
 	get_translation(camray->position, &translation);
 	get_rotation(camray, &rotation);
 	camray->camtoworld = add_mat(translation, rotation);
+}
+
+void	print_cam_debug(t_mlx *rt)
+{
+	printf("CAMERA BEFORE RENDER\n");
+	printf("Position: ");
+	printvec_nl((*rt).scene.camera.position);
+	printf("Forward: ");
+	printvec_nl(rt->scene.camera.vars.forward);
+	printf("Right: ");
+	printvec_nl(rt->scene.camera.vars.right);
+	printf("Up: ");
+	printvec_nl(rt->scene.camera.vars.up);
+	printf("Aspect Ratio: %f\n", rt->scene.camera.vars.aspect_r);
+	printf("fov: %f\n", rt->scene.camera.vars.fov);
+	printf("h: %f\n", rt->scene.camera.vars.h);
+	printf("View_h: %f\n", rt->scene.camera.vars.view_h);
+	printf("View_w: %f\n", rt->scene.camera.vars.view_w);
+	printf("Lower Left Coner: ");
+	printvec_nl(rt->scene.camera.vars.llc);
+	printf("Camera to world matrix: \n");
+	print_matrix(rt->scene.camera.camtoworld);
 }
 
 t_ray	get_ray(double u, double v, t_mlx *rt)
@@ -108,11 +134,12 @@ t_ray	get_ray(double u, double v, t_mlx *rt)
 color ray_color(t_object *object, t_ray camray)
 {
 	color pixel_color;
-	pixel_color.color = vec3(1,0,0);
-	if (hit_sphere(object, camray) > 0)
+	pixel_color.color = vec3(0,0,0);
+	double t = hit_sphere(object, camray);
+	if (t > 0.0)
 	{
-		printf("Hit something\n");
-		pixel_color.color = vec3(255,0,0);
+		//printf("Hit something\n");
+		pixel_color.color = object->color;
 	}
 	return (pixel_color);
 }
@@ -127,7 +154,9 @@ void	render(t_mlx *rt)
 	init_img(rt);
 	init_cam(rt);
 	//write print camera data for debug
+	print_cam_debug(rt);
 	obj = rt->scene.object;
+	printf("Start render~\n");
 	while (y >= 0)
 	{
 		x = 0;

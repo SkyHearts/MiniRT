@@ -6,11 +6,17 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:17:04 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/25 16:26:19 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/26 12:11:09 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include <stdio.h>
+
+void	printvec_nl(t_vec3 vec)
+{
+	printf("[%f, %f, %f]\n", vec.x, vec.y, vec.z);
+}
 
 t_vec3	*create_vec3(double _x, double _y, double _z)
 {
@@ -25,7 +31,7 @@ t_vec3	*create_vec3(double _x, double _y, double _z)
 
 t_vec3	vec3(double _x, double _y, double _z)
 {
-	t_vec3	new_vec3;
+	t_vec3	new_vec3;	
 
 	new_vec3.x = _x;
 	new_vec3.y = _y;
@@ -130,6 +136,24 @@ t_vec3	normalize(t_vec3 vec)
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////
+
+void print_matrix(t_mat44 matrix)
+{
+
+	int i = 0;
+	while (i < 4)
+	{
+		printf("[");
+		int j = 0;
+		while (j < 4)
+		{
+			printf("%15f ", matrix.data[i][j]);
+			j++;
+		}
+		printf("]\n");
+		i++;
+	}
+}
 
 void set_zero(t_mat44 *matrix)
 {

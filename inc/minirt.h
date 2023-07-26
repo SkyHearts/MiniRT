@@ -73,6 +73,11 @@ void	print_cam(t_mlx	rt);
 void	print_light(t_mlx	rt);
 void	print_obj(t_mlx	rt);
 void	ft_printscene(t_mlx	rt);
+void	printvec_nl(t_vec3 vec);
+
+//Print before render
+void	print_cam_debug(t_mlx *rt);
+void	print_matrix(t_mat44 matrix);
 
 //hit interaction
 double hit_sphere(t_object *obj, t_ray r);

@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:13:12 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/25 13:42:39 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/26 11:14:21 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct s_scene
 {
 	t_ambient	ambient;			//NULL first, if != NULL when parsing, return error
 	t_object	*object;			//a list of objects to be iterated through to calculate closest hit
-	t_camera	camera;			//a list of camera to allow iterating through different views 
+	t_camera	camera;			//a camera with all variable stored
 	t_light		*light;				//a list of light to be iterate to obtain brightess colour
 	t_object	*active_object;		//current active object to be manipulated and selected by shooting rays and selecting closest hit
 	t_camera	*active_camera;		//current acrive camera to be manipulated might remove *camera and just use this
