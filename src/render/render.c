@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/26 15:30:38 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/26 15:59:13 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	init_cam(t_mlx *rt)
 	t_mat44 translation;
 	t_mat44 rotation;
 	camray = &(rt->scene.camera);
-	camray->vars.forward = normalize(camray->direction);
+	camray->vars.forward = normalize(sub_vec3(vec3(0, 0, 0), camray->direction));
 	//printf("Direction(Init Cam): ");
 	//printvec_nl((*rt).scene.camera.direction);
 	//printf("Forward(Init Cam): ");
