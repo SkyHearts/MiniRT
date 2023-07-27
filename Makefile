@@ -31,15 +31,6 @@ LIBFT_DIR		= utils/libft
 LIBFT_LIB		= libft.a
 LIB             = -L$(LIBFT_DIR) -lft
 
-ifeq ($(OS), Linux)
-		XPATH=$(XPATH_LINUX)
-		XFLAGS=$(XFLAGS_LINUX)
-		CFLAGS+=-lm
-else
-		XPATH=$(XPATH_MACOS)
-		XFLAGS=$(XFLAGS_MACOS)
-endif
-
 all:  ${NAME} 
 
 ${NAME}:	${LIBFT_DIR}/${LIBFT_LIB} ${MINIRT_OBJS} ${PARSE_OBJS} ${RENDER_OBJS}
