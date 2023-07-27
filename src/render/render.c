@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
+/*   By: sukilim <sukilim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/26 20:44:23 by sulim            ###   ########.fr       */
+/*   Updated: 2023/07/27 16:52:38 by sukilim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,8 +135,8 @@ color ray_color(t_object *object, t_ray camray)
 {
 	color pixel_color;
 	pixel_color.color = vec3(0,0,0);
-	double t = hit_object(object, camray);
-	// double t = hit_sphere(object, camray);
+	// double t = hit_object(object, camray);
+	double t = hit_sphere(object, camray);
 	if (t > 0.0)
 	{
 		//printf("Hit something\n");

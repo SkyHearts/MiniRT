@@ -14,7 +14,8 @@
 # define MINIRT_H
 
 #include "scene.h"
-#include <mlx.h>
+// #include <mlx.h>
+#include <../minilibx-opengl/mlx.h>
 #include "../utils/libft/libft.h"
 #include "../utils/libft/ft_printf.h"
 
@@ -81,7 +82,7 @@ void	print_matrix(t_mat44 matrix);
 
 //hit interaction
 double hit_sphere(t_object *obj, t_ray r);
-t_object *hit_object(t_object *objlst, t_ray r)
+t_object *hit_object(t_object *objlst, t_ray r);
 
 
 void	render(t_mlx *rt);

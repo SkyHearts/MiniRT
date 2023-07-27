@@ -4,7 +4,12 @@ FSAN	= -fsanitize=address
 CFLAGS	= -Wall -Wextra -Werror $(INCLUDES) -g3
 INCLUDES = -I inc -I ${LIBFT_DIR}  ${FSAN}
 MINILIB = -lmlx -framework OpenGL -framework AppKit
- 
+
+XPATH_MACOS=minilibx-opengl
+XFLAGS_MACOS=-I$(XPATH_MACOS) -L$(XPATH_MACOS) -lmlx -framework OpenGL -framework Appkit
+XPATH_LINUX=minilibx-linux
+XFLAGS_LINUX=-I$(XPATH_LINUX) -L$(XPATH_LINUX) -lmlx -lXext -lX11
+
 MINIRT_SRCS	=	main.c print_scene.c vector3.c
 MINIRT_SRCS_DIR	= src/
 MINIRT_OBJS = $(addprefix $(MINIRT_SRCS_DIR), $(MINIRT_SRCS:.c=.o))
@@ -26,11 +31,20 @@ LIBFT_DIR		= utils/libft
 LIBFT_LIB		= libft.a
 LIB             = -L$(LIBFT_DIR) -lft
 
+ifeq ($(OS), Linux)
+		XPATH=$(XPATH_LINUX)
+		XFLAGS=$(XFLAGS_LINUX)
+		CFLAGS+=-lm
+else
+		XPATH=$(XPATH_MACOS)
+		XFLAGS=$(XFLAGS_MACOS)
+endif
+
 all:  ${NAME} 
 
 ${NAME}:	${LIBFT_DIR}/${LIBFT_LIB} ${MINIRT_OBJS} ${PARSE_OBJS} ${RENDER_OBJS}
 	@echo "Compiling minishell"
-	${CC} ${CFLAGS} ${MINIRT_OBJS} ${PARSE_OBJS} ${RENDER_OBJS} -o ${NAME} ${LIB} ${MINILIB}
+	${CC} ${CFLAGS} ${MINIRT_OBJS} ${PARSE_OBJS} ${RENDER_OBJS} -o ${NAME} ${LIB} ${XFLAGS_MACOS}
 	
 ${LIBFT_DIR}/${LIBFT_LIB}:
 	@make -C ${LIBFT_DIR}
