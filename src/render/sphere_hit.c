@@ -6,7 +6,7 @@
 /*   By: sukilim <sukilim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 13:08:57 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/27 16:52:45 by sukilim          ###   ########.fr       */
+/*   Updated: 2023/07/27 18:16:02 by sukilim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ double hit_sphere(t_object *obj, t_ray r)
 	else
 	{
 		double ret = (-b - sqrt(discriminant) ) / (2.0 * a);
-		printf("T: %f\n", ret);
+		//printf("T: %f\n", ret);
 		return (ret);
 	}
 }

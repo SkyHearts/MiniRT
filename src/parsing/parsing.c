@@ -52,6 +52,10 @@ int	add_camera(char **split, t_mlx *rt)
 	cam->position = get_coordinate(split[1]);
 	cam->direction = get_coordinate(split[2]);
 	cam->vars.fov = ft_atoi(split[3]);
+	cam->vars.aspect_r = (double)rt->win_width / (double)rt->win_height;
+	cam->vars.h = tan((degtorad(cam->vars.fov)/2));
+	cam->vars.view_h = 2.0 * cam->vars.h;
+	cam->vars.view_w = cam->vars.aspect_r * cam->vars.view_h;
 	cam->filled = 1;
 	//init_cam(rt);
 	if (check_range(cam->vars.fov, 3))
