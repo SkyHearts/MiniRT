@@ -44,6 +44,7 @@ typedef struct s_mlx
 	char 		**element;
 	int			mode;
 	int			move;
+	int			rotated;
 	double		time;	//Personal use, deactivate for submitions
 }				t_mlx;
 
@@ -83,6 +84,7 @@ int		check_range(double value, int type);
 int		isempty(char *str);
 char	**isspace_split(const char *str);
 double degtorad(double theta);
+t_vec3 get_up(t_vec3 orientation);
 
 //Print scene
 void	print_vec(t_vec3 a);

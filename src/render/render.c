@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/27 15:23:30 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/28 17:30:53 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,13 @@ void	init_cam(t_mlx *rt)
 	//t_mat44 translation;
 	//t_mat44 rotation;
 	camray = &(rt->scene.camera);
-	camray->vars.forward = normalize(sub_vec3(vec3(0, 0, 0), camray->direction));
-	camray->vars.right = cross_vec3(get_up(camray->vars.forward), camray->vars.forward);
-	camray->vars.up = normalize(cross_vec3(camray->vars.right, camray->direction));
+	if(rt->rotated)
+	{
+		camray->vars.forward = normalize(sub_vec3(vec3(0, 0, 0), camray->direction));
+		camray->vars.right = cross_vec3(get_up(camray->vars.forward), camray->vars.forward);
+		camray->vars.up = normalize(cross_vec3(camray->vars.right, camray->direction));
+		rt->rotated = FALSE;
+	}
 	//camray->vars.aspect_r = (double)rt->win_width / (double)rt->win_height;
 	//camray->vars.h = tan((degtorad(camray->vars.fov)/2));
 	//camray->vars.view_h = 2.0 * camray->vars.h;
@@ -144,16 +148,18 @@ void	render(t_mlx *rt)
 {
 	int			x;
 	int			y;
+	int			step;
 	t_object	*obj;
 
+	if (rt->mode == 1)
+		step = 4;
+	else
+		step = 1;
 	y = rt->win_height - 1;
 	init_img(rt);
 	init_cam(rt);
-	//write print camera data for debug
-	//print_cam_debug(rt);
-	//printf("pressed %d\n", i++);
+	print_cam_debug(rt);
 	obj = rt->scene.object;
-	//printf("Start render~\n");
 	while (y >= 0)
 	{
 		x = 0;
@@ -169,9 +175,9 @@ void	render(t_mlx *rt)
 			color pixel_color = ray_color(obj, camray);
 			img_mlx_pixel_put(rt, x, y, RGBtoColor(pixel_color.color));
 			//img_mlx_pixel_put(rt, x, y, 0xffffff);
-			x++;
+			x+= step;
 		}
-		y--;
+		y -= step;
 	}
 	destroy_img(rt);
 }
