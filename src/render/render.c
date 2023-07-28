@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/26 15:59:13 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/28 17:30:53 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,26 +78,26 @@ double degtorad(double theta)
 void	init_cam(t_mlx *rt)
 {
 	t_camera *camray;
-	t_mat44 translation;
-	t_mat44 rotation;
+	//t_mat44 translation;
+	//t_mat44 rotation;
 	camray = &(rt->scene.camera);
-	camray->vars.forward = normalize(sub_vec3(vec3(0, 0, 0), camray->direction));
-	//printf("Direction(Init Cam): ");
-	//printvec_nl((*rt).scene.camera.direction);
-	//printf("Forward(Init Cam): ");
-	//printvec_nl(rt->scene.camera.vars.forward);
-	camray->vars.right = cross_vec3(get_up(camray->vars.forward), camray->vars.forward);
-	camray->vars.up = cross_vec3(camray->vars.right, camray->vars.forward);
-	camray->vars.aspect_r = (double)rt->win_width / (double)rt->win_height;
-	camray->vars.h = tan((degtorad(camray->vars.fov)/2));
-	camray->vars.view_h = 2.0 * camray->vars.h;
-	camray->vars.view_w = camray->vars.aspect_r * camray->vars.view_h;
+	if(rt->rotated)
+	{
+		camray->vars.forward = normalize(sub_vec3(vec3(0, 0, 0), camray->direction));
+		camray->vars.right = cross_vec3(get_up(camray->vars.forward), camray->vars.forward);
+		camray->vars.up = normalize(cross_vec3(camray->vars.right, camray->direction));
+		rt->rotated = FALSE;
+	}
+	//camray->vars.aspect_r = (double)rt->win_width / (double)rt->win_height;
+	//camray->vars.h = tan((degtorad(camray->vars.fov)/2));
+	//camray->vars.view_h = 2.0 * camray->vars.h;
+	//camray->vars.view_w = camray->vars.aspect_r * camray->vars.view_h;
 	camray->vars.horizontal = mul_double_vec3(camray->vars.view_w, camray->vars.right);
 	camray->vars.vertical = mul_double_vec3(camray->vars.view_h, camray->vars.up);
 	camray->vars.llc = sub_vec3(sub_vec3(sub_vec3(camray->position, div_double_vec3(2.0, camray->vars.horizontal)), div_double_vec3(2.0, camray->vars.vertical)), camray->vars.forward);
-	get_translation(camray->position, &translation);
-	get_rotation(camray, &rotation);
-	camray->camtoworld = add_mat(translation, rotation);
+	//get_translation(camray->position, &translation);
+	//get_rotation(camray, &rotation);
+	//camray->camtoworld = add_mat(translation, rotation);
 }
 
 void	print_cam_debug(t_mlx *rt)
@@ -146,17 +146,20 @@ color ray_color(t_object *object, t_ray camray)
 
 void	render(t_mlx *rt)
 {
-	int		x;
-	int		y;
-	t_object *obj;
+	int			x;
+	int			y;
+	int			step;
+	t_object	*obj;
 
+	if (rt->mode == 1)
+		step = 4;
+	else
+		step = 1;
 	y = rt->win_height - 1;
 	init_img(rt);
 	init_cam(rt);
-	//write print camera data for debug
 	print_cam_debug(rt);
 	obj = rt->scene.object;
-	printf("Start render~\n");
 	while (y >= 0)
 	{
 		x = 0;
@@ -172,9 +175,9 @@ void	render(t_mlx *rt)
 			color pixel_color = ray_color(obj, camray);
 			img_mlx_pixel_put(rt, x, y, RGBtoColor(pixel_color.color));
 			//img_mlx_pixel_put(rt, x, y, 0xffffff);
-			x++;
+			x+= step;
 		}
-		y--;
+		y -= step;
 	}
 	destroy_img(rt);
 }

@@ -12,7 +12,6 @@
 
 #include <stdlib.h>
 #include "../inc/minirt.h"
-#include "../inc/scene.h"
 #include <fcntl.h>
 #include <errno.h>
 #include <stdio.h>
@@ -28,6 +27,10 @@ void	init_mlx(t_mlx *rt)
 	rt->scene.object = NULL;
 	rt->scene.active_object = NULL;
 	rt->scene.ambient.filled = 0;
+	rt->mode = 0;
+	rt->move = FALSE;
+	rt->rotated = FALSE;
+	rt->time = time_stamp();
 	rt->mlx = mlx_init();
 	rt->win = mlx_new_window(rt->mlx,rt->win_width,rt->win_height, "minirt");
 }
@@ -52,6 +55,7 @@ int main(int argc, char **argv)
 		//printvec_nl(rt.scene.camera.direction);
 		//print_cam_debug(&rt);
 		render(&rt);
+		hooks_init(&rt);
 		mlx_loop(rt.mlx);
 	}
 	else
