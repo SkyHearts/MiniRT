@@ -29,6 +29,7 @@ void	init_mlx(t_mlx *rt)
 	rt->scene.ambient.filled = 0;
 	rt->mode = 0;
 	rt->move = FALSE;
+	rt->rotated = FALSE;
 	rt->time = time_stamp();
 	rt->mlx = mlx_init();
 	rt->win = mlx_new_window(rt->mlx,rt->win_width,rt->win_height, "minirt");

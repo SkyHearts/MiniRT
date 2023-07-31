@@ -56,6 +56,9 @@ int	add_camera(char **split, t_mlx *rt)
 	cam->vars.h = tan((degtorad(cam->vars.fov)/2));
 	cam->vars.view_h = 2.0 * cam->vars.h;
 	cam->vars.view_w = cam->vars.aspect_r * cam->vars.view_h;
+	cam->vars.forward = normalize(sub_vec3(vec3(0, 0, 0), cam->direction));
+	cam->vars.right = cross_vec3(get_up(cam->vars.forward), cam->vars.forward);
+	cam->vars.up = normalize(cross_vec3(cam->vars.right, cam->direction));
 	cam->filled = 1;
 	//init_cam(rt);
 	if (check_range(cam->vars.fov, 3))

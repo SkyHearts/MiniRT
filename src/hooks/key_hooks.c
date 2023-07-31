@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 09:14:19 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/27 15:27:41 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/27 16:24:34 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@
 // Release key: Exit, and edit/raytrace mdoe
 int	rel_key(int keysym, t_mlx *rt)
 {
-	if (keysym == 53)	//escape key, free and exit program
-    {
+	if (keysym == 53) //escape key, free and exit program
+	{
 		//free data function insert here
 		free_all(rt);
 		//system("leaks -q minirt");
 		exit(0);
 	}
-	else if (keysym == 18)	//'1' switch between edit mode and raytracing mode
+	else if (keysym == 18) //'1' switch between edit mode and raytracing mode
 	{
 		if (rt->mode == 0)
 		{
@@ -40,13 +40,14 @@ int	rel_key(int keysym, t_mlx *rt)
 			rt->mode = 0;
 		}
 	}
-	else if (keysym == 150)	//'~'  key deselect by setting active object as NULL
+	else if (keysym == 150) //'~'  key deselect by setting active object as NULL
 		rt->scene.active_object = NULL;
 	return (0);
 }
+
 void movement(int keysym, t_mlx *rt)
 {
-	t_vec3 *dir;
+	t_vec3	*dir;
 
 	dir = &(rt->scene.camera.direction);
 	if (keysym == 0) //'A'
@@ -83,23 +84,28 @@ void movement(int keysym, t_mlx *rt)
 	{
 		if (rt->scene.active_object == NULL && rt->mode == 1)
 			rt->scene.camera.direction = vec3(dir->x * cos(0.0174533) + dir->z * sin(0.0174533), dir->y, dir->x * -sin(0.0174533) + dir->z * cos(0.0174533));
+		rt->rotated = TRUE;
 	}
 	else if (keysym == 124) //'right'
 	{
 		if (rt->scene.active_object == NULL && rt->mode == 1)
 			rt->scene.camera.direction = vec3(dir->x * cos(-0.0174533) + dir->z * sin(-0.0174533), dir->y, dir->x * -sin(-0.0174533) + dir->z * cos(-0.0174533));
+		rt->rotated = TRUE;
 	}
 		else if (keysym == 126) //'up'
 	{
 		if (rt->scene.active_object == NULL && rt->mode == 1)
 			rt->scene.camera.direction = vec3(dir->x, dir->y * cos(0.0174533) - dir->z * sin(0.0174533), dir->y * sin(0.0174533) + dir->z * cos(0.0174533));
+		rt->rotated = TRUE;
 	}
 	else if (keysym == 125) //'down'
 	{
 		if (rt->scene.active_object == NULL && rt->mode == 1)
 			rt->scene.camera.direction = vec3(dir->x, dir->y * cos(-0.0174533) - dir->z * sin(-0.0174533), dir->y * sin(-0.0174533) + dir->z * cos(-0.0174533));
+		rt->rotated = TRUE;
 	}
 }
+
 // Press key: Camera and object movement
 // W(13) for forward movement
 // S(1) for backwards movement
@@ -123,38 +129,37 @@ int	press_key(int keysym, t_mlx *rt)
 	return (0);
 }
 
-int close_mlx(t_mlx *rt)
+int	close_mlx(t_mlx *rt)
 {
-    //(void)param;
+	//(void)param;
 	//free data function insert here
 	free_all(rt);
-    exit(0);
+	exit(0);
 }
 
-double time_stamp(void)
+double	time_stamp(void)
 {
-	struct timeval current_time;
+	struct timeval	current_time;
+	double			ms;
 
 	gettimeofday(&current_time, NULL);
-	double ms =
-		((double)(current_time.tv_sec) * 1000 +
-		(double)(current_time.tv_usec) / 1000);
-    return (ms);
+	ms = ((double)(current_time.tv_sec) *1000
+			+ (double)(current_time.tv_usec) / 1000);
+	return (ms);
 }
 
 void	framerate(t_mlx *rt)
 {
 	double	delta_time;
 	double	current_time;
+	char	*time;
 	int		fps;
 
 	current_time = time_stamp();
 	delta_time = current_time - rt->time;
-	//printf("delta time:%f\n",delta_time);
 	rt->time = current_time;
 	fps = (int)(1000 / delta_time);
-	//printf("%d\n", fps);
-	char *time = ft_itoa(fps);
+	time = ft_itoa(fps);
 	mlx_string_put (rt->mlx, rt->win, 10, 10, 0xFFFFFF, time);
 	free(time);
 }
@@ -182,7 +187,6 @@ void	hooks_init(t_mlx *rt)
 	mlx_hook(rt->win, destroyNotify, 0, &close_mlx, rt);
 	mlx_loop_hook(rt->mlx, &frame_refresh, rt);
 }
-
 
 //Rx(a)=
 //[1 0 0 ]
