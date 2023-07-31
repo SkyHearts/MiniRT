@@ -99,7 +99,8 @@ void	add_sphere(char **split, t_object **obj)
 	{
 		//print default value of 10 used, diameter must be more than 0
 		(*obj)->diameter = 10.0;
-	}	
+	}
+	//printf("Object type1: %d\n", (*obj)->type);
 }
 
 void	add_plane(char **split, t_object **obj)
@@ -140,6 +141,17 @@ void	check_type_and_input(char **split, t_object **obj)
 		add_cylinder(split, obj);
 }
 
+void	init_objvar(t_object **obj)
+{
+	//printf("Object type2: %d\n", (*obj)->type);
+	if ((*obj)->type == SPHERE)
+		(*obj)->var.forward = vec3(0, 0, 1);
+	else
+		(*obj)->var.forward = normalize(sub_vec3(vec3(0, 0, 0), (*obj)->normal));
+	(*obj)->var.right = normalize(cross_vec3(get_up((*obj)->var.forward), (*obj)->var.forward));
+	(*obj)->var.up =  normalize(cross_vec3((*obj)->var.right, (*obj)->var.forward));
+}
+
 t_object	*ft_newobj(char **split)
 {
 	t_object	*head;
@@ -149,6 +161,7 @@ t_object	*ft_newobj(char **split)
 		return (0);
 	head->index = 1;
 	check_type_and_input(split, &head);
+	init_objvar(&head);
 	head->next = NULL;
 	return (head);
 }

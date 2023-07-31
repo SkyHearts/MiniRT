@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:13:12 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/27 10:43:25 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/31 19:08:55 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,13 @@ typedef struct s_light
 	struct s_light	*next;
 }				t_light;
 
+typedef struct s_vars
+{
+	t_vec3			up;
+	t_vec3			right;
+	t_vec3			forward;
+}				t_var;
+
 typedef struct s_object
 {
 	int				type;
@@ -51,6 +58,7 @@ typedef struct s_object
 	t_vec3			color;
 	double			diameter;
 	double			height;
+	t_var			var;
 	struct s_object	*next;
 }				t_object;
 

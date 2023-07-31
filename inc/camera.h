@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:21:05 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/25 16:26:53 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/31 18:31:24 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 typedef struct s_camvar
 {
-	t_vec3			position;
+	//t_vec3			position;
 	t_vec3			up;
 	t_vec3			right;
 	t_vec3			forward;

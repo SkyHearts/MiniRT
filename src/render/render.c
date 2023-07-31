@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/31 18:08:37 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/31 22:37:30 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,11 +124,11 @@ void	print_cam_debug(t_mlx *rt)
 
 t_ray	get_ray(double u, double v, t_mlx *rt)
 {
-	t_ray camray;
+	t_ray ray;
 
-	camray.origin = rt->scene.camera.position;
-	camray.direction = sub_vec3(add_vec3(add_vec3(rt->scene.camera.vars.llc, mul_double_vec3(u, rt->scene.camera.vars.horizontal)),mul_double_vec3(v, rt->scene.camera.vars.vertical)), camray.origin);
-	return (camray);
+	ray.origin = rt->scene.camera.position;
+	ray.direction = sub_vec3(add_vec3(add_vec3(rt->scene.camera.vars.llc, mul_double_vec3(u, rt->scene.camera.vars.horizontal)),mul_double_vec3(v, rt->scene.camera.vars.vertical)), ray.origin);
+	return (ray);
 }
 
 color ray_color(t_object *object, t_ray camray)

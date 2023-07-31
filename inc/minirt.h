@@ -14,7 +14,8 @@
 # define MINIRT_H
 
 #include "scene.h"
-#include <mlx.h>
+//#include <mlx.h>
+#include "../minilibx/mlx.h"
 #include "../utils/libft/libft.h"
 #include "../utils/libft/ft_printf.h"
 
@@ -84,8 +85,8 @@ int		check_col_range(t_vec3 col);
 int		check_range(double value, int type);
 int		isempty(char *str);
 char	**isspace_split(const char *str);
-double degtorad(double theta);
-t_vec3 get_up(t_vec3 orientation);
+double	degtorad(double theta);
+t_vec3	get_up(t_vec3 orientation);
 
 //Print scene
 void	print_vec(t_vec3 a);
@@ -107,6 +108,7 @@ void	framerate(t_mlx *rt);
 
 //hit interaction
 double hit_sphere(t_object *obj, t_ray r);
+t_ray	get_ray(double u, double v, t_mlx *rt);
 
 //Render
 int		init_img(t_mlx *rt);

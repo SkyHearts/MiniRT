@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 09:14:19 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/31 17:40:11 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/31 22:13:06 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,15 @@ void movement(int keysym, t_mlx *rt)
 	{
 		if (rt->scene.active_object == NULL && rt->mode == 1)
 			rt->scene.camera.position = sub_vec3(rt->scene.camera.position, rt->scene.camera.vars.right);
+		else
+			rt->scene.active_object->position = sub_vec3(rt->scene.active_object->position, rt->scene.active_object->var.right);
 	}
 	else if (keysym == 2) //'D'
 	{
 		if (rt->scene.active_object == NULL && rt->mode == 1)
 			rt->scene.camera.position = add_vec3(rt->scene.camera.position, rt->scene.camera.vars.right);
+		else
+			rt->scene.active_object->position = add_vec3(rt->scene.active_object->position, rt->scene.active_object->var.right);
 	}
 	else if (keysym == 12) //'Q'
 	{
@@ -157,7 +161,7 @@ void	framerate(t_mlx *rt)
 
 	current_time = time_stamp();
 	delta_time = current_time - rt->time;
-	printf("DeltaTime: %f\n", delta_time);
+	//printf("DeltaTime: %f\n", delta_time);
 	rt->time = current_time;
 	//fps = (int)(1000 / delta_time);
 	//time = ft_itoa(fps);
@@ -180,12 +184,56 @@ int	frame_refresh(t_mlx *rt)
 	}
 	return (0);
 }
+void	shootray(t_mlx *rt, t_ray ray)
+{
+	t_object *tmplst;
+	
+	tmplst = rt->scene.object;
+	while (tmplst != NULL)
+	{
+		if(hit_sphere(tmplst, ray) > 0.0f)
+			rt->scene.active_object = tmplst;
+		else
+			rt->scene.active_object = NULL;
+		tmplst = tmplst->next;
+	}
+	if (rt->scene.active_object != NULL)
+	{
+		printf("Object Hit\n");
+		printf("Object Index: %d\n", rt->scene.active_object->index);
+		printf("Object Type: %d\n", rt->scene.active_object->type);
+		printf("Object Position: ");
+		printvec_nl(rt->scene.active_object->position);
+		printf("Forward: ");
+		printvec_nl(rt->scene.active_object->var.forward);
+		printf("Right: ");
+		printvec_nl(rt->scene.active_object->var.right);
+		printf("Up: ");
+		printvec_nl(rt->scene.active_object->var.up);
+	}
+}
+	
+int	mouse_hook(int mousepress, int x, int y, t_mlx *rt)
+{
+	t_ray	mouseray;
+
+	if (mousepress == 1 && rt->mode == 1)
+	{
+		//mlx_mouse_get_pos(rt->win, &x, &y);
+		double u = (double)x / (rt->win_width - 1);
+		double v = (double)y / (rt->win_height - 1);
+		mouseray = get_ray(u, v, rt);
+		shootray(rt, mouseray);
+	}
+	return (0);
+}
 
 void	hooks_init(t_mlx *rt)
 {
 	mlx_key_hook(rt->win, &rel_key, rt); //Default for key release
 	mlx_hook(rt->win, keyPress, 0, &press_key, rt);
 	mlx_hook(rt->win, destroyNotify, 0, &close_mlx, rt);
+	mlx_mouse_hook(rt->win, &mouse_hook, rt);
 	mlx_loop_hook(rt->mlx, &frame_refresh, rt);
 }
 

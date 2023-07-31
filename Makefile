@@ -3,7 +3,8 @@ CC		= gcc
 FSAN	= -fsanitize=address
 CFLAGS	= -Wall -Wextra -Werror $(INCLUDES) -g3
 INCLUDES = -I inc -I ${LIBFT_DIR} ${FSAN}
-MINILIB = -lmlx -framework OpenGL -framework AppKit
+MINILIBDIR = minilibx/
+MINILIB = -L$(MINILIBDIR) -lmlx -framework OpenGL -framework AppKit
 #${FSAN}
 
 MINIRT_SRCS	=	main.c print_scene.c vector3.c free.c
