@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/28 17:30:53 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/31 18:08:37 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	init_img(t_mlx *rt)
 
 void	destroy_img(t_mlx *rt)
 {
-	mlx_put_image_to_window(rt->mlx, rt->win, rt->img, 0, 0);
+	//mlx_put_image_to_window(rt->mlx, rt->win, rt->img, 0, 0);
 	mlx_destroy_image(rt->mlx, rt->img);
 	rt->addr = NULL;
 	rt->img = NULL;
@@ -156,9 +156,10 @@ void	render(t_mlx *rt)
 	else
 		step = 1;
 	y = rt->win_height - 1;
-	init_img(rt);
+	//init_img(rt);
+	ft_memset(rt->addr, 0, ((rt->win_height * rt->line_length) + (rt->win_width * (rt->bpp/8))));
 	init_cam(rt);
-	print_cam_debug(rt);
+	//print_cam_debug(rt);
 	obj = rt->scene.object;
 	while (y >= 0)
 	{
@@ -179,5 +180,6 @@ void	render(t_mlx *rt)
 		}
 		y -= step;
 	}
-	destroy_img(rt);
+	mlx_put_image_to_window(rt->mlx, rt->win, rt->img, 0, 0);
+	//destroy_img(rt);
 }

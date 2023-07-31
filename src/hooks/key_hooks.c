@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 09:14:19 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/27 16:24:34 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/31 17:40:11 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	rel_key(int keysym, t_mlx *rt)
 		}
 		else
 		{
-			printf("Raytrace mode\n");
+			printf("Phong mode\n");
 			rt->mode = 0;
 		}
 	}
@@ -152,16 +152,17 @@ void	framerate(t_mlx *rt)
 {
 	double	delta_time;
 	double	current_time;
-	char	*time;
-	int		fps;
+	//char	*time;
+	//int		fps;
 
 	current_time = time_stamp();
 	delta_time = current_time - rt->time;
+	printf("DeltaTime: %f\n", delta_time);
 	rt->time = current_time;
-	fps = (int)(1000 / delta_time);
-	time = ft_itoa(fps);
-	mlx_string_put (rt->mlx, rt->win, 10, 10, 0xFFFFFF, time);
-	free(time);
+	//fps = (int)(1000 / delta_time);
+	//time = ft_itoa(fps);
+	//mlx_string_put (rt->mlx, rt->win, 10, 10, 0xFFFFFF, time);
+	//free(time);
 }
 
 int	frame_refresh(t_mlx *rt)

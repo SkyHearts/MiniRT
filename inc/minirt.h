@@ -38,6 +38,7 @@ typedef struct s_mlx
 	void		*img;
 	void		*addr;
 	int			bpp;
+	int			size;
 	int			line_length;
 	int			endian;
 	t_scene		scene;
@@ -102,12 +103,15 @@ void	hooks_init(t_mlx *rt);
 void	print_cam_debug(t_mlx *rt);
 void	print_matrix(t_mat44 matrix);
 double 	time_stamp(void);
+void	framerate(t_mlx *rt);
 
 //hit interaction
 double hit_sphere(t_object *obj, t_ray r);
 
 //Render
+int		init_img(t_mlx *rt);
 void	render(t_mlx *rt);
+void	destroy_img(t_mlx *rt);
 
 //free functions
 void	free_all(t_mlx *rt);

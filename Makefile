@@ -2,7 +2,7 @@ NAME	= minirt
 CC		= gcc
 FSAN	= -fsanitize=address
 CFLAGS	= -Wall -Wextra -Werror $(INCLUDES) -g3
-INCLUDES = -I inc -I ${LIBFT_DIR} 
+INCLUDES = -I inc -I ${LIBFT_DIR} ${FSAN}
 MINILIB = -lmlx -framework OpenGL -framework AppKit
 #${FSAN}
 

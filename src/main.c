@@ -33,6 +33,7 @@ void	init_mlx(t_mlx *rt)
 	rt->time = time_stamp();
 	rt->mlx = mlx_init();
 	rt->win = mlx_new_window(rt->mlx,rt->win_width,rt->win_height, "minirt");
+	init_img(rt);
 }
 
 int main(int argc, char **argv)
