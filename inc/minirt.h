@@ -18,6 +18,8 @@
 #include <../minilibx-opengl/mlx.h>
 #include "../utils/libft/libft.h"
 #include "../utils/libft/ft_printf.h"
+#include "object.h"
+
 
 #define DEFAULT_VAL 10
 #define FALSE 0
@@ -45,6 +47,7 @@ typedef struct s_mlx
 	char 		**element;
 	int			mode;
 	int			move;
+	int			rotated;
 	double		time;	//Personal use, deactivate for submitions
 }				t_mlx;
 
@@ -84,6 +87,7 @@ int		check_range(double value, int type);
 int		isempty(char *str);
 char	**isspace_split(const char *str);
 double degtorad(double theta);
+t_vec3 get_up(t_vec3 orientation);
 
 //Print scene
 void	print_vec(t_vec3 a);
@@ -103,8 +107,8 @@ void	print_matrix(t_mat44 matrix);
 double 	time_stamp(void);
 
 //hit interaction
-double hit_sphere(t_object *obj, t_ray r);
-t_object *hit_object(t_object *objlst, t_ray r);
+int		hit_object(t_ray r, t_object *obj);
+double	hit_sphere(t_object *obj, t_ray r);
 
 //Render
 void	render(t_mlx *rt);

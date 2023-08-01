@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere_hit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sukilim <sukilim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 13:08:57 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/27 18:16:02 by sukilim          ###   ########.fr       */
+/*   Updated: 2023/07/31 17:34:30 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,12 @@ double hit_sphere(t_object *obj, t_ray r)
 	//printf("Discriminant: %f\n", discriminant);
 	//return (discriminant > 0);
 	if (discriminant < 0)
-		return -1.0;
+		obj->t =  -1.0;
 	else
 	{
 		double ret = (-b - sqrt(discriminant) ) / (2.0 * a);
 		//printf("T: %f\n", ret);
-		return (ret);
+		obj->t = ret;
 	}
+	return 1;
 }

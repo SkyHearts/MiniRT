@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scene.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:13:12 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/27 10:43:25 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/31 17:35:07 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_object
 	t_vec3			color;
 	double			diameter;
 	double			height;
+	double			t;
 	struct s_object	*next;
 }				t_object;
 
@@ -61,7 +62,7 @@ typedef struct s_scene
 	t_camera	camera;			//a camera with all variable stored
 	t_light		*light;				//a list of light to be iterate to obtain brightess colour
 	t_object	*active_object;		//current active object to be manipulated and selected by shooting rays and selecting closest hit
-	t_camera	*active_camera;		//current acrive camera to be manipulated might remove *camera and just use this
+	// t_camera	*active_camera;		//current acrive camera to be manipulated might remove *camera and just use this
 }				t_scene;
 
 #endif

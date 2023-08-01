@@ -22,13 +22,14 @@ void	init_mlx(t_mlx *rt)
 	rt->win_height = 720;
 	rt->win_width = 1080;
 	rt->scene.camera.filled = 0;
-	rt->scene.active_camera = NULL;
+	// rt->scene.active_camera = NULL;
 	rt->scene.light = NULL;
 	rt->scene.object = NULL;
 	rt->scene.active_object = NULL;
 	rt->scene.ambient.filled = 0;
 	rt->mode = 0;
 	rt->move = FALSE;
+	rt->rotated = FALSE;
 	rt->time = time_stamp();
 	rt->mlx = mlx_init();
 	rt->win = mlx_new_window(rt->mlx,rt->win_width,rt->win_height, "minirt");

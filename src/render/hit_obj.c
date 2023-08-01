@@ -3,23 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   hit_obj.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sukilim <sukilim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 13:28:01 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/27 16:52:49 by sukilim          ###   ########.fr       */
+/*   Updated: 2023/07/31 22:06:28 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minirt.h"
 #include <stdio.h>
 
-t_object *hit_object(t_object *objlst, t_ray r)
+int	hit_object(t_ray r, t_object *obj)
 {
-	t_object *tmplst;
+	int	hit;
+	// int i = 0;
+	t_object	*current_obj;
+	hit = 0;
+	current_obj = obj;
 	
-	tmplst = objlst;
-	while (tmplst != NULL)
+	while (current_obj != NULL)
 	{
-		if()
+		if (current_obj->type == 0)
+			hit = hit_sphere(current_obj, r);
+		// else if (current_obj->type == 1)
+		// 	hit = hit_plane(current_obj, r);
+		// else if (current_obj->type == 2)
+		// 	hit = hit_cylinder(current_obj, r);
+		current_obj = current_obj->next;
 	}
+	return (hit);
 } 

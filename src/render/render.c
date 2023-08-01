@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sukilim <sukilim@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/27 18:16:25 by sukilim          ###   ########.fr       */
+/*   Updated: 2023/08/01 12:26:02 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,13 @@ void	init_cam(t_mlx *rt)
 	//t_mat44 translation;
 	//t_mat44 rotation;
 	camray = &(rt->scene.camera);
-	camray->vars.forward = normalize(sub_vec3(vec3(0, 0, 0), camray->direction));
-	camray->vars.right = cross_vec3(get_up(camray->vars.forward), camray->vars.forward);
-	camray->vars.up = normalize(cross_vec3(camray->vars.right, camray->direction));
+	if(rt->rotated)
+	{
+		camray->vars.forward = normalize(sub_vec3(vec3(0, 0, 0), camray->direction));
+		camray->vars.right = cross_vec3(get_up(camray->vars.forward), camray->vars.forward);
+		camray->vars.up = normalize(cross_vec3(camray->vars.right, camray->direction));
+		rt->rotated = FALSE;
+	}
 	//camray->vars.aspect_r = (double)rt->win_width / (double)rt->win_height;
 	//camray->vars.h = tan((degtorad(camray->vars.fov)/2));
 	//camray->vars.view_h = 2.0 * camray->vars.h;
@@ -127,34 +131,64 @@ t_ray	get_ray(double u, double v, t_mlx *rt)
 	return (camray);
 }
 
-color ray_color(t_object *object, t_ray camray)
+t_vec3 get_obj_normal(t_ray r, t_object *object)
 {
-	color pixel_color;
+	t_vec3 point_of_interaction;
+	t_vec3 result;
+
+	result = vec3(0,0,0);
+	point_of_interaction = add_vec3(r.origin, mul_double_vec3(object->t, r.direction));
+	if (object->type == 0)
+		result = sub_vec3(point_of_interaction, object->position);
+	return result;
+}
+
+color ray_color(t_object *object, t_ray camray, t_light *light)
+{
+	color	pixel_color;
+	t_vec3	light_direction;
+	t_vec3	obj_normal;
+	t_light	*current_light;
+	// t_vec3	cosine;
+	double	cosine;
+
 	pixel_color.color = vec3(0,0,0);
-	// double t = hit_object(object, camray);
-	double t = hit_sphere(object, camray);
-	if (t > 0.0)
+	current_light = light;
+
+	if (hit_object(camray, object))
 	{
-		//printf("Hit something\n");
-		pixel_color.color = object->color;
+		while (current_light != NULL)
+		{
+			obj_normal = get_obj_normal(camray, object);
+			light_direction = sub_vec3(object->position, current_light->position);
+			if (object->t > 0.0)
+			{
+				// cosine = div_vec3(obj_normal, light_direction);
+				cosine = dot_vec3(light_direction, obj_normal);
+				// pixel_color.color = object->color;
+			}
+			current_light = current_light->next;
+		}
 	}
-	return (pixel_color);
+	return (pixel_color.color);
 }
 
 void	render(t_mlx *rt)
 {
 	int			x;
 	int			y;
+	int			step;
 	t_object	*obj;
 
+	if (rt->mode == 1)
+		step = 4;
+	else
+		step = 1;
 	y = rt->win_height - 1;
 	init_img(rt);
 	init_cam(rt);
-	//write print camera data for debug
-	//print_cam_debug(rt);
-	//printf("pressed %d\n", i++);
+	print_cam_debug(rt);
 	obj = rt->scene.object;
-	//printf("Start render~\n");
 	while (y >= 0)
 	{
 		x = 0;
@@ -167,12 +201,12 @@ void	render(t_mlx *rt)
 
 			camray = get_ray(u, v, rt);
 			//write ray data for debug
-			color pixel_color = ray_color(obj, camray);
+			color pixel_color = ray_color(obj, camray, rt->scene.light);
 			img_mlx_pixel_put(rt, x, y, RGBtoColor(pixel_color.color));
 			//img_mlx_pixel_put(rt, x, y, 0xffffff);
-			x++;
+			x+= step;
 		}
-		y--;
+		y -= step;
 	}
 	destroy_img(rt);
 }

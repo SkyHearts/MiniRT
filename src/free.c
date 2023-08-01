@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:36:32 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/27 10:47:51 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/27 16:15:52 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 void	free_objlst(t_object *obj)
 {
-	t_object *tmp_obj;
+	t_object	*tmp_obj;
 
 	tmp_obj = NULL;
 	while (obj != NULL)
@@ -31,7 +31,7 @@ void	free_objlst(t_object *obj)
 
 void	free_lightlst(t_light *light)
 {
-	t_light *tmp_light;
+	t_light	*tmp_light;
 
 	tmp_light = NULL;
 	while (light != NULL)
