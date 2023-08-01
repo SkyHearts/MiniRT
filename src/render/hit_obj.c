@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 13:28:01 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/01 13:42:09 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/01 15:10:02 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,20 @@
 
 int	hit_object(t_ray r, t_object *obj)
 {
-	int	hit;
-	// int i = 0;
-	t_object	*current_obj;
+	int			hit;
+	// t_object	*current_obj;
 	hit = 0;
-	current_obj = obj;
+	// current_obj = obj;
 	
-	while (current_obj != NULL)
-	{
-		// printf("object index: %d \n", current_obj->index);
-		if (current_obj->type == 0)
-		{
-			hit = hit_sphere(current_obj, r);
-		}
+	// while (current_obj != NULL)
+	// {
+		if (obj->type == 0)
+			hit = hit_sphere(obj, r);
 		// else if (current_obj->type == 1)
 		// 	hit = hit_plane(current_obj, r);
 		// else if (current_obj->type == 2)
 		// 	hit = hit_cylinder(current_obj, r);
-		current_obj = current_obj->next;
-	}
+	// 	current_obj = current_obj->next;
+	// }
 	return (hit);
 } 
