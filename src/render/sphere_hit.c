@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 13:08:57 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/31 17:34:30 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/01 13:03:22 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,5 @@ double hit_sphere(t_object *obj, t_ray r)
 		//printf("T: %f\n", ret);
 		obj->t = ret;
 	}
-	return 1;
+	return obj->t;
 }

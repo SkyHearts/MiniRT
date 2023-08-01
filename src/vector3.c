@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:17:04 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/01 11:09:30 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/01 13:54:17 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,16 +66,6 @@ t_vec3	mul_vec3(t_vec3 vec1, t_vec3 vec2)
 	result.x = vec1.x * vec2.x;
 	result.y = vec1.y * vec2.y;
 	result.z = vec1.z * vec2.z;
-	return (result);
-}
-
-t_vec3	div_vec3(t_vec3 vec1, t_vec3 vec2)
-{
-	t_vec3	result;
-
-	result.x = vec1.x / vec2.x;
-	result.y = vec1.y / vec2.y;
-	result.z = vec1.z / vec2.z;
 	return (result);
 }
 

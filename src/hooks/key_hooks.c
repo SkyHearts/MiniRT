@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hooks.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 09:14:19 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/27 16:24:34 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/01 13:28:17 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,14 +169,14 @@ int	frame_refresh(t_mlx *rt)
 	if (rt->move == TRUE)
 	{
 		render(rt);
-		framerate(rt);
+		// framerate(rt);
 		rt->move = FALSE;
 	}
-	else
-	{
-		render(rt);
-		framerate(rt);
-	}
+	// else
+	// {
+	// 	render(rt);
+	// 	// framerate(rt);
+	// }
 	return (0);
 }
 

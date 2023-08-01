@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:28:55 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/01 11:16:58 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/01 13:54:35 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ t_vec3	mul_vec3(t_vec3 vec1, t_vec3 vec2);
 t_vec3	div_vec3(t_vec3 vec1, t_vec3 vec2);
 // t_vec3	sub_double_vec3(t_vec3 vec1, t_vec3 vec2);
 t_vec3	mul_double_vec3(double num, t_vec3 vec);
-t_vec3	div_double_vec3(double num, t_vec3 vec);
 double	dot_vec3(t_vec3 vec1, t_vec3 vec2);
 t_vec3	cross_vec3(t_vec3 vec1, t_vec3 vec2);
 t_vec3	*pnormalize(t_vec3 vec);

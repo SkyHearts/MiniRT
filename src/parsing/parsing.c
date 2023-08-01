@@ -109,7 +109,7 @@ int	parse_line(t_mlx *rt, char *line)
 	int ret;
 
 	split = isspace_split(line);
-	if (isempty(line))
+	if (isempty(line) || line[0] == '#')
 		return (free_darray(split), 0);
 	if (!ft_strcmp_wlist(split[0], rt->element))
 		return (printf("File error: Unknown element\n"), free_darray(split), 1); // Unknow element detected, return 1
