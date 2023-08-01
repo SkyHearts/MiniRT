@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/31 22:37:30 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/01 18:32:17 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	init_cam(t_mlx *rt)
 	if(rt->rotated)
 	{
 		camray->vars.forward = normalize(sub_vec3(vec3(0, 0, 0), camray->direction));
-		camray->vars.right = cross_vec3(get_up(camray->vars.forward), camray->vars.forward);
+		camray->vars.right = normalize(cross_vec3(get_up(camray->vars.forward), camray->vars.forward));
 		camray->vars.up = normalize(cross_vec3(camray->vars.right, camray->direction));
 		rt->rotated = FALSE;
 	}
@@ -118,8 +118,8 @@ void	print_cam_debug(t_mlx *rt)
 	printf("View_w: %f\n", rt->scene.camera.vars.view_w);
 	printf("Lower Left Coner: ");
 	printvec_nl(rt->scene.camera.vars.llc);
-	printf("Camera to world matrix: \n");
-	print_matrix(rt->scene.camera.camtoworld);
+	//printf("Camera to world matrix: \n");
+	//print_matrix(rt->scene.camera.camtoworld);
 }
 
 t_ray	get_ray(double u, double v, t_mlx *rt)
@@ -159,7 +159,7 @@ void	render(t_mlx *rt)
 	//init_img(rt);
 	ft_memset(rt->addr, 0, ((rt->win_height * rt->line_length) + (rt->win_width * (rt->bpp/8))));
 	init_cam(rt);
-	//print_cam_debug(rt);
+	print_cam_debug(rt);
 	obj = rt->scene.object;
 	while (y >= 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 09:14:19 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/31 22:13:06 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/01 16:36:08 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,23 +68,38 @@ void movement(int keysym, t_mlx *rt)
 	{
 		if (rt->scene.active_object == NULL && rt->mode == 1)
 			rt->scene.camera.position = add_vec3(rt->scene.camera.position, rt->scene.camera.vars.up);
+		else
+			rt->scene.active_object->position = add_vec3(rt->scene.active_object->position, rt->scene.active_object->var.up);
 	}
 	else if (keysym == 14) //'E'
 	{
 		if (rt->scene.active_object == NULL && rt->mode == 1)
 			rt->scene.camera.position = sub_vec3(rt->scene.camera.position, rt->scene.camera.vars.up);
+		else
+			rt->scene.active_object->position = sub_vec3(rt->scene.active_object->position, rt->scene.active_object->var.up);
 	}
 	else if (keysym == 13) //'W'
 	{
 		if (rt->scene.active_object == NULL && rt->mode == 1)
 			rt->scene.camera.position = sub_vec3(rt->scene.camera.position, rt->scene.camera.vars.forward);
+		else
+			rt->scene.active_object->position = sub_vec3(rt->scene.active_object->position, rt->scene.active_object->var.forward);
 	}
 	else if (keysym == 1) //'S'
 	{
 		if (rt->scene.active_object == NULL && rt->mode == 1)
 			rt->scene.camera.position = add_vec3(rt->scene.camera.position, rt->scene.camera.vars.forward);
+		else
+			rt->scene.active_object->position = add_vec3(rt->scene.active_object->position, rt->scene.active_object->var.forward);
 	}
-	else if (keysym == 123) //'left'
+}
+
+void rotation(int keysym, t_mlx *rt)
+{
+	t_vec3	*dir;
+
+	dir = &(rt->scene.camera.direction);
+	if (keysym == 123) //'left'
 	{
 		if (rt->scene.active_object == NULL && rt->mode == 1)
 			rt->scene.camera.direction = vec3(dir->x * cos(0.0174533) + dir->z * sin(0.0174533), dir->y, dir->x * -sin(0.0174533) + dir->z * cos(0.0174533));
@@ -109,7 +124,6 @@ void movement(int keysym, t_mlx *rt)
 		rt->rotated = TRUE;
 	}
 }
-
 // Press key: Camera and object movement
 // W(13) for forward movement
 // S(1) for backwards movement
@@ -127,7 +141,7 @@ int	press_key(int keysym, t_mlx *rt)
 	if (rt->mode == 1)
 	{
 		movement(keysym, rt);
-		//rotation(keysym, rt);
+		rotation(keysym, rt);
 		rt->move = TRUE;
 	}
 	return (0);
@@ -174,13 +188,13 @@ int	frame_refresh(t_mlx *rt)
 	if (rt->move == TRUE)
 	{
 		render(rt);
-		framerate(rt);
+		//framerate(rt);
 		rt->move = FALSE;
 	}
 	else
 	{
 		render(rt);
-		framerate(rt);
+		//framerate(rt);
 	}
 	return (0);
 }
@@ -216,12 +230,13 @@ void	shootray(t_mlx *rt, t_ray ray)
 int	mouse_hook(int mousepress, int x, int y, t_mlx *rt)
 {
 	t_ray	mouseray;
+	double	u;
+	double	v;
 
 	if (mousepress == 1 && rt->mode == 1)
 	{
-		//mlx_mouse_get_pos(rt->win, &x, &y);
-		double u = (double)x / (rt->win_width - 1);
-		double v = (double)y / (rt->win_height - 1);
+		u = (double)x / (rt->win_width - 1);
+		v = (double)y / (rt->win_height - 1);
 		mouseray = get_ray(u, v, rt);
 		shootray(rt, mouseray);
 	}

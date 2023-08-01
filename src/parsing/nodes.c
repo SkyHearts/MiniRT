@@ -145,11 +145,18 @@ void	init_objvar(t_object **obj)
 {
 	//printf("Object type2: %d\n", (*obj)->type);
 	if ((*obj)->type == SPHERE)
+	{
 		(*obj)->var.forward = vec3(0, 0, 1);
+		(*obj)->var.right = normalize(cross_vec3(get_up((*obj)->var.forward), (*obj)->var.forward));
+		(*obj)->var.up =  normalize(cross_vec3((*obj)->var.right, vec3(0, 0, -1)));
+		//(*obj)->var.up =  normalize(cross_vec3((*obj)->var.right, (*obj)->var.forward));
+	}
 	else
+	{
 		(*obj)->var.forward = normalize(sub_vec3(vec3(0, 0, 0), (*obj)->normal));
-	(*obj)->var.right = normalize(cross_vec3(get_up((*obj)->var.forward), (*obj)->var.forward));
-	(*obj)->var.up =  normalize(cross_vec3((*obj)->var.right, (*obj)->var.forward));
+		(*obj)->var.right = normalize(cross_vec3(get_up((*obj)->var.forward), (*obj)->var.forward));
+		(*obj)->var.up =  normalize(cross_vec3((*obj)->var.right, (*obj)->var.forward));
+	}
 }
 
 t_object	*ft_newobj(char **split)
