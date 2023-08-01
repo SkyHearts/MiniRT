@@ -14,10 +14,13 @@
 # define MINIRT_H
 
 #include "scene.h"
-//#include <mlx.h>
-#include "../minilibx/mlx.h"
+#include <mlx.h>
+//#include "../minilibx/mlx.h"
+//#include <../minilibx-opengl/mlx.h>
 #include "../utils/libft/libft.h"
 #include "../utils/libft/ft_printf.h"
+#include "object.h"
+
 
 #define DEFAULT_VAL 10
 #define FALSE 0
@@ -107,7 +110,8 @@ double 	time_stamp(void);
 void	framerate(t_mlx *rt);
 
 //hit interaction
-double hit_sphere(t_object *obj, t_ray r);
+int		hit_object(t_ray r, t_object *obj);
+double	hit_sphere(t_object *obj, t_ray r);
 t_ray	get_ray(double u, double v, t_mlx *rt);
 
 //Render

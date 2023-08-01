@@ -22,7 +22,7 @@ void	init_mlx(t_mlx *rt)
 	rt->win_height = 720;
 	rt->win_width = 1080;
 	rt->scene.camera.filled = 0;
-	rt->scene.active_camera = NULL;
+	// rt->scene.active_camera = NULL;
 	rt->scene.light = NULL;
 	rt->scene.object = NULL;
 	rt->scene.active_object = NULL;
