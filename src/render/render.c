@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/01 15:15:14 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/01 15:46:31 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,7 @@ color ray_color(t_object *object, t_ray camray, t_light *light)
 					pixel_color.color = mul_double_vec3(light->ratio, mul_double_vec3(cosine, this_object->color));
 				current_light = current_light->next;
 			}	
-			printf("this_obj: %d\n", this_object->index);
+			// printf("this_obj: %d\n", this_object->index);
 		}
 		this_object = this_object->next;
 	}
