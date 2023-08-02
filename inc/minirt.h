@@ -112,6 +112,7 @@ void	framerate(t_mlx *rt);
 //hit interaction
 int		hit_object(t_ray r, t_object *obj);
 double	hit_sphere(t_object *obj, t_ray r);
+double	hit_plane(t_object *obj, t_ray r);
 t_ray	get_ray(double u, double v, t_mlx *rt);
 
 //Render

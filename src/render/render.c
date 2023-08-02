@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/01 21:32:10 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/02 17:58:27 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,9 @@ t_vec3 get_obj_normal(t_ray r, t_object *object)
 	point_of_interaction = add_vec3(r.origin, mul_double_vec3(object->t, r.direction));
 	if (object->type == 0)
 		result = normalize(sub_vec3(point_of_interaction, object->position));
+	if (object->type == 1)
+		//result = vec3(0, -1, 0);
+		result = object->normal;
 	return result;
 }
 
@@ -180,7 +183,7 @@ color ray_color(t_object *object, t_ray camray, t_light *light)
 			while (current_light != NULL)
 			{
 				obj_normal = get_obj_normal(camray, this_object);
-				light_direction = normalize(sub_vec3( current_light->position, this_object->position));
+				light_direction = normalize(sub_vec3(current_light->position, this_object->position));
 				cosine = dot_vec3(light_direction, obj_normal);
 				if (cosine < 0)
 					pixel_color.color = mul_double_vec3(0.0, this_object->color);
@@ -188,7 +191,6 @@ color ray_color(t_object *object, t_ray camray, t_light *light)
 					pixel_color.color = mul_double_vec3(light->ratio, mul_double_vec3(cosine, this_object->color));
 				current_light = current_light->next;
 			}	
-			// printf("this_obj: %d\n", this_object->index);
 		}
 		this_object = this_object->next;
 	}

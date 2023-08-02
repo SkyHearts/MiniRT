@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   sphere_hit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 13:08:57 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/01 13:03:22 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/02 18:04:42 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minirt.h"
 #include <stdio.h>
 
-double hit_sphere(t_object *obj, t_ray r)
+double	hit_sphere(t_object *obj, t_ray r)
 {
 	//center = sphere centre, radius = sphere radius
 	//write data for debug
@@ -33,4 +33,31 @@ double hit_sphere(t_object *obj, t_ray r)
 		obj->t = ret;
 	}
 	return obj->t;
+}
+
+double	hit_plane(t_object *obj, t_ray r)
+{
+	double	denom;
+	double	ret;
+
+	denom = dot_vec3(r.direction, obj->normal);
+	//printf("Plane denom = %f\n", denom);
+	if (denom > 0.0)
+		obj->t = -1;
+		//return(-1);
+	else
+	{	
+		ret = dot_vec3(sub_vec3(obj->position, r.origin), obj->normal) / denom;
+		if (ret > 0)
+			obj->t = ret;
+	}
+	//printf("Plane\n");
+	//printf("ray position =");
+	//printvec_nl(r.origin);
+	//printf("Plane position =");
+	//printvec_nl(obj->position);
+	//printvec_nl(sub_vec3(obj->position, r.origin));
+	//printf("Plane nume: %f\n", dot_vec3(sub_vec3(obj->position, r.origin), obj->normal));
+	//printf("Plane t = %f\n",obj->t);
+	return (obj->t);
 }

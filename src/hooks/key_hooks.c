@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 09:14:19 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/01 21:39:41 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/02 15:47:54 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,20 +200,22 @@ int	frame_refresh(t_mlx *rt)
 }
 void	shootray(t_mlx *rt, t_ray ray)
 {
-	t_object *tmplst;
-	double tmin;
+	t_object	*tmplst;
+	double		tmin;
+	double		obj_t;
 
 	tmin = INFINITY;
 	tmplst = rt->scene.object;
 	while (tmplst != NULL)
 	{
-		if(hit_sphere(tmplst, ray) > 0.0f)
+		if(tmplst->type == 0)
+			obj_t = hit_sphere(tmplst, ray);
+		if(tmplst->type == 1)
+			obj_t = hit_plane(tmplst, ray);
+		if (obj_t < tmin && obj_t > 0.0)
 		{
-			if (hit_sphere(tmplst, ray) < tmin)
-			{
-				tmin = hit_sphere(tmplst, ray);
-				rt->scene.active_object = tmplst;
-			}
+			tmin = obj_t;
+			rt->scene.active_object = tmplst;
 		}
 		tmplst = tmplst->next;
 	}
