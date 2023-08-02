@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/02 22:32:09 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/02 23:28:28 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,26 +165,29 @@ color clamp_vec(color *col, double min, double max)
 
 color ray_color(t_object *object, t_ray camray, t_light *light)
 {
-	color		pixel_color;
-	t_vec3		light_direction;
-	t_vec3		obj_normal;
-	t_light		*current_light;
-	double		cosine;
+	color			pixel_color;
+	t_vec3			light_direction;
+	t_vec3			obj_normal;
+	t_light			*current_light;
+	t_hit_record	rec;
+	double			cosine;
 
 	pixel_color.color = vec3(0,0,0);
 	current_light = light;
+	rec.t = INFINITY;
+	rec.obj = object;
 
-	if (hit_object(camray, object) > 0)
+	if (hit_object(camray, object, &rec) > 0)
 	{
 		while (current_light != NULL)
 		{
-			obj_normal = get_obj_normal(camray, object);
-			light_direction = normalize(sub_vec3( current_light->position, object->position));
+			obj_normal = get_obj_normal(camray, rec.obj);
+			light_direction = normalize(sub_vec3( current_light->position, rec.obj->position));
 			cosine = dot_vec3(light_direction, obj_normal);
 			if (cosine < 0)
-				pixel_color.color = mul_double_vec3(0.0, object->color);
+				pixel_color.color = mul_double_vec3(0.0, rec.obj->color);
 			else
-				pixel_color.color = mul_double_vec3(light->ratio, mul_double_vec3(cosine, object->color));
+				pixel_color.color = mul_double_vec3(light->ratio, mul_double_vec3(cosine, rec.obj->color));
 			current_light = current_light->next;
 		}	
 	}
