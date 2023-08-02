@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 13:08:57 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/02 18:04:42 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/02 18:44:09 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,3 +61,8 @@ double	hit_plane(t_object *obj, t_ray r)
 	//printf("Plane t = %f\n",obj->t);
 	return (obj->t);
 }
+
+//double	hit_cylinder(t_object *obj, t_ray r)
+//{
+	
+//}

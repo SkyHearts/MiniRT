@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:17:04 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/02 17:43:47 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/02 18:49:28 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,8 +138,16 @@ double	lengthsqr(t_vec3 vec)
 {
 	double	length;
 	
+	length = (vec.x * vec.x) + (vec.y * vec.y) + (vec.z * vec.z);
+	return (length);
+}
+
+double	length(t_vec3 vec)
+{
+	double	length;
+	
 	length = sqrt((vec.x * vec.x) + (vec.y * vec.y) + (vec.z * vec.z));
-	return (length * length);
+	return (length);
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
 
