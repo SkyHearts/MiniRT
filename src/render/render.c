@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/02 22:29:42 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/02 22:32:09 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	init_img(t_mlx *rt)
 
 void	destroy_img(t_mlx *rt)
 {
-	mlx_put_image_to_window(rt->mlx, rt->win, rt->img, 0, 0);
+	//mlx_put_image_to_window(rt->mlx, rt->win, rt->img, 0, 0);
 	mlx_destroy_image(rt->mlx, rt->img);
 	rt->addr = NULL;
 	rt->img = NULL;
@@ -84,7 +84,7 @@ void	init_cam(t_mlx *rt)
 	if(rt->rotated)
 	{
 		camray->vars.forward = normalize(sub_vec3(vec3(0, 0, 0), camray->direction));
-		camray->vars.right = cross_vec3(get_up(camray->vars.forward), camray->vars.forward);
+		camray->vars.right = normalize(cross_vec3(get_up(camray->vars.forward), camray->vars.forward));
 		camray->vars.up = normalize(cross_vec3(camray->vars.right, camray->direction));
 		rt->rotated = FALSE;
 	}
@@ -118,17 +118,17 @@ void	print_cam_debug(t_mlx *rt)
 	printf("View_w: %f\n", rt->scene.camera.vars.view_w);
 	printf("Lower Left Coner: ");
 	printvec_nl(rt->scene.camera.vars.llc);
-	printf("Camera to world matrix: \n");
-	print_matrix(rt->scene.camera.camtoworld);
+	//printf("Camera to world matrix: \n");
+	//print_matrix(rt->scene.camera.camtoworld);
 }
 
 t_ray	get_ray(double u, double v, t_mlx *rt)
 {
-	t_ray camray;
+	t_ray ray;
 
-	camray.origin = rt->scene.camera.position;
-	camray.direction = sub_vec3(add_vec3(add_vec3(rt->scene.camera.vars.llc, mul_double_vec3(u, rt->scene.camera.vars.horizontal)),mul_double_vec3(v, rt->scene.camera.vars.vertical)), camray.origin);
-	return (camray);
+	ray.origin = rt->scene.camera.position;
+	ray.direction = sub_vec3(add_vec3(add_vec3(rt->scene.camera.vars.llc, mul_double_vec3(u, rt->scene.camera.vars.horizontal)),mul_double_vec3(v, rt->scene.camera.vars.vertical)), ray.origin);
+	return (ray);
 }
 
 t_vec3 get_obj_normal(t_ray r, t_object *object)
@@ -140,6 +140,9 @@ t_vec3 get_obj_normal(t_ray r, t_object *object)
 	point_of_interaction = add_vec3(r.origin, mul_double_vec3(object->t, r.direction));
 	if (object->type == 0)
 		result = normalize(sub_vec3(point_of_interaction, object->position));
+	if (object->type == 1)
+		//result = vec3(0, -1, 0);
+		result = object->normal;
 	return result;
 }
 
@@ -196,13 +199,14 @@ void	render(t_mlx *rt)
 	t_object	*obj;
 
 	if (rt->mode == 1)
-		step = 4;
+		step = 2;
 	else
 		step = 1;
 	y = rt->win_height - 1;
-	init_img(rt);
+	//init_img(rt);
+	ft_memset(rt->addr, 0, ((rt->win_height * rt->line_length) + (rt->win_width * (rt->bpp/8))));
 	init_cam(rt);
-	print_cam_debug(rt);
+	//print_cam_debug(rt);
 	obj = rt->scene.object;
 	while (y >= 0)
 	{
@@ -223,5 +227,6 @@ void	render(t_mlx *rt)
 		}
 		y -= step;
 	}
-	destroy_img(rt);
+	mlx_put_image_to_window(rt->mlx, rt->win, rt->img, 0, 0);
+	//destroy_img(rt);
 }

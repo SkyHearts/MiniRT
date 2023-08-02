@@ -2,13 +2,14 @@ NAME	= minirt
 CC		= gcc
 FSAN	= -fsanitize=address
 CFLAGS	= -Wall -Wextra -Werror $(INCLUDES) -g3
-INCLUDES = -I inc -I ${LIBFT_DIR} 
-# MINILIB = -lmlx -framework OpenGL -framework AppKit
+INCLUDES = -I inc -I ${LIBFT_DIR} ${FSAN}
+MINILIBDIR = minilibx/
+MINILIB = -L$(MINILIBDIR) -lmlx -framework OpenGL -framework AppKit
 
-XPATH_MACOS=minilibx-opengl
-XFLAGS_MACOS=-I$(XPATH_MACOS) -L$(XPATH_MACOS) -lmlx -framework OpenGL -framework Appkit
-XPATH_LINUX=minilibx-linux
-XFLAGS_LINUX=-I$(XPATH_LINUX) -L$(XPATH_LINUX) -lmlx -lXext -lX11
+#XPATH_MACOS=minilibx-opengl
+#XFLAGS_MACOS=-I$(XPATH_MACOS) -L$(XPATH_MACOS) -lmlx -framework OpenGL -framework Appkit
+#XPATH_LINUX=minilibx-linux
+#XFLAGS_LINUX=-I$(XPATH_LINUX) -L$(XPATH_LINUX) -lmlx -lXext -lX11
 
 MINIRT_SRCS	=	main.c print_scene.c vector3.c free.c
 MINIRT_SRCS_DIR	= src/
@@ -38,7 +39,8 @@ all:  ${NAME}
 
 ${NAME}:	${LIBFT_DIR}/${LIBFT_LIB} ${MINIRT_OBJS} ${PARSE_OBJS} ${HOOKS_OBJS} ${RENDER_OBJS}
 	@echo "Compiling minirt"
-	${CC} ${CFLAGS} ${MINIRT_OBJS} ${PARSE_OBJS} ${HOOKS_OBJS} ${RENDER_OBJS} -o ${NAME} ${LIB} ${XFLAGS_MACOS}
+	${CC} ${CFLAGS} ${MINIRT_OBJS} ${PARSE_OBJS} ${HOOKS_OBJS} ${RENDER_OBJS} -o ${NAME} ${LIB} ${MINILIB}
+#${XFLAGS_MACOS}
 # ${MINILIB}
 	
 ${LIBFT_DIR}/${LIBFT_LIB}:
@@ -58,5 +60,4 @@ fclean: clean
 	@rm -rf ${NAME}
 
 re: clean all
-
 .PHONY:	all clean fclean re

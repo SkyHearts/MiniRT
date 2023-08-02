@@ -33,6 +33,7 @@ void	init_mlx(t_mlx *rt)
 	rt->time = time_stamp();
 	rt->mlx = mlx_init();
 	rt->win = mlx_new_window(rt->mlx,rt->win_width,rt->win_height, "minirt");
+	init_img(rt);
 }
 
 int main(int argc, char **argv)
@@ -49,6 +50,7 @@ int main(int argc, char **argv)
 			return (1);
 		}
 		ft_printscene(rt); //to check parse inputs
+		print_cam_debug(&rt);
 		//ft_printf("Position(Main): ");
 		//printvec_nl(rt.scene.camera.position);
 		//ft_printf("Direction(Main): ");

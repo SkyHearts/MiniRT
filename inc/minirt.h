@@ -14,8 +14,9 @@
 # define MINIRT_H
 
 #include "scene.h"
-// #include <mlx.h>
-#include <../minilibx-opengl/mlx.h>
+#include <mlx.h>
+//#include "../minilibx/mlx.h"
+//#include <../minilibx-opengl/mlx.h>
 #include "../utils/libft/libft.h"
 #include "../utils/libft/ft_printf.h"
 #include "object.h"
@@ -41,6 +42,7 @@ typedef struct s_mlx
 	void		*img;
 	void		*addr;
 	int			bpp;
+	int			size;
 	int			line_length;
 	int			endian;
 	t_scene		scene;
@@ -86,8 +88,8 @@ int		check_col_range(t_vec3 col);
 int		check_range(double value, int type);
 int		isempty(char *str);
 char	**isspace_split(const char *str);
-double degtorad(double theta);
-t_vec3 get_up(t_vec3 orientation);
+double	degtorad(double theta);
+t_vec3	get_up(t_vec3 orientation);
 
 //Print scene
 void	print_vec(t_vec3 a);
@@ -105,13 +107,18 @@ void	hooks_init(t_mlx *rt);
 void	print_cam_debug(t_mlx *rt);
 void	print_matrix(t_mat44 matrix);
 double 	time_stamp(void);
+void	framerate(t_mlx *rt);
 
 //hit interaction
 int		hit_object(t_ray r, t_object *obj);
 double	hit_sphere(t_object *obj, t_ray r);
+double	hit_plane(t_object *obj, t_ray r);
+t_ray	get_ray(double u, double v, t_mlx *rt);
 
 //Render
+int		init_img(t_mlx *rt);
 void	render(t_mlx *rt);
+void	destroy_img(t_mlx *rt);
 
 //free functions
 void	free_all(t_mlx *rt);

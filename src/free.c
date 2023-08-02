@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 10:36:32 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/27 16:15:52 by jyim             ###   ########.fr       */
+/*   Updated: 2023/07/31 18:09:28 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	free_lightlst(t_light *light)
 
 void	free_all(t_mlx *rt)
 {
+	destroy_img(rt);
 	free_objlst(rt->scene.object);
 	free_lightlst(rt->scene.light);
 }
