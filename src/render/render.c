@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/02 18:54:09 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/02 22:29:42 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ color ray_color(t_object *object, t_ray camray, t_light *light)
 
 	pixel_color.color = vec3(0,0,0);
 	current_light = light;
-	
+
 	if (hit_object(camray, object) > 0)
 	{
 		while (current_light != NULL)
