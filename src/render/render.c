@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/03 13:56:35 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/03 15:53:32 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,16 @@ color ray_color(t_object *object, t_ray camray, t_light *light)
 	t_hit_record	rec;
 	double			cosine;
 
+	double			specular_strength;
+	t_vec3			view_direction;
+	t_vec3			reflect_direction;
+	double			spec;
+	t_vec3			specular;
+	color			white_color;
+
+	specular_strength = 0.5;
 	pixel_color.color = vec3(0,0,0);
+	white_color.color = vec(255,255,255);
 	current_light = light;
 	rec.t = INFINITY;
 
@@ -183,10 +192,17 @@ color ray_color(t_object *object, t_ray camray, t_light *light)
 			obj_normal = get_obj_normal(camray, rec.obj);
 			light_direction = normalize(sub_vec3(current_light->position, rec.obj->position));
 			cosine = dot_vec3(light_direction, obj_normal);
+
+			view_direction = normalize(sub_vec3(camray.direction - rec.obj->position));
+			reflect_direction = reflect(mul_double_vec3(-1, light_direction), obj_normal);
+			spec = pow(max(dot_vec3(view_direction, reflect_direction), 0), 32);
+			specular = mul_double_vec3((specular_strength * spec), white_color.color);
+
 			if (cosine < 0)
 				pixel_color.color = mul_double_vec3(0.0, rec.obj->color);
 			else
-				pixel_color.color = mul_double_vec3(light->ratio, mul_double_vec3(cosine, rec.obj->color));
+				pixel_color.color = mul_vec3(specular, mul_double_vec3(light->ratio, mul_double_vec3(cosine, rec.obj->color)));
+				// pixel_color.color = mul_double_vec3(light->ratio, mul_double_vec3(cosine, rec.obj->color));
 			current_light = current_light->next;
 		}	
 	}
