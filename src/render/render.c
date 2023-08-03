@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/03 13:56:35 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/03 15:06:59 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ t_vec3 get_obj_normal(t_ray r, t_object *object)
 	result = vec3(0,0,0);
 	point_of_interaction = add_vec3(r.origin, mul_double_vec3(object->t, r.direction));
 	if (object->type == 0)
-		result = normalize(sub_vec3(point_of_interaction, object->position));
+		result = (sub_vec3(point_of_interaction, object->position));
 	if (object->type == 1)
 		//result = vec3(0, -1, 0);
 		result = object->normal;
@@ -166,31 +166,52 @@ color clamp_vec(color *col, double min, double max)
 color ray_color(t_object *object, t_ray camray, t_light *light)
 {
 	color			pixel_color;
+	color			final_color;
 	t_vec3			light_direction;
 	t_vec3			obj_normal;
 	t_light			*current_light;
 	t_hit_record	rec;
 	double			cosine;
+	double			multiplier;
+
+	int i = 0;
+	int bounces = 2;
+	multiplier = 1.0;
 
 	pixel_color.color = vec3(0,0,0);
+	final_color.color = vec3(0,0,0);
 	current_light = light;
 	rec.t = INFINITY;
 
-	if (hit_object(camray, object, &rec) > 0)
+	while (i < bounces)
 	{
-		while (current_light != NULL)
+		if (hit_object(camray, object, &rec) > 0)
 		{
-			obj_normal = get_obj_normal(camray, rec.obj);
-			light_direction = normalize(sub_vec3(current_light->position, rec.obj->position));
-			cosine = dot_vec3(light_direction, obj_normal);
-			if (cosine < 0)
-				pixel_color.color = mul_double_vec3(0.0, rec.obj->color);
-			else
-				pixel_color.color = mul_double_vec3(light->ratio, mul_double_vec3(cosine, rec.obj->color));
-			current_light = current_light->next;
-		}	
+			while (current_light != NULL)
+			{
+				obj_normal = get_obj_normal(camray, rec.obj);
+				light_direction = normalize(sub_vec3(current_light->position, rec.obj->position));
+				cosine = dot_vec3(light_direction, obj_normal);
+				if (cosine < 0)
+				{
+					pixel_color.color = mul_double_vec3(0.0, rec.obj->color);
+					final_color.color = mul_double_vec3(multiplier, add_vec3(pixel_color.color, final_color.color));
+					break;
+				}
+				else
+				{
+					pixel_color.color = mul_double_vec3(light->ratio, mul_double_vec3(cosine, rec.obj->color));
+					final_color.color = mul_double_vec3(multiplier, add_vec3(pixel_color.color, final_color.color));
+				}
+				multiplier *= 0.7;
+				camray.origin = add_vec3(rec.obj->position, mul_double_vec3(0.0001, obj_normal));
+				camray.direction = normalize(sub_vec3(camray.direction, obj_normal));
+				current_light = current_light->next;
+			}	
+		}
+		i++;
 	}
-	return (clamp_vec(&pixel_color, 0.0, 255.0));
+	return (clamp_vec(&final_color, 0.0, 255.0));
 }
 
 void	render(t_mlx *rt)
