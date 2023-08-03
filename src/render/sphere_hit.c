@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 13:08:57 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/02 18:44:09 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/03 13:53:30 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ double	hit_sphere(t_object *obj, t_ray r)
 {
 	//center = sphere centre, radius = sphere radius
 	//write data for debug
+	//obj->t = -1;
 	t_vec3 oc = sub_vec3(r.origin, obj->position);
 	double a = dot_vec3(r.direction, r.direction);
 	double b = 2.0 * dot_vec3(oc, r.direction);
@@ -26,6 +27,7 @@ double	hit_sphere(t_object *obj, t_ray r)
 	//return (discriminant > 0);
 	if (discriminant < 0)
 		obj->t =  -1.0;
+		//return 0;
 	else
 	{
 		double ret = (-b - sqrt(discriminant) ) / (2.0 * a);
@@ -40,6 +42,7 @@ double	hit_plane(t_object *obj, t_ray r)
 	double	denom;
 	double	ret;
 
+	//obj->t = -1;
 	denom = dot_vec3(r.direction, obj->normal);
 	//printf("Plane denom = %f\n", denom);
 	if (denom > 0.0)

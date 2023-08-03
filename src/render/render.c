@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/02 23:28:28 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/03 13:56:35 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,14 +175,13 @@ color ray_color(t_object *object, t_ray camray, t_light *light)
 	pixel_color.color = vec3(0,0,0);
 	current_light = light;
 	rec.t = INFINITY;
-	rec.obj = object;
 
 	if (hit_object(camray, object, &rec) > 0)
 	{
 		while (current_light != NULL)
 		{
 			obj_normal = get_obj_normal(camray, rec.obj);
-			light_direction = normalize(sub_vec3( current_light->position, rec.obj->position));
+			light_direction = normalize(sub_vec3(current_light->position, rec.obj->position));
 			cosine = dot_vec3(light_direction, obj_normal);
 			if (cosine < 0)
 				pixel_color.color = mul_double_vec3(0.0, rec.obj->color);

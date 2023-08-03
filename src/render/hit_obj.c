@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hit_obj.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 13:28:01 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/02 23:29:30 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/03 13:55:24 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	hit_object(t_ray r, t_object *obj, t_hit_record *rec)
 	hit = 0;
 	current_obj = obj;
 
-	(void) rec;
+	//(void) rec;
 	
 	while (current_obj != NULL)
 	{
@@ -31,7 +31,7 @@ int	hit_object(t_ray r, t_object *obj, t_hit_record *rec)
 		// else if (current_obj->type == 2)
 		// 	hit = hit_cylinder(current_obj, r);
 		
-		if (rec->t > current_obj->t)
+		if (rec->t > current_obj->t && current_obj->t != -1)
 		{
 			rec->t = current_obj->t;
 			rec->obj = current_obj;
@@ -41,5 +41,7 @@ int	hit_object(t_ray r, t_object *obj, t_hit_record *rec)
 		}
 		current_obj = current_obj->next;
 	}
-	return (hit);
+	if (rec->t == INFINITY)
+		rec->t = -1;
+	return (rec->t);
 } 

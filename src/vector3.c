@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:17:04 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/02 18:49:28 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/03 14:13:27 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,16 @@ double	length(t_vec3 vec)
 	length = sqrt((vec.x * vec.x) + (vec.y * vec.y) + (vec.z * vec.z));
 	return (length);
 }
+
+//w = v - 2 * (v ∙ n) * n
+t_vec3	reflect(t_vec3 raydir, t_vec3 normal)
+{
+	t_vec3 reflected;
+
+	reflected =  sub_vec3(raydir, mul_double_vec3((2 * dot_vec3(raydir, normal)), normal));
+	return (reflected);
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 void print_matrix(t_mat44 matrix)
