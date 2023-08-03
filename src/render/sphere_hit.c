@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 13:08:57 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/02 18:44:09 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/02 21:25:12 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,11 @@ double	hit_plane(t_object *obj, t_ray r)
 	return (obj->t);
 }
 
-//double	hit_cylinder(t_object *obj, t_ray r)
-//{
-	
-//}
+double	hit_cylinder(t_object *obj, t_ray r)
+{
+	t_vec3 oc = sub_vec3(r.origin, obj->position);
+	double a = dot_vec3(r.direction, r.direction);
+	double b = 2.0 * dot_vec3(oc, r.direction);
+	double c = dot_vec3(oc, oc) - ((obj->diameter) * (obj->diameter))/4;
+	double discriminant = b * b - 4 * a * c;
+}
