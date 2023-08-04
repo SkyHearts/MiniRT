@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 13:28:01 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/03 15:53:29 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/04 21:27:18 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,6 @@ int	hit_object(t_ray r, t_object *obj, t_hit_record *rec)
 		{
 			rec->t = current_obj->t;
 			rec->obj = current_obj;
-			// printf("Obj type: %d\n", rec.obj->type);
-			// printf("Obj color:");
-			// printvec_nl(rec.obj->color);
 		}
 		current_obj = current_obj->next;
 	}
@@ -45,3 +42,5 @@ int	hit_object(t_ray r, t_object *obj, t_hit_record *rec)
 		rec->t = -1;
 	return (rec->t);
 } 
+
+// printvec_nl(rec.obj->color);

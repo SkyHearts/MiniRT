@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/04 15:23:57 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/04 21:26:56 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,9 +200,7 @@ color ray_color(t_object *object, t_ray camray, t_light *light)
 			if (cosine < 0)
 				break;
 			else
-				// pixel_color.color = mul_double_vec3(light->ratio, mul_double_vec3(cosine, rec.obj->color));
 				pixel_color.color = add_vec3(specular, mul_double_vec3(light->ratio, mul_double_vec3(cosine, rec.obj->color)));
-				// pixel_color.color = mul_double_vec3(light->ratio, mul_double_vec3(cosine, rec.obj->color));
 			current_light = current_light->next;
 		}	
 	}
