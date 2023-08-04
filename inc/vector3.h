@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector3.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:28:55 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/02 18:47:50 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/04 13:22:18 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ t_vec3	add_vec3(t_vec3 vector1, t_vec3 vector2);
 t_vec3	sub_vec3(t_vec3 vec1, t_vec3 vec2);
 t_vec3	mul_vec3(t_vec3 vec1, t_vec3 vec2);
 t_vec3	div_vec3(t_vec3 vec1, t_vec3 vec2);
+t_vec3	reflect(t_vec3 raydir, t_vec3 normal);
 // t_vec3	sub_double_vec3(t_vec3 vec1, t_vec3 vec2);
 double	lengthsqr(t_vec3 vec);
 double	length(t_vec3 vec);

@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/03 15:53:32 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/04 15:23:57 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ t_vec3 get_obj_normal(t_ray r, t_object *object)
 		result = normalize(sub_vec3(point_of_interaction, object->position));
 	if (object->type == 1)
 		//result = vec3(0, -1, 0);
-		result = object->normal;
+		result = object	->normal;
 	return result;
 }
 
@@ -181,7 +181,7 @@ color ray_color(t_object *object, t_ray camray, t_light *light)
 
 	specular_strength = 0.5;
 	pixel_color.color = vec3(0,0,0);
-	white_color.color = vec(255,255,255);
+	white_color.color = vec3(255,255,255);
 	current_light = light;
 	rec.t = INFINITY;
 
@@ -190,18 +190,18 @@ color ray_color(t_object *object, t_ray camray, t_light *light)
 		while (current_light != NULL)
 		{
 			obj_normal = get_obj_normal(camray, rec.obj);
-			light_direction = normalize(sub_vec3(current_light->position, rec.obj->position));
+			light_direction = normalize(sub_vec3(current_light->position, add_vec3(camray.origin, mul_double_vec3(rec.t, camray.direction))));
 			cosine = dot_vec3(light_direction, obj_normal);
-
-			view_direction = normalize(sub_vec3(camray.direction - rec.obj->position));
-			reflect_direction = reflect(mul_double_vec3(-1, light_direction), obj_normal);
-			spec = pow(max(dot_vec3(view_direction, reflect_direction), 0), 32);
-			specular = mul_double_vec3((specular_strength * spec), white_color.color);
+			view_direction = normalize(sub_vec3(camray.direction, rec.obj->position));
+			reflect_direction = reflect(mul_double_vec3(-1, light_direction), mul_double_vec3(1, obj_normal));
+			spec = pow(fmax(dot_vec3(view_direction, reflect_direction), 0), 32);
+			specular = mul_double_vec3((specular_strength * spec), current_light->color);
 
 			if (cosine < 0)
-				pixel_color.color = mul_double_vec3(0.0, rec.obj->color);
+				break;
 			else
-				pixel_color.color = mul_vec3(specular, mul_double_vec3(light->ratio, mul_double_vec3(cosine, rec.obj->color)));
+				// pixel_color.color = mul_double_vec3(light->ratio, mul_double_vec3(cosine, rec.obj->color));
+				pixel_color.color = add_vec3(specular, mul_double_vec3(light->ratio, mul_double_vec3(cosine, rec.obj->color)));
 				// pixel_color.color = mul_double_vec3(light->ratio, mul_double_vec3(cosine, rec.obj->color));
 			current_light = current_light->next;
 		}	
