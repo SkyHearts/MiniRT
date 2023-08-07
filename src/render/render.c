@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/04 17:23:42 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/07 13:15:58 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,28 +127,51 @@ t_ray	get_ray(double u, double v, t_mlx *rt)
 	t_ray ray;
 
 	ray.origin = rt->scene.camera.position;
-	ray.direction = sub_vec3(add_vec3(add_vec3(rt->scene.camera.vars.llc, mul_double_vec3(u, rt->scene.camera.vars.horizontal)),mul_double_vec3(v, rt->scene.camera.vars.vertical)), ray.origin);
+	ray.direction = normalize(sub_vec3(add_vec3(add_vec3(rt->scene.camera.vars.llc, mul_double_vec3(u, rt->scene.camera.vars.horizontal)),mul_double_vec3(v, rt->scene.camera.vars.vertical)), ray.origin));
 	return (ray);
 }
 
-t_vec3 get_obj_normal(t_ray r, t_object *object)
+int	inlight(t_vec3 poi, t_object *object, t_light *light)
 {
-	t_vec3	point_of_interaction;
+	double	light_dis;
+	double	intersect_dis;
+
+	light_dis = length(sub_vec3(poi, light->position));
+	intersect_dis = length(sub_vec3(poi, object->position));
+	if (light_dis < intersect_dis)
+		return (1);
+	return (0);
+}
+
+t_vec3 get_obj_normal(t_ray r, t_object *object, t_light *light)
+{
+	t_vec3	poi;
 	t_vec3	result;
+	(void) light;
 	double	height;
 
 	result = vec3(0,0,0);
-	point_of_interaction = add_vec3(r.origin, mul_double_vec3(object->t, r.direction));
+	poi = add_vec3(r.origin, mul_double_vec3(object->t, r.direction));
 	if (object->type == 0)
-		result = normalize(sub_vec3(point_of_interaction, object->position));
+	{
+		result = normalize(sub_vec3(poi, object->position));
+		if (dot_vec3(r.direction, result) > 0.0)
+			result = mul_double_vec3(-1, result);
+	}
 	if (object->type == 1)
-		//result = vec3(0, -1, 0);
+	{
 		result = object->normal;
+		//if (dot_vec3(r.direction, result) > 0.0)
+		//	result = mul_double_vec3(-1, result);
+		//if (dot_vec3(sub_vec3(light->position, object->normal), result) > 0.0)
+		//	result = mul_double_vec3(-1, result);
+	}
 	if (object->type == 2)
 	{
-		height = dot_vec3(normalize(object->normal), sub_vec3(point_of_interaction, object->position));
-		result = normalize(sub_vec3(point_of_interaction, add_vec3(object->position, mul_double_vec3(height, object->normal))));
-		//result = add_vec3(object->position, mul_double_vec3(height, object->normal))
+		height = dot_vec3(normalize(object->normal), sub_vec3(poi, object->position));
+		result = normalize(sub_vec3(poi, add_vec3(object->position, mul_double_vec3(height, object->normal))));
+		if (dot_vec3(r.direction, result) > 0.0)
+			result = mul_double_vec3(-1, result);
 	}
 	return result;
 }
@@ -169,31 +192,58 @@ color clamp_vec(color *col, double min, double max)
 		col->color.z = max;
 	return (*col);
 }
+t_vec3	getlightdir(t_ray camray,t_light *light,t_hit_record *rec)
+{
+	t_vec3	light_direction;
+	
+	light_direction = normalize(sub_vec3(light->position, add_vec3(camray.origin, mul_double_vec3(rec->t, camray.direction))));
+	if (dot_vec3(camray.direction,light_direction) > 0.0)
+		light_direction = normalize(mul_double_vec3(-1, light_direction));
+	return (light_direction);
+}
 
 color ray_color(t_object *object, t_ray camray, t_light *light)
 {
 	color			pixel_color;
 	t_vec3			light_direction;
-	t_vec3			obj_normal;
+	//t_vec3			obj_normal;
 	t_light			*current_light;
 	t_hit_record	rec;
 	double			cosine;
 
+	double			specular_strength;
+	t_vec3			view_direction;
+	t_vec3			reflect_direction;
+	double			spec;
+	t_vec3			specular;
+	color			white_color;
+
+	specular_strength = 0.5;
 	pixel_color.color = vec3(0,0,0);
+	white_color.color = vec3(255,255,255);
 	current_light = light;
-	rec.t = INFINITY;
+	//rec.t = INFINITY;
 
 	if (hit_object(camray, object, &rec) > 0)
 	{
 		while (current_light != NULL)
 		{
-			obj_normal = get_obj_normal(camray, rec.obj);
-			light_direction = normalize(sub_vec3(current_light->position, rec.obj->position));
-			cosine = dot_vec3(light_direction, obj_normal);
+			//obj_normal = get_obj_normal(camray, rec.obj, current_light);
+			//light_direction = normalize(sub_vec3(current_light->position, add_vec3(camray.origin, mul_double_vec3(rec.t, camray.direction))));
+			//light_direction = getlightdir(camray, current_light, &rec);
+			light_direction = normalize(sub_vec3(current_light->position, rec.poi));
+			cosine = dot_vec3(light_direction, rec.normal);
+			view_direction = normalize(sub_vec3(camray.direction, rec.obj->position));
+			reflect_direction = reflect(mul_double_vec3(-1, light_direction), mul_double_vec3(1, rec.normal));
+			spec = pow(fmax(dot_vec3(view_direction, reflect_direction), 0), 32);
+			specular = mul_double_vec3((specular_strength * spec), current_light->color);
 			if (cosine < 0)
-				pixel_color.color = mul_double_vec3(0.0, rec.obj->color);
+				break;
 			else
-				pixel_color.color = mul_double_vec3(light->ratio, mul_double_vec3(cosine, rec.obj->color));
+				// pixel_color.color = mul_double_vec3(light->ratio, mul_double_vec3(cosine, rec.obj->color));
+				pixel_color.color = add_vec3(specular, mul_double_vec3(light->ratio, mul_double_vec3(cosine, rec.obj->color)));
+				// pixel_color.color = mul_double_vec3(light->ratio, mul_double_vec3(cosine, rec.obj->color));
+				//pixel_color.color = (rec.obj->color);
 			current_light = current_light->next;
 		}	
 	}
