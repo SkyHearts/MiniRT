@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:37:39 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/08 13:41:24 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/08 14:26:24 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ typedef struct s_hit_record
 
 	// shadow
 	t_vec3	light_direction;
-	t_light	*current_light;
 	double	intensity;
 	int		validIllum;
 	color	illum_color;
