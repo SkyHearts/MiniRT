@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/08 14:46:24 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/08 16:19:59 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ color ray_color(t_object *object, t_ray camray, t_light *light, t_mlx *rt)
 	current_light = light;
 	rec.t = INFINITY;
 
-	if (hit_object(camray, object, &rec) > 0)
+	if (hit_object(camray, object, &rec, 1) > 0)
 	{
 		while (current_light != NULL)
 		{
@@ -211,23 +211,31 @@ color ray_color(t_object *object, t_ray camray, t_light *light, t_mlx *rt)
 			specular = mul_double_vec3((specular_strength * spec), current_light->color);
 			// shadow
 			// light_ray = sub_vec3(add_vec3(point_of_interaction, light_direction), point_of_interaction);
+			t_ray lightray;
+			lightray.direction = rec.light_direction;
+			lightray.origin = add_vec3(rec.poi, mul_double_vec3(EPS, rec.normal));
+			if (hit_object(lightray, object, &rec, 0) > 0.0 && dot_vec3(camray.direction, rec.normal) < 0.0)
+			{
+				pixel_color.color = vec3(0, 0, 0);
+				return (pixel_color);
+			}
 			if (cosine < 0)
 				break;
 				//pixel_color.color = ambient(&rec, rt);
 
-			if (rec.validIllum)
-			{
-				illumFound = 1;
-				pixel_color.color = add_vec3(add_vec3(specular, mul_double_vec3(light->ratio, mul_double_vec3(cosine, rec.obj->color))), mul_double_vec3(rec.intensity, rec.illum_color.color));
-			}
-			else
-				pixel_color.color = add_vec3(specular, mul_double_vec3(light->ratio, mul_double_vec3(fmax(0.0, cosine), rec.obj->color)));
+			// if (rec.validIllum)
+			// {
+			// 	illumFound = 1;
+			// 	pixel_color.color = add_vec3(add_vec3(specular, mul_double_vec3(light->ratio, mul_double_vec3(fmax(0.0, cosine), rec.obj->color))), mul_double_vec3(rec.intensity, rec.illum_color.color));
+			// }
+			// else
+			pixel_color.color = add_vec3(specular, mul_double_vec3(light->ratio, mul_double_vec3(fmax(0.0, cosine), rec.obj->color)));
 			current_light = current_light->next;
 		}
 		// if (illumFound)
 		// {
 		// 	pixel_color.color = mul_double_vec3(0.0, rec.obj->color);
-		// 	outputImage.SetPixel(x, y, pixel_color.color);
+		// 	// outputImage.SetPixel(x, y, pixel_color.color);
 		// }
 	}
 	else

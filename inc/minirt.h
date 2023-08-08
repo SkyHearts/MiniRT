@@ -25,6 +25,7 @@
 #define DEFAULT_VAL 10
 #define FALSE 0
 #define TRUE 1
+#define EPS 1e-6
 
 typedef enum s_key
 {
@@ -110,13 +111,13 @@ double 	time_stamp(void);
 void	framerate(t_mlx *rt);
 
 //hit interaction
-int		hit_object(t_ray r, t_object *obj, t_hit_record *rec);
-double	hit_sphere(t_object *obj, t_ray r, t_hit_record *rec);
-double	hit_plane(t_object *obj, t_ray r, t_hit_record *rec);
+int		hit_object(t_ray r, t_object *obj, t_hit_record *rec, int record);
+double	hit_sphere(t_object *obj, t_ray r, t_hit_record *rec, int record);
+double	hit_plane(t_object *obj, t_ray r, t_hit_record *rec, int record);
 double	hit_cylinder(t_object *obj, t_ray r);
-double	hit_cylinder2(t_object *obj, t_ray r, t_hit_record *rec);
+double	hit_cylinder2(t_object *obj, t_ray r, t_hit_record *rec, int record);
 double	top_cap(t_object *obj, t_ray r);
-double	top_cap2(t_object *obj, t_ray r, t_hit_record *rec);
+double	top_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record);
 double	btm_cap(t_object *obj, t_ray r);
 t_ray	get_ray(double u, double v, t_mlx *rt);
 

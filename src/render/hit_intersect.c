@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 13:08:57 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/08 13:27:39 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/08 15:54:09 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_vec3	get_obj_normal2(t_ray r, t_object *object, t_hit_record *rec, t_vec3 poi)
 	return (normal);
 }
 
-double	hit_sphere(t_object *obj, t_ray r, t_hit_record *rec)
+double	hit_sphere(t_object *obj, t_ray r, t_hit_record *rec, int record)
 {
 	t_sphere sphere;
 	//center = sphere centre, radius = sphere radius
@@ -79,17 +79,17 @@ double	hit_sphere(t_object *obj, t_ray r, t_hit_record *rec)
 			sphere.t1 = sphere.t0;
 		obj->t = fmin(sphere.t1, sphere.t0);
 	}
-	if (rec->t > obj->t)
+	if (rec->t > obj->t && record)
 	{
+		rec->t = obj->t;
 		rec->poi = get_intersect(r, obj->t);
 		rec->normal = get_obj_normal2(r, obj, rec, rec->poi);
-		rec->t = obj->t;
 		rec->obj = obj;
 	}
 	return (TRUE);
 }
 
-double	hit_plane(t_object *obj, t_ray r, t_hit_record *rec)
+double	hit_plane(t_object *obj, t_ray r, t_hit_record *rec, int record)
 {
 	double	denom;
 	double	ret;
@@ -106,11 +106,11 @@ double	hit_plane(t_object *obj, t_ray r, t_hit_record *rec)
 			return (FALSE);
 		else
 			obj->t = ret;
-		if (rec->t > obj->t)
+		if (rec->t > obj->t && record)
 		{
+			rec->t = obj->t;
 			rec->poi = get_intersect(r, obj->t);
 			rec->normal = get_obj_normal2(r, obj, rec, rec->poi);
-			rec->t = obj->t;
 			rec->obj = obj;
 		}
 	}
@@ -124,7 +124,7 @@ double	hit_plane(t_object *obj, t_ray r, t_hit_record *rec)
 //(r.o + t * r.dir - pa - (va . (r.o + t * r.dir) - pa)va)^2 - r^2 = 0
 //oc is point of ray.origin to coordinate of obj, delta.p
 
-double	top_cap2(t_object *obj, t_ray r, t_hit_record *rec)
+double	top_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record)
 {
 	t_vec3	top;
 	double	denom;
@@ -144,17 +144,17 @@ double	top_cap2(t_object *obj, t_ray r, t_hit_record *rec)
 	plane = sub_vec3(add_vec3(r.origin, mul_double_vec3(obj->t, r.direction)), top);
 	if (dot_vec3(plane, plane) > (obj->radius * obj->radius))
 		return (FALSE);
-	if (rec->t > obj->t)
+	if (rec->t > obj->t && record)
 	{
+		rec->t = obj->t;
 		rec->poi = get_intersect(r, obj->t);
 		rec->normal = get_obj_normal2(r, obj, rec, rec->poi);
-		rec->t = obj->t;
 		rec->obj = obj;
 	}
 	return (TRUE);
 }
 
-double	btm_cap2(t_object *obj, t_ray r, t_hit_record *rec)
+double	btm_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record)
 {
 	double	denom;
 	double	ret;
@@ -172,23 +172,23 @@ double	btm_cap2(t_object *obj, t_ray r, t_hit_record *rec)
 	plane = sub_vec3(add_vec3(r.origin, mul_double_vec3(obj->t, r.direction)), obj->position);
 	if (dot_vec3(plane, plane) > (obj->radius * obj->radius))
 		return (FALSE);
-	if (rec->t > obj->t)
+	if (rec->t > obj->t && record)
 	{
+		rec->t = obj->t;
 		rec->poi = get_intersect(r, obj->t);
 		rec->normal = get_obj_normal2(r, obj, rec, rec->poi);
-		rec->t = obj->t;
 		rec->obj = obj;
 	}
 	return (TRUE);
 }
 
-double	hit_cylinder2(t_object *obj, t_ray r, t_hit_record *rec)
+double	hit_cylinder2(t_object *obj, t_ray r, t_hit_record *rec, int record)
 {
 	t_cylinder2 cy;
 	
 	cy.top = add_vec3(obj->position, mul_double_vec3(obj->height, obj->normal));
-	top_cap2(obj, r, rec);
-	btm_cap2(obj, r, rec);
+	top_cap2(obj, r, rec, record);
+	btm_cap2(obj, r, rec, record);
 	cy.oc = sub_vec3(r.origin, obj->position);
 	cy.a = dot_vec3(r.direction, r.direction) - (dot_vec3(r.direction, obj->normal)
 				* dot_vec3(r.direction, obj->normal)) ;
@@ -218,11 +218,11 @@ double	hit_cylinder2(t_object *obj, t_ray r, t_hit_record *rec)
 		return (FALSE);
 	else if (dot_vec3(obj->normal, sub_vec3(add_vec3(r.origin, mul_double_vec3(obj->t, r.direction)), obj->position)) < 0)
 		return (FALSE);
-	if (rec->t > obj->t)
+	if (rec->t > obj->t && record)
 	{
+		rec->t = obj->t;
 		rec->poi = get_intersect(r, obj->t);
 		rec->normal = get_obj_normal2(r, obj, rec, rec->poi);
-		rec->t = obj->t;
 		rec->obj = obj;
 	}
 	return (TRUE);
