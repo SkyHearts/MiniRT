@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 13:28:01 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/07 17:32:32 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/08 12:45:57 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,7 @@ int	hit_object(t_ray r, t_object *obj, t_hit_record *rec)
 		else if (current_obj->type == 1)
 			hit = hit_plane(current_obj, r, rec);
 		else if (current_obj->type == 2)
-		{
 		 	hit = hit_cylinder2(current_obj, r, rec);
-			//top_cap(current_obj, r);
-		}
-		//if (rec->t > current_obj->t && current_obj->t != -1)
-		//{
-		//	rec->t = current_obj->t;
-		//	rec->obj = current_obj;
-		//	// printf("Obj type: %d\n", rec.obj->type);
-		//	// printf("Obj color:");
-		//	// printvec_nl(rec.obj->color);
-		//}
 		current_obj = current_obj->next;
 	}
 	if (rec->t == INFINITY)

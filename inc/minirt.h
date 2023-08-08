@@ -120,6 +120,10 @@ double	top_cap2(t_object *obj, t_ray r, t_hit_record *rec);
 double	btm_cap(t_object *obj, t_ray r);
 t_ray	get_ray(double u, double v, t_mlx *rt);
 
+//hit utils
+t_vec3	get_intersect(t_ray r, double t);
+t_vec3	get_obj_normal2(t_ray r, t_object *object, t_hit_record *rec, t_vec3 poi);
+
 //Render
 int		init_img(t_mlx *rt);
 void	render(t_mlx *rt);
