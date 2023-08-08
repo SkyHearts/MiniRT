@@ -94,6 +94,7 @@ void	add_sphere(char **split, t_object **obj)
 	(*obj)->type = SPHERE;
 	(*obj)->position = get_coordinate(split[1]);
 	(*obj)->diameter = ft_atof(split[2]);
+	(*obj)->radius = ft_atof(split[2]) / 2;
 	(*obj)->color = get_color(split[3]);
 	if ((*obj)->diameter <= 0)
 	{
@@ -107,7 +108,7 @@ void	add_plane(char **split, t_object **obj)
 {
 	(*obj)->type = PLANE;
 	(*obj)->position = get_coordinate(split[1]);
-	(*obj)->position.z *= -1;
+	//(*obj)->position = mul_double_vec3(-1,(*obj)->position);
 	(*obj)->normal = normalize(get_normal(split[2]));
 	(*obj)->color = get_color(split[3]);
 }
@@ -118,6 +119,7 @@ void	add_cylinder(char **split, t_object **obj)
 	(*obj)->position = get_coordinate(split[1]);
 	(*obj)->normal = get_normal(split[2]);
 	(*obj)->diameter = ft_atof(split[3]);
+	(*obj)->radius = ft_atof(split[3]) / 2;
 	(*obj)->height = ft_atof(split[4]);
 	(*obj)->color = get_color(split[5]);
 	if ((*obj)->diameter <= 0)

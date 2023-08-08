@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 09:14:19 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/02 15:47:54 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/08 11:17:52 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,27 +202,35 @@ void	shootray(t_mlx *rt, t_ray ray)
 {
 	t_object	*tmplst;
 	double		tmin;
-	double		obj_t;
+	//double		obj_t;
+	t_hit_record rec;
+	(void) ray;
 
 	tmin = INFINITY;
 	tmplst = rt->scene.object;
+	rec.t = INFINITY;
 	while (tmplst != NULL)
 	{
 		if(tmplst->type == 0)
-			obj_t = hit_sphere(tmplst, ray);
+			hit_sphere(tmplst, ray, &rec);
 		if(tmplst->type == 1)
-			obj_t = hit_plane(tmplst, ray);
-		if (obj_t < tmin && obj_t > 0.0)
-		{
-			tmin = obj_t;
-			rt->scene.active_object = tmplst;
-		}
+			hit_plane(tmplst, ray, &rec);
+		if(tmplst->type == 2)
+			hit_cylinder2(tmplst, ray, &rec);
+		//if (obj_t < tmin && obj_t > 0.0)
+		//{
+		//	tmin = obj_t;
+		//	rt->scene.active_object = tmplst;
+		//}
 		tmplst = tmplst->next;
 	}
-	if (tmin == INFINITY)
+	if (rec.t == INFINITY)
 		rt->scene.active_object = NULL;
+	else
+		rt->scene.active_object = rec.obj;
 	if (rt->scene.active_object != NULL)
 	{
+		printf("rec hit t:%f\n", rec.t);
 		printf("Object Hit\n");
 		printf("Object Index: %d\n", rt->scene.active_object->index);
 		printf("Object Type: %d\n", rt->scene.active_object->type);

@@ -19,7 +19,7 @@ PARSE_SRC = nodes.c parsing.c parsing_utils.c isspace_split.c
 PARSE_DIR = src/parsing/
 PARSE_OBJS = $(addprefix $(PARSE_DIR), $(PARSE_SRC:.c=.o))
 
-RENDER_SRC = render.c hit_obj.c sphere_hit.c
+RENDER_SRC = render.c hit_obj.c hit_intersect.c
 RENDER_DIR = src/render/
 RENDER_OBJS = $(addprefix $(RENDER_DIR), $(RENDER_SRC:.c=.o))
 

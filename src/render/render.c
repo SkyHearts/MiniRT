@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/08 13:09:19 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/08 13:41:22 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@
 
 unsigned int	RGBtoColor(t_vec3 color)
 {
-		unsigned int r = (unsigned int)(color.x);
-		unsigned int g = (unsigned int)(color.y);
-		unsigned int b = (unsigned int)(color.z);
+	unsigned int r = (unsigned int)(color.x);
+	unsigned int g = (unsigned int)(color.y);
+	unsigned int b = (unsigned int)(color.z);
 
-		unsigned int result = (r << 16) | (g << 8) | b;
-		return result;
+	unsigned int result = (r << 16) | (g << 8) | b;
+	return result;
 }
 void	img_mlx_pixel_put(t_mlx *rt, int x, int y, int color)
 {
@@ -127,22 +127,8 @@ t_ray	get_ray(double u, double v, t_mlx *rt)
 	t_ray ray;
 
 	ray.origin = rt->scene.camera.position;
-	ray.direction = sub_vec3(add_vec3(add_vec3(rt->scene.camera.vars.llc, mul_double_vec3(u, rt->scene.camera.vars.horizontal)),mul_double_vec3(v, rt->scene.camera.vars.vertical)), ray.origin);
+	ray.direction = normalize(sub_vec3(add_vec3(add_vec3(rt->scene.camera.vars.llc, mul_double_vec3(u, rt->scene.camera.vars.horizontal)),mul_double_vec3(v, rt->scene.camera.vars.vertical)), ray.origin));
 	return (ray);
-}
-
-t_vec3 get_obj_normal(t_object *object, t_vec3 point_of_interaction)
-{
-	t_vec3 result;
-
-	result = vec3(0,0,0);
-
-	if (object->type == 0)
-		result = normalize(sub_vec3(point_of_interaction, object->position));
-	if (object->type == 1)
-		//result = vec3(0, -1, 0);
-		result = object	->normal;
-	return result;
 }
 
 color clamp_vec(color *col, double min, double max)
@@ -161,15 +147,33 @@ color clamp_vec(color *col, double min, double max)
 		col->color.z = max;
 	return (*col);
 }
+t_vec3	getlightdir(t_ray camray,t_light *light,t_hit_record *rec)
+{
+	t_vec3	light_direction;
+	
+	light_direction = normalize(sub_vec3(light->position, add_vec3(camray.origin, mul_double_vec3(rec->t, camray.direction))));
+	if (dot_vec3(camray.direction,light_direction) > 0.0)
+		light_direction = normalize(mul_double_vec3(-1, light_direction));
+	return (light_direction);
+}
 
-color ray_color(t_object *object, t_ray camray, t_light *light)
+t_vec3 ambient(t_hit_record *rec, t_mlx *rt)
+{
+	t_vec3 ambient;
+	ambient.x = rec->obj->color.x * (rt->scene.ambient.color.x / 255) * rt->scene.ambient.ratio;
+	ambient.y = rec->obj->color.y * (rt->scene.ambient.color.y / 255) * rt->scene.ambient.ratio;
+	ambient.z = rec->obj->color.z * (rt->scene.ambient.color.z / 255) * rt->scene.ambient.ratio;
+	return (ambient);
+}
+
+color ray_color(t_object *object, t_ray camray, t_light *light, t_mlx *rt)
 {
 	// diffuse & light direction
 	color			pixel_color;
+	
+	// specular
 	t_hit_record	rec;
 	double			cosine;
-
-	// specular
 	double			specular_strength;
 	t_vec3			view_direction;
 	t_vec3			reflect_direction;
@@ -178,6 +182,8 @@ color ray_color(t_object *object, t_ray camray, t_light *light)
 
 	// shadow
 	// t_vec3			light_ray;
+
+	(void)rt;
 
 	// specular
 	specular_strength = 0.5;
@@ -192,23 +198,24 @@ color ray_color(t_object *object, t_ray camray, t_light *light)
 		while (rec.current_light != NULL)
 		{
 			// diffuse & light direction
-			cosine = dot_vec3(rec.light_direction, rec.obj_normal);
+			rec.light_direction = normalize(sub_vec3(rec.current_light->position, rec.poi));
+			cosine = dot_vec3(rec.light_direction, rec.normal);
 			// specular
 			view_direction = normalize(sub_vec3(camray.direction, rec.obj->position));
-			reflect_direction = reflect(mul_double_vec3(-1, rec.light_direction), mul_double_vec3(1, rec.obj_normal));
+			reflect_direction = reflect(mul_double_vec3(-1, rec.light_direction), mul_double_vec3(1, rec.normal));
 			spec = pow(fmax(dot_vec3(view_direction, reflect_direction), 0), 32);
 			specular = mul_double_vec3((specular_strength * spec), rec.current_light->color);
 			// shadow
 			// light_ray = sub_vec3(add_vec3(point_of_interaction, light_direction), point_of_interaction);
-
 			if (cosine < 0)
+				//pixel_color.color = ambient(&rec, rt);
 				break;
 			else
+				pixel_color.color = add_vec3(specular, mul_double_vec3(light->ratio, mul_double_vec3(fmax(0.0, cosine), rec.obj->color)));
 				// pixel_color.color = add_vec3(add_vec3(specular, mul_double_vec3(light->ratio, mul_double_vec3(cosine, rec.obj->color))), mul_double_vec3(intensity, m_color.color));
-				pixel_color.color = add_vec3(specular, mul_double_vec3(light->ratio, mul_double_vec3(cosine, rec.obj->color)));
-		
+				//pixel_color.color = (rec.obj->color);
 			rec.current_light = rec.current_light->next;
-		}
+		}	
 	}
 	// else
 	// 	pixel_color.color = add_vec3(pixel_color.color, mul_double_vec3(intensity, m_color.color));
@@ -229,14 +236,12 @@ void	render(t_mlx *rt)
 	t_object	*obj;
 
 	if (rt->mode == 1)
-		step = 2;
+		step = 4;
 	else
 		step = 1;
 	y = rt->win_height - 1;
-	//init_img(rt);
 	ft_memset(rt->addr, 0, ((rt->win_height * rt->line_length) + (rt->win_width * (rt->bpp/8))));
 	init_cam(rt);
-	//print_cam_debug(rt);
 	obj = rt->scene.object;
 	while (y >= 0)
 	{
@@ -250,7 +255,7 @@ void	render(t_mlx *rt)
 
 			camray = get_ray(u, v, rt);
 			//write ray data for debug
-			color pixel_color = ray_color(obj, camray, rt->scene.light);
+			color pixel_color = ray_color(obj, camray, rt->scene.light, rt);
 			img_mlx_pixel_put(rt, x, y, RGBtoColor(pixel_color.color));
 			//img_mlx_pixel_put(rt, x, y, 0xffffff);
 			x+= step;
@@ -258,5 +263,4 @@ void	render(t_mlx *rt)
 		y -= step;
 	}
 	mlx_put_image_to_window(rt->mlx, rt->win, rt->img, 0, 0);
-	//destroy_img(rt);
 }
