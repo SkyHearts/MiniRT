@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/04 21:24:29 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/08 13:09:19 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,12 +166,8 @@ color ray_color(t_object *object, t_ray camray, t_light *light)
 {
 	// diffuse & light direction
 	color			pixel_color;
-	t_vec3			light_direction;
-	t_vec3			obj_normal;
-	t_light			*current_light;
 	t_hit_record	rec;
 	double			cosine;
-	t_vec3			point_of_interaction;
 
 	// specular
 	double			specular_strength;
@@ -181,57 +177,37 @@ color ray_color(t_object *object, t_ray camray, t_light *light)
 	t_vec3			specular;
 
 	// shadow
-	color			m_color;
-	double			angle;
-	double			intensity;
-	int				validIllum;
 	// t_vec3			light_ray;
-
-	// shadow
-	m_color.color = vec3(1.0, 1.0, 1.0);
-	validIllum = 0;
-	intensity = 0.0;
 
 	// specular
 	specular_strength = 0.5;
 
 	// general
 	pixel_color.color = vec3(0,0,0);
-	current_light = light;
+	rec.current_light = light;
 	rec.t = INFINITY;
 
 	if (hit_object(camray, object, &rec) > 0)
 	{
-		while (current_light != NULL)
+		while (rec.current_light != NULL)
 		{
 			// diffuse & light direction
-			point_of_interaction = add_vec3(camray.origin, mul_double_vec3(rec.t, camray.direction));
-			obj_normal = get_obj_normal(rec.obj, point_of_interaction);
-			light_direction = normalize(sub_vec3(current_light->position, point_of_interaction));
-			cosine = dot_vec3(light_direction, obj_normal);
+			cosine = dot_vec3(rec.light_direction, rec.obj_normal);
 			// specular
 			view_direction = normalize(sub_vec3(camray.direction, rec.obj->position));
-			reflect_direction = reflect(mul_double_vec3(-1, light_direction), mul_double_vec3(1, obj_normal));
+			reflect_direction = reflect(mul_double_vec3(-1, rec.light_direction), mul_double_vec3(1, rec.obj_normal));
 			spec = pow(fmax(dot_vec3(view_direction, reflect_direction), 0), 32);
-			specular = mul_double_vec3((specular_strength * spec), current_light->color);
+			specular = mul_double_vec3((specular_strength * spec), rec.current_light->color);
 			// shadow
-			angle = acos(dot_vec3(obj_normal, light_direction));
 			// light_ray = sub_vec3(add_vec3(point_of_interaction, light_direction), point_of_interaction);
 
 			if (cosine < 0)
 				break;
-			// else if (angle < 1.5708)
-			// {
-			// 	// We do have illumination.
-			// 	intensity = 1.0 * (1.0 - (angle / 1.5708));
-			// 	validIllum = 1;
-			// 	pixel_color.color = add_vec3(add_vec3(specular, mul_double_vec3(light->ratio, mul_double_vec3(cosine, rec.obj->color))), mul_double_vec3(intensity, m_color.color));
-			// }
 			else
 				// pixel_color.color = add_vec3(add_vec3(specular, mul_double_vec3(light->ratio, mul_double_vec3(cosine, rec.obj->color))), mul_double_vec3(intensity, m_color.color));
 				pixel_color.color = add_vec3(specular, mul_double_vec3(light->ratio, mul_double_vec3(cosine, rec.obj->color)));
 		
-			current_light = current_light->next;
+			rec.current_light = rec.current_light->next;
 		}
 	}
 	// else
