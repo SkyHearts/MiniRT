@@ -25,6 +25,7 @@
 #define DEFAULT_VAL 10
 #define FALSE 0
 #define TRUE 1
+#define EPS 1e-6
 
 typedef enum s_key
 {
@@ -114,6 +115,7 @@ int			mouse_hook(int mousepress, int x, int y, t_mlx *rt);
 int			press_key(int keysym, t_mlx *rt);
 void		move1(int keysym, t_mlx *rt);
 void		move2(int keysym, t_mlx *rt);
+void		move3(int keysym, t_mlx *rt);
 void		rotation1(int keysym, t_mlx *rt);
 void		rotation2(int keysym, t_mlx *rt);
 
@@ -124,14 +126,15 @@ double		time_stamp(void);
 void		framerate(t_mlx *rt);
 
 //hit interaction
-int			hit_object(t_ray r, t_object *obj, t_hit_record *rec);
-double		hit_sphere(t_object *obj, t_ray r, t_hit_record *rec);
-double		hit_plane(t_object *obj, t_ray r, t_hit_record *rec);
+int			hit_object(t_ray r, t_object *obj, t_hit_record *rec, int record);
+double		hit_sphere(t_object *obj, t_ray r, t_hit_record *rec, int record);
+double		hit_plane(t_object *obj, t_ray r, t_hit_record *rec, int record);
 double		hit_cylinder(t_object *obj, t_ray r);
-double		hit_cylinder2(t_object *obj, t_ray r, t_hit_record *rec);
+double		hit_cylinder2(t_object *obj, t_ray r, t_hit_record *rec, int record);
 double		top_cap(t_object *obj, t_ray r);
-double		top_cap2(t_object *obj, t_ray r, t_hit_record *rec);
+double		top_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record);
 double		btm_cap(t_object *obj, t_ray r);
+double		btm_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record);
 t_ray		get_ray(double u, double v, t_mlx *rt);
 
 //hit utils

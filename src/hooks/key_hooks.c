@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 09:14:19 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/09 13:40:54 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/09 17:48:55 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	press_key(int keysym, t_mlx *rt)
 	{
 		move1(keysym, rt);
 		move2(keysym, rt);
+		move3(keysym, rt);
 		rotation1(keysym, rt);
 		rotation2(keysym, rt);
 		rt->move = TRUE;
@@ -84,10 +85,10 @@ int	frame_refresh(t_mlx *rt)
 		rt->move = FALSE;
 	}
 	else
-	//{
+	{
 		render(rt);
 	//	//framerate(rt);
-	//}
+	}
 	return (0);
 }
 

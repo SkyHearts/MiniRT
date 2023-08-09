@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 18:13:26 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/09 13:19:49 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/09 19:13:34 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ static void	shootray(t_mlx *rt, t_ray ray)
 	while (tmplst != NULL)
 	{
 		if (tmplst->type == 0)
-			hit_sphere(tmplst, ray, &rec);
+			hit_sphere(tmplst, ray, &rec, 1);
 		if (tmplst->type == 1)
-			hit_plane(tmplst, ray, &rec);
+			hit_plane(tmplst, ray, &rec, 1);
 		if (tmplst->type == 2)
-			hit_cylinder2(tmplst, ray, &rec);
+			hit_cylinder2(tmplst, ray, &rec, 1);
 		tmplst = tmplst->next;
 	}
 	if (rec.t == INFINITY)
@@ -36,6 +36,8 @@ static void	shootray(t_mlx *rt, t_ray ray)
 		rt->scene.active_object = rec.obj;
 	if (rt->scene.active_object != NULL)
 	{
+		if (rec.iscap)
+			printf("Hit cap");
 		printf("rec hit t:%f\n", rec.t);
 		printf("Object Hit\n");
 		printf("Object Index: %d\n", rt->scene.active_object->index);

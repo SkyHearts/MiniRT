@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:37:39 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/09 14:39:59 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/09 15:22:54 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@ typedef struct s_hit_record
 	t_vec3		poi;
 	t_vec3		cap_normal;
 	int			iscap;
+
+	// shadow
+	t_vec3	light_direction;
+	double	intensity;
+	int		validIllum;
+	color	illum_color;
 }	t_hit_record;
 
 typedef struct s_sphere
