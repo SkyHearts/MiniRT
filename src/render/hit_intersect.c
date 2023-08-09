@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 13:08:57 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/08 13:13:41 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/09 14:57:22 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 double	hit_sphere(t_object *obj, t_ray r, t_hit_record *rec)
 {
-	t_sphere sphere;
+	t_sphere	sphere;
 
 	sphere.oc = sub_vec3(r.origin, obj->position);
 	sphere.a = dot_vec3(r.direction, r.direction);
@@ -26,9 +26,9 @@ double	hit_sphere(t_object *obj, t_ray r, t_hit_record *rec)
 		return (FALSE);
 	else
 	{
-		sphere.t0 = (-sphere.b - sqrt(sphere.discriminant) ) / (2.0 * sphere.a);
-		sphere.t1 = (-sphere.b + sqrt(sphere.discriminant) ) / (2.0 * sphere.a);
-		if(sphere.t0 < 0 && sphere.t1 < 0)
+		sphere.t0 = (-sphere.b - sqrt(sphere.discriminant)) / (2.0 * sphere.a);
+		sphere.t1 = (-sphere.b + sqrt(sphere.discriminant)) / (2.0 * sphere.a);
+		if (sphere.t0 < 0 && sphere.t1 < 0)
 			return (FALSE);
 		else if (sphere.t0 < 0.0)
 			sphere.t0 = sphere.t1;
@@ -42,6 +42,7 @@ double	hit_sphere(t_object *obj, t_ray r, t_hit_record *rec)
 		rec->normal = get_obj_normal2(r, obj, rec, rec->poi);
 		rec->t = obj->t;
 		rec->obj = obj;
+		rec->iscap = 0;
 	}
 	return (TRUE);
 }
@@ -54,20 +55,20 @@ double	hit_plane(t_object *obj, t_ray r, t_hit_record *rec)
 
 	normal = obj->normal;
 	denom = dot_vec3(r.direction, normal);
-	if (fabs(denom) > 1e-6)
+	if (fabs(denom) < 1e-6)
+		return (FALSE);
+	ret = dot_vec3(sub_vec3(obj->position, r.origin), obj->normal) / denom;
+	if (ret < 1e-6)
+		return (FALSE);
+	else
+		obj->t = ret;
+	if (rec->t > obj->t)
 	{
-		ret = dot_vec3(sub_vec3(obj->position, r.origin), obj->normal) / denom;
-		if (ret < 1e-6)
-			return (FALSE);
-		else
-			obj->t = ret;
-		if (rec->t > obj->t)
-		{
-			rec->poi = get_intersect(r, obj->t);
-			rec->normal = get_obj_normal2(r, obj, rec, rec->poi);
-			rec->t = obj->t;
-			rec->obj = obj;
-		}
+		rec->poi = get_intersect(r, obj->t);
+		rec->normal = get_obj_normal2(r, obj, rec, rec->poi);
+		rec->t = obj->t;
+		rec->obj = obj;
+		rec->iscap = 0;
 	}
 	return (TRUE);
 }
@@ -83,18 +84,17 @@ double	top_cap2(t_object *obj, t_ray r, t_hit_record *rec)
 	t_vec3	top;
 	double	denom;
 	double	ret;
-	t_vec3 plane;
-	
+	t_vec3	plane;
+
 	top = add_vec3(obj->position, mul_double_vec3(obj->height, obj->normal));
 	denom = dot_vec3(r.direction, obj->normal);
-	if (fabs(denom) > 1e-6)
-	{
-		ret = dot_vec3(sub_vec3(top, r.origin), obj->normal) / denom;
-		if (ret < 1e-6)
-			return (FALSE);
-		else
-			obj->t = ret;
-	}
+	if (fabs(denom) < 1e-6)
+		return (FALSE);
+	ret = dot_vec3(sub_vec3(top, r.origin), obj->normal) / denom;
+	if (ret < 1e-6)
+		return (FALSE);
+	else
+		obj->t = ret;
 	plane = sub_vec3(add_vec3(r.origin, mul_double_vec3(obj->t, r.direction)), top);
 	if (dot_vec3(plane, plane) > (obj->radius * obj->radius))
 		return (FALSE);
@@ -102,8 +102,10 @@ double	top_cap2(t_object *obj, t_ray r, t_hit_record *rec)
 	{
 		rec->poi = get_intersect(r, obj->t);
 		rec->normal = get_obj_normal2(r, obj, rec, rec->poi);
+		rec->cap_normal = obj->normal;
 		rec->t = obj->t;
 		rec->obj = obj;
+		rec->iscap = 1;
 	}
 	return (TRUE);
 }
@@ -112,17 +114,16 @@ double	btm_cap2(t_object *obj, t_ray r, t_hit_record *rec)
 {
 	double	denom;
 	double	ret;
-	t_vec3 plane;
-	
+	t_vec3	plane;
+
 	denom = dot_vec3(r.direction, obj->normal);
-	if (fabs(denom) > 1e-6)
-	{
-		ret = dot_vec3(sub_vec3(obj->position, r.origin), obj->normal) / denom;
-		if (ret < 1e-6)
-			return (FALSE);
-		else
-			obj->t = ret;
-	}
+	if (fabs(denom) < 1e-6)
+		return (FALSE);
+	ret = dot_vec3(sub_vec3(obj->position, r.origin), obj->normal) / denom;
+	if (ret < 1e-6)
+		return (FALSE);
+	else
+		obj->t = ret;
 	plane = sub_vec3(add_vec3(r.origin, mul_double_vec3(obj->t, r.direction)), obj->position);
 	if (dot_vec3(plane, plane) > (obj->radius * obj->radius))
 		return (FALSE);
@@ -130,35 +131,36 @@ double	btm_cap2(t_object *obj, t_ray r, t_hit_record *rec)
 	{
 		rec->poi = get_intersect(r, obj->t);
 		rec->normal = get_obj_normal2(r, obj, rec, rec->poi);
+		rec->cap_normal = mul_double_vec3(-1, obj->normal);
 		rec->t = obj->t;
 		rec->obj = obj;
+		rec->iscap = 1;
 	}
 	return (TRUE);
 }
 
 double	hit_cylinder2(t_object *obj, t_ray r, t_hit_record *rec)
 {
-	t_cylinder2 cy;
-	
+	t_cylinder2	cy;
+
 	cy.top = add_vec3(obj->position, mul_double_vec3(obj->height, obj->normal));
 	top_cap2(obj, r, rec);
 	btm_cap2(obj, r, rec);
 	cy.oc = sub_vec3(r.origin, obj->position);
-	cy.a = dot_vec3(r.direction, r.direction) - (dot_vec3(r.direction, obj->normal)
-				* dot_vec3(r.direction, obj->normal)) ;
-	cy.b = 2.0 * (dot_vec3(r.direction, cy.oc) - (dot_vec3(r.direction, obj->normal)
-				* dot_vec3(cy.oc, obj->normal)));
-	cy.c = dot_vec3(cy.oc, cy.oc)
-			- (dot_vec3(cy.oc,  obj->normal) * dot_vec3(cy.oc, obj->normal))
-			- (obj->radius * obj->radius);
+	cy.a = dot_vec3(r.direction, r.direction) - (dot_vec3(r.direction,
+				obj->normal) * dot_vec3(r.direction, obj->normal));
+	cy.b = 2.0 * (dot_vec3(r.direction, cy.oc) - (dot_vec3(r.direction,
+					obj->normal) * dot_vec3(cy.oc, obj->normal)));
+	cy.c = dot_vec3(cy.oc, cy.oc) - (dot_vec3(cy.oc, obj->normal)
+			* dot_vec3(cy.oc, obj->normal)) - (obj->radius * obj->radius);
 	cy.discriminant = cy.b * cy.b - 4 * cy.a * cy.c;
 	if (cy.discriminant < 0)
 		return (FALSE);
 	else
 	{
-		cy.t0 = (-cy.b - sqrt(cy.discriminant) ) / (2.0 * cy.a);
-		cy.t1 = (-cy.b + sqrt(cy.discriminant) ) / (2.0 * cy.a);
-		if(cy.t0 < 0 && cy.t1 < 0)
+		cy.t0 = (-cy.b - sqrt(cy.discriminant)) / (2.0 * cy.a);
+		cy.t1 = (-cy.b + sqrt(cy.discriminant)) / (2.0 * cy.a);
+		if (cy.t0 < 0 && cy.t1 < 0)
 			return (FALSE);
 		else if (cy.t0 > 0.0 && cy.t1 > 0.0)
 			obj->t = fmin(cy.t1, cy.t0);
@@ -178,6 +180,7 @@ double	hit_cylinder2(t_object *obj, t_ray r, t_hit_record *rec)
 		rec->normal = get_obj_normal2(r, obj, rec, rec->poi);
 		rec->t = obj->t;
 		rec->obj = obj;
+		rec->iscap = 0;
 	}
 	return (TRUE);
 }

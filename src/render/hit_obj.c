@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 13:28:01 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/08 13:15:14 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/09 14:54:28 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ t_vec3	get_intersect(t_ray r, double t)
 
 t_vec3	get_obj_normal2(t_ray r, t_object *object, t_hit_record *rec, t_vec3 poi)
 {
-	t_vec3 normal;
+	t_vec3	normal;
 	double	height;
-	(void) rec;
-	
+
+	(void)rec;
 	if (object->type == 0)
 	{
 		normal = normalize(sub_vec3(poi, object->position));
@@ -49,11 +49,12 @@ int	hit_object(t_ray r, t_object *obj, t_hit_record *rec)
 {
 	int			hit;
 	t_object	*current_obj;
+
 	hit = 0;
 	current_obj = obj;
 	rec->t = INFINITY;
+	rec->iscap = 0;
 	//(void) rec;
-	
 	while (current_obj != NULL)
 	{
 		if (current_obj->type == 0)
@@ -61,13 +62,13 @@ int	hit_object(t_ray r, t_object *obj, t_hit_record *rec)
 		else if (current_obj->type == 1)
 			hit = hit_plane(current_obj, r, rec);
 		else if (current_obj->type == 2)
-		 	hit = hit_cylinder2(current_obj, r, rec);
+			hit = hit_cylinder2(current_obj, r, rec);
 		current_obj = current_obj->next;
 	}
 	if (rec->t == INFINITY)
 		rec->t = -1;
 	return (rec->t);
-} 
+}
 
 
 // printvec_nl(rec.obj->color);

@@ -46,14 +46,14 @@ int main(int argc, char **argv)
 		ret = parse_scene(argv[1], &rt);
 		if (ret == 1)
 		{
-			ft_printf("ERROR!\n");
+			printf("ERROR!\n");
 			return (1);
 		}
 		ft_printscene(rt); //to check parse inputs
 		print_cam_debug(&rt);
-		//ft_printf("Position(Main): ");
+		//printf("Position(Main): ");
 		//printvec_nl(rt.scene.camera.position);
-		//ft_printf("Direction(Main): ");
+		//printf("Direction(Main): ");
 		//printvec_nl(rt.scene.camera.direction);
 		//print_cam_debug(&rt);
 		render(&rt);

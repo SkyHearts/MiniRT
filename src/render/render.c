@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/08 13:11:36 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/09 13:20:30 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ unsigned int	RGBtoColor(t_vec3 color)
 	unsigned int result = (r << 16) | (g << 8) | b;
 	return result;
 }
+
 void	img_mlx_pixel_put(t_mlx *rt, int x, int y, int color)
 {
 	char	*pixel;
@@ -64,6 +65,8 @@ t_vec3 get_up(t_vec3 orientation)
 {
 	if (orientation.y == 1.0)
 		return(vec3(0,0,1));
+	if (orientation.y == -1.0)
+		return(vec3(0,0,-1));
 	return (vec3(0, 1, 0));
 }
 

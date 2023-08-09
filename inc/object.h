@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:37:39 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/07 17:14:21 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/09 14:39:59 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,12 @@
 
 typedef struct s_hit_record
 {
-	double	t;
-	t_object *obj;
-	t_vec3 normal;
-	t_vec3 poi;
+	double		t;
+	t_object	*obj;
+	t_vec3		normal;
+	t_vec3		poi;
+	t_vec3		cap_normal;
+	int			iscap;
 }	t_hit_record;
 
 typedef struct s_sphere
@@ -29,14 +31,14 @@ typedef struct s_sphere
 	double	c;
 	double	t0;
 	double	t1;
-	double  discriminant;
+	double	discriminant;
 }				t_sphere;
 
 typedef struct s_plane
 {
 	double	denom;
 	double	t;
-	double  discriminant;
+	double	discriminant;
 }				t_plane;
 
 //v = ray.dir, va = cylinder dir
@@ -57,12 +59,12 @@ typedef struct s_cylinder
 typedef struct s_cylinder2
 {
 	t_vec3	top; //cylinder pos + (cylinder height * cylinder dir)
-	t_vec3	oc; 
+	t_vec3	oc;
 	double	a;
 	double	b;
 	double	c;
 	double	t0;
 	double	t1;
-	double  discriminant;
+	double	discriminant;
 }				t_cylinder2;
 #endif
