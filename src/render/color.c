@@ -1,0 +1,155 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   color.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/10 15:01:29 by sulim             #+#    #+#             */
+/*   Updated: 2023/08/11 00:27:41 by sulim            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../inc/minirt.h"
+#include <stdio.h>
+
+// int	shade(t_scene *sc, t_hit_record rec, t_light *current_light, t_ray camray)
+// {
+// 	t_ray			shadowray;
+// 	t_hit_record	shadow_rec;
+
+// 	shadowray.direction = rec.light_direction;
+// 	shadowray.origin = get_shadow_origin(&rec);
+// 	if (hit_object(shadowray, sc->object, &shadow_rec, 1) > 0 && \
+// 	dot_vec3(camray.direction, rec.normal) < 0.0 && shadow_rec.t < \
+// 	length(sub_vec3(current_light->position, rec.poi)))
+// 		return (1);
+// 	return (0);
+// }
+
+double	module_v(t_vec3	v)
+{
+	return (sqrt(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2)));
+}
+
+int shade(t_scene *sc, t_hit_record rec, t_light *light)
+{
+	t_ray			shadowray;
+	t_hit_record	shadow_rec;
+	t_vec3			hit_shadow;
+	t_vec3			hit_light;
+
+
+	hit_light = sub_vec3(light->position, rec.poi);
+	shadowray.origin = rec.poi;
+	shadowray.direction = normalize(hit_light);
+
+	hit_object(shadowray, sc->object, &shadow_rec, 1);
+	hit_shadow = sub_vec3(shadow_rec.poi, shadowray.origin);
+	if (shadow_rec.t > 0.000001 && (module_v(hit_light) > module_v(hit_shadow)))
+		return (1);
+	return (0);
+}
+
+t_vec3	diffuse(t_hit_record rec, t_light *current_light, double t)
+{
+	t_vec3	result;
+	double	ratio;
+
+	ratio = t * current_light->ratio;
+
+	result = mul_vec3(rec.obj->color, mul_double_vec3(ratio, \
+	div_double_vec3(255, current_light->color)));
+	return (result);
+}
+
+t_vec3	get_specular(t_ray camray, t_hit_record	rec, t_light *current_light)
+{
+	t_vec3			view_direction;
+	t_vec3			reflect_direction;
+	double			spec;
+
+	view_direction = normalize(sub_vec3(camray.direction, rec.obj->position));
+	reflect_direction = reflect(mul_double_vec3(-1, rec.light_direction), \
+	mul_double_vec3(1, rec.normal));
+	spec = pow(fmax(dot_vec3(view_direction, reflect_direction), 0), 32);
+	return (mul_double_vec3((SPECULAR_STRENGTH * spec), current_light->color));
+}
+
+// t_vec3 specular(t_hit_record rec, t_scene *sc, t_light *light)
+// {
+// 	t_vec3	v;
+// 	t_vec3	r;
+// 	double	ret;
+// 	double	spec;
+// 	t_vec3	hit_light;
+
+// 	// ret = mul_double_vec3(2, dot_vec3(rec.normal, hit_light));
+
+// 	hit_light = normalize(sub_vec3(light->position, rec.poi));
+// 	ret = 2 * dot_vec3(rec.normal, hit_light);
+// 	v = normalize(sub_vec3(rec.poi, sc->camera.direction));
+// 	r = sub_vec3(mul_double_vec3(ret, rec.normal), hit_light);
+// 	spec = pow(dot_vec3(r, v), 50) * light->ratio * 0.5;
+// 	return (mul_double_vec3(spec, light->color));
+// }
+
+// t_vec3	calc_color(t_scene *sc, t_hit_record rec, t_vec3 amb)
+t_vec3	calc_color(t_scene *sc, t_hit_record rec, t_vec3 amb, t_ray camray)
+{
+	t_light			*light;
+	t_vec3			ret;
+	double			cosine;
+	t_vec3			specular;
+
+	ret = vec3(0, 0, 0);
+	light = sc->light;
+	while (light)
+	{
+		// if (shade(sc, rec, light, camray))
+		if (shade(sc, rec, light))
+			ret = add_vec3(ret, amb);
+		else
+		{
+			rec.light_direction = normalize(sub_vec3(light->position, rec.poi));
+			cosine = dot_vec3(rec.light_direction, rec.normal);
+			specular = get_specular(camray, rec, light);
+			ret = add_vec3(ret, amb);
+			if (cosine > 0)
+				// ret = add_vec3(add_vec3(ret, diffuse(rec, light, cosine)), specular(rec, sc, light));
+				// ret = add_vec3(add_vec3(ret, diffuse(rec, light, cosine)), specular);
+				ret = add_vec3(specular, mul_double_vec3(light->ratio, mul_double_vec3(fmax(0.0, cosine), rec.obj->color)));
+				// ret = add_vec3(specular(rec, sc, light), mul_double_vec3(light->ratio, mul_double_vec3(fmax(0.0, cosine), rec.obj->color)));
+		}
+		light = light->next;
+	}
+	return (ret);
+}
+
+// int	is_inside(t_vec3 ray, t_vec3 norm)
+// {
+// 	if (dot_vec3(ray, norm) > 0)
+// 		return (1);
+// 	return (0);
+// }
+
+color	ray_color(t_scene *sc, t_ray camray)
+{
+	t_hit_record	rec;
+	color			pixel_color;
+	t_vec3			amb;
+
+	pixel_color.color = vec3(0, 0, 0);
+	if (hit_object(camray, sc->object, &rec, 1) > 0)
+	{
+		amb = mul_double_vec3(sc->ambient.ratio, mul_vec3(rec.obj->color, \
+		div_double_vec3(255, sc->ambient.color)));
+		// if (is_inside(camray.direction, rec.normal))
+		// 	rec.normal = mul_double_vec3(-1, rec.normal);
+		// pixel_color.color = calc_color(sc, rec, amb);
+		pixel_color.color = calc_color(sc, rec, amb, camray);
+	}
+	else
+		pixel_color.color = mul_double_vec3(sc->ambient.ratio, sc->ambient.color);
+	return (clamp_vec(&pixel_color));
+}
