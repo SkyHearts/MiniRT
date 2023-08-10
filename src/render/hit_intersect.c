@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/08/09 20:27:20 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/10 13:02:54 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ double	hit_plane(t_object *obj, t_ray r, t_hit_record *rec, int record)
 	double	ret;
 	t_vec3	normal;
 
-	if (record == 0 && dot_vec3(r.direction, obj->normal) < 0)
-		return (FALSE);
+	//if (record == 0 && dot_vec3(r.direction, obj->normal) < 0)
+	//	return (FALSE);
 	normal = obj->normal;
 	denom = dot_vec3(r.direction, normal);
 	if (fabs(denom) < 1e-6)
@@ -90,8 +90,8 @@ double	top_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record)
 	double	ret;
 	t_vec3	plane;
 
-	if (record == 0 && dot_vec3(r.direction, obj->normal) < 0)
-		return (FALSE);
+	//if (record == 0 && dot_vec3(r.direction, obj->normal) < 0)
+	//	return (FALSE);
 	top = add_vec3(obj->position, mul_double_vec3(obj->height, obj->normal));
 	denom = dot_vec3(r.direction, obj->normal);
 	if (fabs(denom) < 1e-6)
@@ -125,8 +125,8 @@ double	btm_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record)
 	double	ret;
 	t_vec3	plane;
 
-	if (record == 0 && dot_vec3(r.direction, obj->normal) < 0)
-		return (FALSE);
+	//if (record == 0 && dot_vec3(r.direction, obj->normal) < 0)
+	//	return (FALSE);
 	denom = dot_vec3(r.direction, obj->normal);
 	if (fabs(denom) < 1e-6)
 		return (FALSE);

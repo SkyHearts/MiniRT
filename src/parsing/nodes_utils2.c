@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   node_utils2.c                                      :+:      :+:    :+:   */
+/*   nodes_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 13:45:14 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/09 13:47:54 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/10 13:05:47 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ void	init_objvar(t_object **obj)
 		(*obj)->var.right = normalize(cross_vec3(get_up((*obj)->var.forward),
 					(*obj)->var.forward));
 		(*obj)->var.up = normalize(cross_vec3((*obj)->var.right,
+					(*obj)->var.forward));
+		(*obj)->var.right = normalize(cross_vec3((*obj)->var.up,
 					(*obj)->var.forward));
 	}
 }

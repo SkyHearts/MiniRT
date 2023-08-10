@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/09 18:41:26 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/10 12:41:42 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,9 +228,10 @@ color ray_color(t_object *object, t_ray camray, t_light *light, t_mlx *rt)
 			shadowray.direction = rec.light_direction;
 			//shadowray.origin = add_vec3(rec.poi, mul_double_vec3(EPS, rec.normal));
 			shadowray.origin = get_shadow_origin(&rec);
+			t_hit_record	shadow_rec;
 			//shadowray.origin = rec.poi;
 			//&& dot_vec3(camray.direction, rec.normal) < 0.0
-			if (hit_object(shadowray, object, &rec, 0) > 0 && dot_vec3(camray.direction, rec.normal) < 0.0)
+			if (hit_object(shadowray, object, &shadow_rec, 1) > 0 && dot_vec3(camray.direction, rec.normal) < 0.0 && shadow_rec.t < length(sub_vec3(current_light->position, rec.poi)))
 			{
 				pixel_color.color = vec3(0, 0, 0);
 				return (pixel_color);
