@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 13:28:01 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/08 16:00:44 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/08 17:35:06 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	hit_object(t_ray r, t_object *obj, t_hit_record *rec, int record)
 	hit = 0;
 	current_obj = obj;
 	rec->t = INFINITY;
-	int hitted = 0;
+	int hittable = 0;
 	
 	while (current_obj != NULL)
 	{
@@ -66,7 +66,7 @@ int	hit_object(t_ray r, t_object *obj, t_hit_record *rec, int record)
 
 		if (hit > 0.0)
 		{
-			hitted = 1;
+			hittable = 1;
 			ft_shadow(rec);
 		}
 		else
@@ -75,8 +75,8 @@ int	hit_object(t_ray r, t_object *obj, t_hit_record *rec, int record)
 	}
 	if (rec->t == INFINITY)
 		rec->t = -1;
-	
-	return (hitted);
+
+	return (hittable);
 } 
 
 // printvec_nl(rec.obj->color);

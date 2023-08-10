@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/08 16:19:59 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/08 18:02:25 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,8 @@ color ray_color(t_object *object, t_ray camray, t_light *light, t_mlx *rt)
 	t_vec3			reflect_direction;
 	double			spec;
 	t_vec3			specular;
+	t_vec3 diffuse;
+	t_vec3 base;
 
 	//shadow
 	int				illumFound;
@@ -214,10 +216,13 @@ color ray_color(t_object *object, t_ray camray, t_light *light, t_mlx *rt)
 			t_ray lightray;
 			lightray.direction = rec.light_direction;
 			lightray.origin = add_vec3(rec.poi, mul_double_vec3(EPS, rec.normal));
-			if (hit_object(lightray, object, &rec, 0) > 0.0 && dot_vec3(camray.direction, rec.normal) < 0.0)
+			if ( hit_object(lightray, object, &rec, 0) > 0.0)
 			{
-				pixel_color.color = vec3(0, 0, 0);
-				return (pixel_color);
+				pixel_color.color = vec3(0, 0, 255);
+				// pixel_color.color = mul_double_vec3(0.0, rec.obj->color);
+				// pixel_color.color = add_vec3(add_vec3(specular, mul_double_vec3(light->ratio, mul_double_vec3(fmax(0.0, cosine), pixel_color.color))), mul_double_vec3(rec.intensity, rec.illum_color.color));
+				// pixel_color.color = mul_double_vec3(0.0, rec.obj->color);
+				return (clamp_vec(&pixel_color, 0.0, 255.0));
 			}
 			if (cosine < 0)
 				break;

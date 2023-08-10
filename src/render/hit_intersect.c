@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 13:08:57 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/08 15:54:09 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/08 17:54:58 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,7 @@ double	hit_cylinder2(t_object *obj, t_ray r, t_hit_record *rec, int record)
 	{
 		cy.t0 = (-cy.b - sqrt(cy.discriminant) ) / (2.0 * cy.a);
 		cy.t1 = (-cy.b + sqrt(cy.discriminant) ) / (2.0 * cy.a);
-		if(cy.t0 < 0 && cy.t1 < 0)
+		if(cy.t0 < EPS && cy.t1 < EPS)
 			return (FALSE);
 		else if (cy.t0 > 0.0 && cy.t1 > 0.0)
 			obj->t = fmin(cy.t1, cy.t0);
@@ -214,9 +214,9 @@ double	hit_cylinder2(t_object *obj, t_ray r, t_hit_record *rec, int record)
 			cy.t1 = cy.t0;
 		obj->t = fmin(cy.t1, cy.t0);
 	}
-	if (dot_vec3(obj->normal, sub_vec3(add_vec3(r.origin, mul_double_vec3(obj->t, r.direction)), cy.top)) > 0)
+	if (dot_vec3(obj->normal, sub_vec3(add_vec3(r.origin, mul_double_vec3(obj->t, r.direction)), cy.top)) > EPS)
 		return (FALSE);
-	else if (dot_vec3(obj->normal, sub_vec3(add_vec3(r.origin, mul_double_vec3(obj->t, r.direction)), obj->position)) < 0)
+	else if (dot_vec3(obj->normal, sub_vec3(add_vec3(r.origin, mul_double_vec3(obj->t, r.direction)), obj->position)) < EPS)
 		return (FALSE);
 	if (rec->t > obj->t && record)
 	{
