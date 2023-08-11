@@ -6,26 +6,26 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 17:05:24 by sulim             #+#    #+#             */
-/*   Updated: 2023/08/10 23:21:54 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/11 13:28:29 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minirt.h"
 
-color	clamp_vec(color *col)
+color	clamp_vec(color *col, t_vec3 min, double max)
 {
-	if (col->color.x < 0.0)
-		col->color.x = 0.0;
-	else if (col->color.x > 255)
-		col->color.x = 255;
-	if (col->color.y < 0.0)
-		col->color.y = 0.0;
-	else if (col->color.y > 255)
-		col->color.y = 255;
-	if (col->color.z < 0.0)
-		col->color.z = 0.0;
-	else if (col->color.z > 255)
-		col->color.z = 255;
+	if (col->color.x < min.x)
+		col->color.x = min.x;
+	else if (col->color.x > max)
+		col->color.x = max;
+	if (col->color.y < min.y)
+		col->color.y = min.y;
+	else if (col->color.y > max)
+		col->color.y = max;
+	if (col->color.z < min.z)
+		col->color.z = min.z;
+	else if (col->color.z > max)
+		col->color.z = max;
 	return (*col);
 }
 

@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 15:01:29 by sulim             #+#    #+#             */
-/*   Updated: 2023/08/11 09:59:37 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/11 14:55:29 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,29 +43,33 @@ t_vec3	get_specular(t_ray camray, t_hit_record	rec, t_light *current_light)
 t_vec3	calc_color(t_scene *sc, t_hit_record rec, t_vec3 amb, t_ray camray)
 {
 	t_light			*light;
-	t_vec3			ret;
+	color			ret;
 	double			cosine;
 	t_vec3			specular;
+	t_vec3			min;
 
-	ret = vec3(0, 0, 0);
+	ret.color = vec3(0, 0, 0);
 	light = sc->light;
-	while (light)
+	while (light != NULL)
 	{
 		rec.light_direction = normalize(sub_vec3(light->position, rec.poi));
 		if (shade(sc, rec, light, camray))
-			ret = add_vec3(ret, amb);
+			ret.color = add_vec3(ret.color, amb);
 		else
 		{
 			cosine = dot_vec3(rec.light_direction, rec.normal);
 			specular = get_specular(camray, rec, light);
-			ret = add_vec3(ret, amb);
 			if (cosine > 0)
-				ret = add_vec3(specular, mul_double_vec3(light->ratio, \
+			{
+				min = add_vec3(ret.color, amb);
+				ret.color = add_vec3(specular, mul_double_vec3(light->ratio, \
 				mul_double_vec3(fmax(0.0, cosine), rec.obj->color)));
+				ret = clamp_vec(&ret, min, 255);
+			}
 		}
 		light = light->next;
 	}
-	return (ret);
+	return (ret.color);
 }
 
 color	ray_color(t_scene *sc, t_ray camray)
@@ -73,8 +77,10 @@ color	ray_color(t_scene *sc, t_ray camray)
 	t_hit_record	rec;
 	color			pixel_color;
 	t_vec3			amb;
+	t_vec3			min;
 
 	pixel_color.color = vec3(0, 0, 0);
+	min = vec3(0, 0, 0);
 	if (hit_object(camray, sc->object, &rec, 1) > 0)
 	{
 		amb = mul_double_vec3(sc->ambient.ratio, mul_vec3(rec.obj->color, \
@@ -84,5 +90,5 @@ color	ray_color(t_scene *sc, t_ray camray)
 	else
 		pixel_color.color = mul_double_vec3(sc->ambient.ratio, \
 		sc->ambient.color);
-	return (clamp_vec(&pixel_color));
+	return (clamp_vec(&pixel_color, min, 255));
 }

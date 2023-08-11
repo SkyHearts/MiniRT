@@ -11,7 +11,7 @@ MINILIB = -L$(MINILIBDIR) -lmlx -framework OpenGL -framework AppKit
 #XPATH_LINUX=minilibx-linux
 #XFLAGS_LINUX=-I$(XPATH_LINUX) -L$(XPATH_LINUX) -lmlx -lXext -lX11
 
-MINIRT_SRCS	=	main.c print_scene.c vector3.c free.c
+MINIRT_SRCS	=	main.c print_scene.c free.c
 MINIRT_SRCS_DIR	= src/
 MINIRT_OBJS = $(addprefix $(MINIRT_SRCS_DIR), $(MINIRT_SRCS:.c=.o))
 
@@ -19,7 +19,11 @@ PARSE_SRC = nodes.c nodes_utils.c nodes_utils2.c add_scene.c parsing.c parsing_u
 PARSE_DIR = src/parsing/
 PARSE_OBJS = $(addprefix $(PARSE_DIR), $(PARSE_SRC:.c=.o))
 
-RENDER_SRC = render.c hit_obj.c hit_intersect.c color.c color_utils.c
+VECTORS_SRC = vector1.c vector2.c vector3.c vector4.c vector5.c
+VECTORS_DIR = src/vectors/
+VECTORS_OBJS = $(addprefix $(VECTORS_DIR), $(VECTORS_SRC:.c=.o))
+
+RENDER_SRC = render_utils.c render.c hit_obj.c hit_intersect.c color.c color_utils.c image.c
 RENDER_DIR = src/render/
 RENDER_OBJS = $(addprefix $(RENDER_DIR), $(RENDER_SRC:.c=.o))
 
@@ -37,9 +41,9 @@ LIB             = -L$(LIBFT_DIR) -lft
 
 all:  ${NAME} 
 
-${NAME}:	${LIBFT_DIR}/${LIBFT_LIB} ${MINIRT_OBJS} ${PARSE_OBJS} ${HOOKS_OBJS} ${RENDER_OBJS}
+${NAME}:	${LIBFT_DIR}/${LIBFT_LIB} ${MINIRT_OBJS} ${PARSE_OBJS} ${HOOKS_OBJS} ${VECTORS_OBJS} ${RENDER_OBJS}
 	@echo "Compiling minirt"
-	${CC} ${CFLAGS} ${MINIRT_OBJS} ${PARSE_OBJS} ${HOOKS_OBJS} ${RENDER_OBJS} -o ${NAME} ${LIB} ${MINILIB}
+	${CC} ${CFLAGS} ${MINIRT_OBJS} ${PARSE_OBJS} ${HOOKS_OBJS} ${VECTORS_OBJS} ${RENDER_OBJS} -o ${NAME} ${LIB} ${MINILIB}
 #${XFLAGS_MACOS}
 	
 ${LIBFT_DIR}/${LIBFT_LIB}:
@@ -51,7 +55,9 @@ clean:
 	@rm -rf ${MINIRT_OBJS}
 	@rm -rf ${PARSE_OBJS}
 	@rm -rf ${HOOKS_OBJS}
+	@rm -rf ${VECTORS_OBJS}
 	@rm -rf ${RENDER_OBJS}
+
 #@rm -rf ${UTILS_OBJS}
 
 fclean: clean
