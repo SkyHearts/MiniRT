@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 11:09:43 by sulim             #+#    #+#             */
-/*   Updated: 2023/08/11 11:13:37 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/11 21:29:03 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,15 @@ int	init_img(t_mlx *rt)
 	rt->img = mlx_new_image(rt->mlx, rt->win_width, rt->win_height);
 	if (!rt->img)
 		return (1);
-		//exit_program(MLX_ERROR);
 	rt->addr = mlx_get_data_addr(rt->img, &rt->bpp,
 			&rt->line_length, &rt->endian);
 	if (!rt->addr)
 		return (1);
-		//exit_program(MLX_ERROR);
 	return (0);
 }
 
 void	destroy_img(t_mlx *rt)
 {
-	//mlx_put_image_to_window(rt->mlx, rt->win, rt->img, 0, 0);
 	mlx_destroy_image(rt->mlx, rt->img);
 	rt->addr = NULL;
 	rt->img = NULL;

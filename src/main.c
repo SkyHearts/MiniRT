@@ -22,7 +22,6 @@ void	init_mlx(t_mlx *rt)
 	rt->win_height = 720;
 	rt->win_width = 1080;
 	rt->scene.camera.filled = 0;
-	// rt->scene.active_camera = NULL;
 	rt->scene.light = NULL;
 	rt->scene.object = NULL;
 	rt->scene.active_object = NULL;
@@ -32,16 +31,17 @@ void	init_mlx(t_mlx *rt)
 	rt->rotated = FALSE;
 	rt->time = time_stamp();
 	rt->mlx = mlx_init();
-	rt->win = mlx_new_window(rt->mlx,rt->win_width,rt->win_height, "minirt");
+	rt->win = mlx_new_window(rt->mlx, rt->win_width, rt->win_height, "minirt");
 	init_img(rt);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	if (argc == 2)
 	{
-		t_mlx rt;
-		int ret;
+		t_mlx	rt;
+		int		ret;
+
 		init_mlx(&rt);
 		ret = parse_scene(argv[1], &rt);
 		if (ret == 1)
@@ -51,11 +51,6 @@ int main(int argc, char **argv)
 		}
 		ft_printscene(rt); //to check parse inputs
 		print_cam_debug(&rt);
-		//printf("Position(Main): ");
-		//printvec_nl(rt.scene.camera.position);
-		//printf("Direction(Main): ");
-		//printvec_nl(rt.scene.camera.direction);
-		//print_cam_debug(&rt);
 		render(&rt);
 		hooks_init(&rt);
 		mlx_loop(rt.mlx);

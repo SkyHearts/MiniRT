@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fps.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 18:11:15 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/08 18:12:15 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/11 21:31:20 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,5 @@ void	framerate(t_mlx *rt)
 
 	current_time = time_stamp();
 	delta_time = current_time - rt->time;
-	//printf("DeltaTime: %f\n", delta_time);
 	rt->time = current_time;
-	//fps = (int)(1000 / delta_time);
-	//time = ft_itoa(fps);
-	//mlx_string_put (rt->mlx, rt->win, 10, 10, 0xFFFFFF, time);
-	//free(time);
 }

@@ -6,10 +6,9 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/08/10 13:41:26 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/11 21:30:25 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../inc/minirt.h"
 #include <stdio.h>
@@ -54,8 +53,6 @@ double	hit_plane(t_object *obj, t_ray r, t_hit_record *rec, int record)
 	double	ret;
 	t_vec3	normal;
 
-	//if (record == 0 && dot_vec3(r.direction, obj->normal) < 0)
-	//	return (FALSE);
 	normal = obj->normal;
 	denom = dot_vec3(r.direction, normal);
 	if (fabs(denom) < 1e-6)
@@ -90,8 +87,6 @@ double	top_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record)
 	double	ret;
 	t_vec3	plane;
 
-	//if (record == 0 && dot_vec3(r.direction, obj->normal) < 0)
-	//	return (FALSE);
 	top = add_vec3(obj->position, mul_double_vec3(obj->height, obj->normal));
 	denom = dot_vec3(r.direction, obj->normal);
 	if (fabs(denom) < 1e-6)
@@ -104,8 +99,6 @@ double	top_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record)
 	plane = sub_vec3(add_vec3(r.origin, mul_double_vec3(obj->t, r.direction)), top);
 	if (dot_vec3(plane, plane) > (obj->radius * obj->radius))
 		return (FALSE);
-	//if (length(sub_vec3(get_intersect(r, obj->t), top)) > obj->radius)
-	//	return (FALSE);
 	if (rec->t > obj->t && record)
 	{
 		rec->t = obj->t;
@@ -125,8 +118,6 @@ double	btm_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record)
 	double	ret;
 	t_vec3	plane;
 
-	//if (record == 0 && dot_vec3(r.direction, obj->normal) < 0)
-	//	return (FALSE);
 	denom = dot_vec3(r.direction, obj->normal);
 	if (fabs(denom) < 1e-6)
 		return (FALSE);
@@ -138,8 +129,6 @@ double	btm_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record)
 	plane = sub_vec3(add_vec3(r.origin, mul_double_vec3(obj->t, r.direction)), obj->position);
 	if (dot_vec3(plane, plane) > (obj->radius * obj->radius))
 		return (FALSE);
-	//if (length(sub_vec3(get_intersect(r, obj->t), obj->position)) > obj->radius)
-	//	return (FALSE);
 	if (rec->t > obj->t && record)
 	{
 		rec->t = obj->t;
@@ -157,9 +146,6 @@ double	hit_cylinder2(t_object *obj, t_ray r, t_hit_record *rec, int record)
 	t_cylinder2	cy;
 
 	cy.top = add_vec3(obj->position, mul_double_vec3(obj->height, obj->normal));
-	
-	//top_cap2(obj, r, rec, record);
-	//btm_cap2(obj, r, rec, record);
 	cy.oc = sub_vec3(r.origin, obj->position);
 	cy.a = dot_vec3(r.direction, r.direction) - (dot_vec3(r.direction,
 				obj->normal) * dot_vec3(r.direction, obj->normal));

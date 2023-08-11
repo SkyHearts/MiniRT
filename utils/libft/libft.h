@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jyim <jyim@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 17:52:36 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/19 18:30:20 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/11 21:15:25 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,7 @@ void			ft_lstadd_back(t_list **lst, t_list *new);
 void			ft_lstdelone(t_list *lst, void (*del)(void*));
 void			ft_lstclear(t_list **lst, void (*del)(void*));
 void			ft_lstiter(t_list *lst, void (*f)(void*));
-t_list			*ft_lstmap(t_list *lst, void *(*f)(void*),
-	void (*del)(void *));
+t_list			*ft_lstmap(t_list *lst, void *(*f)(void*), void (*del)(void *));
 char			*get_next_line(int fd);
 
 #endif

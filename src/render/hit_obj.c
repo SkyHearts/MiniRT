@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 13:28:01 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/10 22:36:47 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/11 21:29:15 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ t_vec3	get_intersect(t_ray r, double t)
 	return (poi);
 }
 
-t_vec3	get_obj_normal2(t_ray r, t_object *object, t_hit_record *rec, t_vec3 poi)
+t_vec3	get_obj_normal2(t_ray r, t_object *object, t_hit_record *rec, t_vec3 \
+poi)
 {
 	t_vec3	normal;
 	double	height;
@@ -37,54 +38,27 @@ t_vec3	get_obj_normal2(t_ray r, t_object *object, t_hit_record *rec, t_vec3 poi)
 		normal = object->normal;
 	if (object->type == 2)
 	{
-		height = dot_vec3(normalize(object->normal), sub_vec3(poi, object->position));
-		normal = normalize(sub_vec3(poi, add_vec3(object->position, mul_double_vec3(height, object->normal))));
+		height = dot_vec3(normalize(object->normal), sub_vec3(poi, \
+		object->position));
+		normal = normalize(sub_vec3(poi, add_vec3(object->position, \
+		mul_double_vec3(height, object->normal))));
 		if (dot_vec3(r.direction, normal) > 0.0)
 			normal = mul_double_vec3(-1, normal);
 	}
 	return (normal);
 }
 
-// void ft_shadow(t_hit_record *rec)
-// {
-// 		// Shadow, so no illumination.
-// 		rec->illum_color.color = vec3(1.0, 1.0, 1.0);
-// 		rec->intensity = 0.0;
-// }
-
-// void ft_illuminate(t_hit_record *rec)
-// {
-// 	double			angle;
-
-// 	// Compute the angle between the local normal and the light ray.
-// 	// Note that we assume that localNormal is a unit vector.
-// 	angle = acos(dot_vec3(rec->normal, rec->light_direction));
-	
-// 	// If the normal is pointing away from the light, then we have no illumination.
-// 	if (angle > 1.5708)
-// 	{
-// 		// No illumination.
-// 		rec->illum_color.color = vec3(1.0, 1.0, 1.0);
-// 		rec->intensity = 0.0;
-// 	}
-// 	else
-// 	{
-// 		// We do have illumination.
-// 		rec->illum_color.color = vec3(1.0, 1.0, 1.0);
-// 		rec->intensity = 1.0 * (1.0 - (angle / 1.5708));
-// 	}
-// }
-
 int	hit_object(t_ray r, t_object *obj, t_hit_record *rec, int record)
 {
 	int			hit;
 	t_object	*current_obj;
+	int			hitted;
 
 	hit = 0;
 	current_obj = obj;
 	rec->t = INFINITY;
 	rec->iscap = 0;
-	int hitted = 0;
+	hitted = 0;
 	while (current_obj != NULL)
 	{
 		if (current_obj->type == 0)
@@ -93,10 +67,6 @@ int	hit_object(t_ray r, t_object *obj, t_hit_record *rec, int record)
 			hit = hit_plane(current_obj, r, rec, record);
 		else if (current_obj->type == 2)
 			hit = hit_cylinder2(current_obj, r, rec, record);
-		//if (current_obj->type == 2)
-		//	hit = top_cap2(current_obj, r, rec, record);
-		//if (current_obj->type == 2)
-		//	hit = btm_cap2(current_obj, r, rec, record);
 		if (hit)
 			hitted = 1;
 		current_obj = current_obj->next;
