@@ -13,20 +13,20 @@
 #ifndef MINIRT_H
 # define MINIRT_H
 
-#include "scene.h"
-#include <mlx.h>
+# include "scene.h"
+# include <mlx.h>
 //#include "../minilibx/mlx.h"
 //#include <../minilibx-opengl/mlx.h>
-#include "../utils/libft/libft.h"
-#include "../utils/libft/ft_printf.h"
-#include "object.h"
+# include "../utils/libft/libft.h"
+# include "../utils/libft/ft_printf.h"
+# include "object.h"
 
 
-#define DEFAULT_VAL 10
-#define FALSE 0
-#define TRUE 1
-#define EPS 1e-6
-#define SPECULAR_STRENGTH 0.5
+# define DEFAULT_VAL 10
+# define FALSE 0
+# define TRUE 1
+# define EPS 1e-6
+# define SPECULAR_STRENGTH 0.5
 
 typedef enum s_key
 {

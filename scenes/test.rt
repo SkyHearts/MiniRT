@@ -1,12 +1,12 @@
 #Ambient	Intensity		Color
-A 			0.6 			255,255,255
+A 			0.1 			255,255,255
 
 #Camera		Position		Orientation				FOV
 C 			0,0,20 			0,0,-1 					45
 
 #Lights		Position		Intensity				Color
 L			0,-5,5		1						55,255,255
-# L			-2,-5,-8			0.7						255,55,255
+L			5,-5,5			0.7						255,55,255
 
 #SPHERE		Position		Diameter				Color
 sp 			0.0,0,-15 		8						255,0,0
