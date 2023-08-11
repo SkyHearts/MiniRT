@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 15:01:29 by sulim             #+#    #+#             */
-/*   Updated: 2023/08/11 14:55:29 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/11 15:20:33 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ t_vec3	calc_color(t_scene *sc, t_hit_record rec, t_vec3 amb, t_ray camray)
 	double			cosine;
 	t_vec3			specular;
 	t_vec3			min;
+	t_vec3			shadow;
 
 	ret.color = vec3(0, 0, 0);
 	light = sc->light;
@@ -54,7 +55,11 @@ t_vec3	calc_color(t_scene *sc, t_hit_record rec, t_vec3 amb, t_ray camray)
 	{
 		rec.light_direction = normalize(sub_vec3(light->position, rec.poi));
 		if (shade(sc, rec, light, camray))
-			ret.color = add_vec3(ret.color, amb);
+		{
+			shadow = vec3(0, 0, 0);
+			shadow = add_vec3(shadow, amb);
+			ret.color = shadow;
+		}
 		else
 		{
 			cosine = dot_vec3(rec.light_direction, rec.normal);
