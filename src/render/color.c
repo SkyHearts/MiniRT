@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 15:01:29 by sulim             #+#    #+#             */
-/*   Updated: 2023/08/11 09:37:37 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/11 09:45:50 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,10 @@ int shade(t_scene *sc, t_hit_record rec, t_light *light, t_ray camray)
 	t_ray			shadowray;
 	t_hit_record	shadow_rec;
 
-	// 	shadowray.direction = rec.light_direction;
-	// 	shadowray.origin = get_shadow_origin(&rec);
-	shadowray.origin = rec.poi;
-	shadowray.direction = normalize(sub_vec3(light->position, rec.poi));
+	shadowray.direction = rec.light_direction;
+	shadowray.origin = get_shadow_origin(&rec);
 
-	hit_object(shadowray, sc->object, &shadow_rec, 1);
-	// shadow_rec.t > 0.000001 
-	// 	hit_object(shadowray, sc->object, &shadow_rec, 1) > 0
-	if (shadow_rec.t > 0.000001 && dot_vec3(camray.direction, rec.normal) < 0.0 && shadow_rec.t < length(sub_vec3(light->position, rec.poi)))
+	if (hit_object(shadowray, sc->object, &shadow_rec, 1) > 0 && dot_vec3(camray.direction, rec.normal) < 0.0 && shadow_rec.t < length(sub_vec3(light->position, rec.poi)))
 		return (1);
 	return (0);
 }
@@ -55,11 +50,11 @@ t_vec3	calc_color(t_scene *sc, t_hit_record rec, t_vec3 amb, t_ray camray)
 	light = sc->light;
 	while (light)
 	{
+		rec.light_direction = normalize(sub_vec3(light->position, rec.poi));
 		if (shade(sc, rec, light, camray))
 			ret = add_vec3(ret, amb);
 		else
 		{
-			rec.light_direction = normalize(sub_vec3(light->position, rec.poi));
 			cosine = dot_vec3(rec.light_direction, rec.normal);
 			specular = get_specular(camray, rec, light);
 			ret = add_vec3(ret, amb);
