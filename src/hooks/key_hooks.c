@@ -16,24 +16,6 @@
 #include <errno.h>
 #include <stdio.h>
 
-void	iterate_light(int keysym, t_mlx *rt)
-{
-	if (keysym == 43)
-	{
-		if (rt->scene.act_light->previous != NULL)
-			rt->scene.act_light = rt->scene.act_light->previous;
-		if (rt->scene.act_light->previous == NULL)
-			printf("Reach the first light\n");
-	}
-	else if (keysym == 47)
-	{
-		if (rt->scene.act_light->next != NULL)
-			rt->scene.act_light = rt->scene.act_light->next;
-		if (rt->scene.act_light->next == NULL)
-			printf("Reach the last light\n");
-	}
-}
-
 // Release key: Exit, and edit/raytrace mdoe
 // Esc key (53) Free and exit
 // '1' key (18) switch between edit mode and raytracing mode
