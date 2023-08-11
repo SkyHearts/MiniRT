@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 18:13:26 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/11 15:39:13 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/11 20:12:32 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,12 @@ static void	shootray(t_mlx *rt, t_ray ray)
 	else
 		rt->scene.active_object = rec.obj;
 	if (rt->scene.active_object != NULL)
-	{
+	{	
+		if (rec.iscap)
+			printf("Hit cap\n");
 		printf("rec hit t:%f\n", rec.t);
+		printf("rec normal t:\n");
+		printvec_nl(rec.normal);
 		printf("Object Hit\n");
 		printf("Object Index: %d\n", rt->scene.active_object->index);
 		printf("Object Type: %d\n", rt->scene.active_object->type);

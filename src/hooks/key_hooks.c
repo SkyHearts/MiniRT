@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 09:14:19 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/10 19:49:44 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/11 21:21:46 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,15 @@ void	iterate_light(int keysym, t_mlx *rt)
 	{
 		if (rt->scene.act_light->previous != NULL)
 			rt->scene.act_light = rt->scene.act_light->previous;
+		if (rt->scene.act_light->previous == NULL)
+			printf("Reach the first light\n");
 	}
 	else if (keysym == 47)
 	{
 		if (rt->scene.act_light->next != NULL)
 			rt->scene.act_light = rt->scene.act_light->next;
+		if (rt->scene.act_light->next == NULL)
+			printf("Reach the last light\n");
 	}
 }
 

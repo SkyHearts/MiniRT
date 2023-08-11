@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 13:28:01 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/11 18:37:54 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/11 20:31:36 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,27 +21,27 @@ t_vec3	get_intersect(t_ray r, double t)
 	return (poi);
 }
 
-t_vec3	get_obj_normal2(t_ray r, t_object *object, t_hit_record *rec, t_vec3 poi)
+t_vec3	get_obj_normal2(t_ray r, t_object *obj, t_hit_record *rec, t_vec3 poi)
 {
 	t_vec3	normal;
 	double	height;
 
 	(void)rec;
-	if (object->type == 0)
+	if (obj->type == 0)
 	{
-		normal = normalize(sub_vec3(poi, object->position));
+		normal = normalize(sub_vec3(poi, obj->position));
 		if (dot_vec3(r.direction, normal) > 0.0)
 			normal = mul_double_vec3(-1, normal);
 	}
-	else if (object->type == 1)
-		normal = object->normal;
-	if (object->type == 2)
+	else if (obj->type == 1)
+		normal = obj->normal;
+	if (obj->type == 2)
 	{
-		height = dot_vec3(normalize(object->normal), sub_vec3(poi, object->position));
-		normal = normalize(sub_vec3(poi, add_vec3(object->position, mul_double_vec3(height, object->normal))));
+		height = dot_vec3(normalize(obj->normal), sub_vec3(poi, obj->position));
+		normal = normalize(sub_vec3(poi, add_vec3(obj->position, mul_double_vec3(height, obj->normal))));
 		if (dot_vec3(r.direction, rec->cap_normal) > 0.0 && rec->iscap)
 			normal = mul_double_vec3(-1, rec->cap_normal);
-		if (rec->iscap)
+		else if (rec->iscap)
 			normal = rec->cap_normal;
 		else if (dot_vec3(r.direction, normal) > 0.0)
 			normal = mul_double_vec3(-1, normal);

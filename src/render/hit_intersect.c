@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/08/11 17:47:39 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/11 20:33:48 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,6 @@ double	top_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record)
 	double	ret;
 	t_vec3	plane;
 
-	//if (dot_vec3(r.direction, obj->normal) < 0)
-	//	obj->normal = mul_double_vec3(-1, obj->normal);
 	top = add_vec3(obj->position, mul_double_vec3(obj->height, obj->normal));
 	denom = dot_vec3(r.direction, obj->normal);
 	if (fabs(denom) < 1e-6)
@@ -105,6 +103,8 @@ double	btm_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record)
 
 	//if (record == 0 && dot_vec3(r.direction, obj->normal) < 0)
 	//	return (FALSE);
+	//if (dot_vec3(r.direction, obj->normal) > 0)
+	//	obj->normal = mul_double_vec3(-1, obj->normal);
 	denom = dot_vec3(r.direction, obj->normal);
 	if (fabs(denom) < 1e-6)
 		return (FALSE);
@@ -136,7 +136,7 @@ double	hit_cylinder(t_object *obj, t_ray r, t_hit_record *rec, int record)
 	{
 		cy.t0 = (-cy.b - sqrt(cy.discriminant)) / (2.0 * cy.a);
 		cy.t1 = (-cy.b + sqrt(cy.discriminant)) / (2.0 * cy.a);
-		if (cy.t0 < 0 && cy.t1 < 0)
+		if (cy.t0 < EPS && cy.t1 < EPS)
 			return (FALSE);
 		else if (cy.t0 < 0.0)
 			cy.t0 = cy.t1;
@@ -145,8 +145,10 @@ double	hit_cylinder(t_object *obj, t_ray r, t_hit_record *rec, int record)
 		obj->t = fmin(cy.t1, cy.t0);
 	}
 	//if (dot_vec3(obj->normal, add_vec3(r.origin, mul_double_vec3(obj->t, r.direction))) > obj->height)
+	//	return (FALSE);
 	//	return (top_cap2(obj, r, rec, record));
-	//if (dot_vec3(obj->normal, add_vec3(r.origin, mul_double_vec3(obj->t, r.direction))) < 0)
+	//if (dot_vec3(obj->normal, add_vec3(r.origin, mul_double_vec3(obj->t, r.direction))) > 0)
+	//	return (FALSE);
 	//	return (btm_cap2(obj, r, rec, record));
 	//if (top_cap2(obj, r, rec, record))
 	//	return (TRUE);
@@ -154,13 +156,13 @@ double	hit_cylinder(t_object *obj, t_ray r, t_hit_record *rec, int record)
 	//	return (TRUE);
 	if (dot_vec3(obj->normal, sub_vec3(add_vec3(r.origin,
 					mul_double_vec3(obj->t, r.direction)), cy.top)) > 0)
-	//	return (top_cap2(obj, r, rec, record));
-		return (FALSE);
+		return (top_cap2(obj, r, rec, record));
+		//return (FALSE);
 	//	//printf("Hit topcap\n"),
 	if (dot_vec3(obj->normal, sub_vec3(add_vec3(r.origin,
 					mul_double_vec3(obj->t, r.direction)), obj->position)) < 0)
-	//	return (btm_cap2(obj, r, rec, record));
-		return (FALSE);
+		return (btm_cap2(obj, r, rec, record));
+		//return (FALSE);
 	update_rec(obj, r, rec, record);
 	return (TRUE);
 }
