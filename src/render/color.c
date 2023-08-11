@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 15:01:29 by sulim             #+#    #+#             */
-/*   Updated: 2023/08/11 00:27:41 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/11 09:27:31 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@
 // 	return (0);
 // }
 
-double	module_v(t_vec3	v)
-{
-	return (sqrt(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2)));
-}
+// double	module_v(t_vec3	v)
+// {
+// 	return (sqrt(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2)));
+// }
 
-int shade(t_scene *sc, t_hit_record rec, t_light *light)
+int shade(t_scene *sc, t_hit_record rec, t_light *light, t_ray camray)
 {
 	t_ray			shadowray;
 	t_hit_record	shadow_rec;
@@ -46,22 +46,23 @@ int shade(t_scene *sc, t_hit_record rec, t_light *light)
 
 	hit_object(shadowray, sc->object, &shadow_rec, 1);
 	hit_shadow = sub_vec3(shadow_rec.poi, shadowray.origin);
-	if (shadow_rec.t > 0.000001 && (module_v(hit_light) > module_v(hit_shadow)))
+	// if (shadow_rec.t > 0.000001 && (module_v(hit_light) > module_v(hit_shadow)))
+	if (shadow_rec.t > 0.000001 && dot_vec3(camray.direction, rec.normal) < 0.0 && shadow_rec.t < length(sub_vec3(light->position, rec.poi)))
 		return (1);
 	return (0);
 }
 
-t_vec3	diffuse(t_hit_record rec, t_light *current_light, double t)
-{
-	t_vec3	result;
-	double	ratio;
+// t_vec3	diffuse(t_hit_record rec, t_light *current_light, double t)
+// {
+// 	t_vec3	result;
+// 	double	ratio;
 
-	ratio = t * current_light->ratio;
+// 	ratio = t * current_light->ratio;
 
-	result = mul_vec3(rec.obj->color, mul_double_vec3(ratio, \
-	div_double_vec3(255, current_light->color)));
-	return (result);
-}
+// 	result = mul_vec3(rec.obj->color, mul_double_vec3(ratio, \
+// 	div_double_vec3(255, current_light->color)));
+// 	return (result);
+// }
 
 t_vec3	get_specular(t_ray camray, t_hit_record	rec, t_light *current_light)
 {
@@ -106,9 +107,10 @@ t_vec3	calc_color(t_scene *sc, t_hit_record rec, t_vec3 amb, t_ray camray)
 	light = sc->light;
 	while (light)
 	{
-		// if (shade(sc, rec, light, camray))
-		if (shade(sc, rec, light))
+		// if (shade(sc, rec, light))
+		if (shade(sc, rec, light, camray))
 			ret = add_vec3(ret, amb);
+			// ret = add_vec3(ret, amb);
 		else
 		{
 			rec.light_direction = normalize(sub_vec3(light->position, rec.poi));
