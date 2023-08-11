@@ -13,19 +13,21 @@
 #ifndef MINIRT_H
 # define MINIRT_H
 
-#include "scene.h"
-#include <mlx.h>
+# include "scene.h"
+# include <mlx.h>
 //#include "../minilibx/mlx.h"
 //#include <../minilibx-opengl/mlx.h>
-#include "../utils/libft/libft.h"
-#include "../utils/libft/ft_printf.h"
-#include "object.h"
+# include "../utils/libft/libft.h"
+# include "../utils/libft/ft_printf.h"
+# include "object.h"
 
 
-#define DEFAULT_VAL 10
-#define FALSE 0
-#define TRUE 1
-#define EPS 1e-6
+# define DEFAULT_VAL 10
+# define FALSE 0
+# define TRUE 1
+# define EPS 1e-6
+# define DEG1 0.0174533
+# define DEG5 0.0872665
 
 typedef enum s_key
 {
@@ -99,6 +101,7 @@ double		degtorad(double theta);
 t_vec3		get_up(t_vec3 orientation);
 void		check_type_and_input(char **split, t_object **obj);
 void		init_objvar(t_object **obj);
+void		reinit_objvar(t_object *obj);
 
 //Print scene
 void		print_vec(t_vec3 a);
@@ -118,6 +121,7 @@ void		move2(int keysym, t_mlx *rt);
 void		move3(int keysym, t_mlx *rt);
 void		rotation1(int keysym, t_mlx *rt);
 void		rotation2(int keysym, t_mlx *rt);
+void		light_move(int keysym, t_mlx *rt);
 
 //Print before render
 void		print_cam_debug(t_mlx *rt);
@@ -129,12 +133,15 @@ void		framerate(t_mlx *rt);
 int			hit_object(t_ray r, t_object *obj, t_hit_record *rec, int record);
 double		hit_sphere(t_object *obj, t_ray r, t_hit_record *rec, int record);
 double		hit_plane(t_object *obj, t_ray r, t_hit_record *rec, int record);
-double		hit_cylinder(t_object *obj, t_ray r);
-double		hit_cylinder2(t_object *obj, t_ray r, t_hit_record *rec, int record);
+//double		hit_cylinder(t_object *obj, t_ray r);
+double		hit_cylinder(t_object *obj, t_ray r, t_hit_record *rec, int record);
+void		assign_cylinder(t_cylinder2 *cy, t_object *obj, t_ray r);
 double		top_cap(t_object *obj, t_ray r);
 double		top_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record);
 double		btm_cap(t_object *obj, t_ray r);
 double		btm_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record);
+void		update_rec(t_object *obj, t_ray r, t_hit_record *rec, int record);
+void		update_rec2(t_object *obj, t_ray r, t_hit_record *rec, int record);
 t_ray		get_ray(double u, double v, t_mlx *rt);
 
 //hit utils

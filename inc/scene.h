@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:13:12 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/05 20:37:34 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/10 18:58:29 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ typedef enum s_objtype
 
 typedef struct col
 {
-	t_vec3 color;
+	t_vec3			color;
 }				color;
 
 typedef struct s_ambient
@@ -39,6 +39,7 @@ typedef struct s_light
 	t_vec3			position;
 	t_vec3			color;
 	double			ratio;
+	struct s_light	*previous;
 	struct s_light	*next;
 }				t_light;
 
@@ -64,14 +65,21 @@ typedef struct s_object
 	struct s_object	*next;
 }				t_object;
 
+//ambient, NULL first, if != NULL when parsing, return error
+//object, a list of objects to be iterated through to calculate closest hit
+//camera, a camera with all variable stored
+//light, a list of light to be iterate to obtain brightess colour
+//active_object, current active object to be manipulated and selected by
+// shooting rays and selecting closest hit
+//act_light, iterate through a list of lights to be modified
 typedef struct s_scene
 {
-	t_ambient	ambient;			//NULL first, if != NULL when parsing, return error
-	t_object	*object;			//a list of objects to be iterated through to calculate closest hit
-	t_camera	camera;			//a camera with all variable stored
-	t_light		*light;				//a list of light to be iterate to obtain brightess colour
-	t_object	*active_object;		//current active object to be manipulated and selected by shooting rays and selecting closest hit
-	// t_camera	*active_camera;		//current acrive camera to be manipulated might remove *camera and just use this
+	t_ambient		ambient;
+	t_object		*object;
+	t_camera		camera;
+	t_light			*light;
+	t_object		*active_object;
+	t_light			*act_light;
 }				t_scene;
 
 #endif

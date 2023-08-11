@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/10 12:41:42 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/11 14:31:40 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	init_cam(t_mlx *rt)
 	camray = &(rt->scene.camera);
 	if(rt->rotated)
 	{
+		reinit_objvar(rt->scene.object);
 		camray->vars.forward = normalize(sub_vec3(vec3(0, 0, 0), camray->direction));
 		camray->vars.right = normalize(cross_vec3(get_up(camray->vars.forward), camray->vars.forward));
 		camray->vars.up = normalize(cross_vec3(camray->vars.right, camray->direction));
@@ -218,7 +219,7 @@ color ray_color(t_object *object, t_ray camray, t_light *light, t_mlx *rt)
 			rec.light_direction = normalize(sub_vec3(current_light->position, rec.poi));
 			cosine = dot_vec3(rec.light_direction, rec.normal);
 			// specular
-			view_direction = normalize(sub_vec3(camray.direction, rec.obj->position));
+			view_direction = normalize(sub_vec3(camray.direction, rec.poi));
 			reflect_direction = reflect(mul_double_vec3(-1, rec.light_direction), mul_double_vec3(1, rec.normal));
 			spec = pow(fmax(dot_vec3(view_direction, reflect_direction), 0), 32);
 			specular = mul_double_vec3((specular_strength * spec), current_light->color);
@@ -231,7 +232,7 @@ color ray_color(t_object *object, t_ray camray, t_light *light, t_mlx *rt)
 			t_hit_record	shadow_rec;
 			//shadowray.origin = rec.poi;
 			//&& dot_vec3(camray.direction, rec.normal) < 0.0
-			if (hit_object(shadowray, object, &shadow_rec, 1) > 0 && dot_vec3(camray.direction, rec.normal) < 0.0 && shadow_rec.t < length(sub_vec3(current_light->position, rec.poi)))
+			if (hit_object(shadowray, object, &shadow_rec, 1) > 0 && dot_vec3(camray.direction, rec.normal) < 0.0 && roundf(shadow_rec.t) < roundf(length(sub_vec3(current_light->position, rec.poi))))
 			{
 				pixel_color.color = vec3(0, 0, 0);
 				return (pixel_color);

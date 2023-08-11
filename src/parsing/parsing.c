@@ -62,7 +62,9 @@ int	parse_scene(char *file, t_mlx *rt)
 		free(line);
 		line = get_next_line(fd);
 	}
+	close(fd);
 	if (!rt->scene.ambient.filled || !rt->scene.camera.filled)
-		return (0);
+		return (printf("Ambient, camera or lights not inserted\n"), 0);
+	rt->scene.act_light = rt->scene.light;
 	return (ret);
 }

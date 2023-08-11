@@ -19,11 +19,11 @@ PARSE_SRC = nodes.c nodes_utils.c nodes_utils2.c add_scene.c parsing.c parsing_u
 PARSE_DIR = src/parsing/
 PARSE_OBJS = $(addprefix $(PARSE_DIR), $(PARSE_SRC:.c=.o))
 
-RENDER_SRC = render.c hit_obj.c hit_intersect.c
+RENDER_SRC = render.c hit_obj.c hit_intersect.c hit_utils.c
 RENDER_DIR = src/render/
 RENDER_OBJS = $(addprefix $(RENDER_DIR), $(RENDER_SRC:.c=.o))
 
-HOOKS_SRC = key_hooks.c key_moves.c mouse_hooks.c fps.c
+HOOKS_SRC = key_hooks.c key_moves.c key_moves2.c mouse_hooks.c fps.c
 HOOKS_DIR = src/hooks/
 HOOKS_OBJS = $(addprefix $(HOOKS_DIR), $(HOOKS_SRC:.c=.o))
 

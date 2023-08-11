@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 18:11:15 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/08 18:12:15 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/10 17:18:46 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,14 @@ void	framerate(t_mlx *rt)
 {
 	double	delta_time;
 	double	current_time;
+	double	fps;
+	char	*time;
 
 	current_time = time_stamp();
 	delta_time = current_time - rt->time;
-	//printf("DeltaTime: %f\n", delta_time);
 	rt->time = current_time;
-	//fps = (int)(1000 / delta_time);
-	//time = ft_itoa(fps);
-	//mlx_string_put (rt->mlx, rt->win, 10, 10, 0xFFFFFF, time);
-	//free(time);
+	fps = (int)(1000 / delta_time);
+	time = ft_itoa(fps);
+	mlx_string_put (rt->mlx, rt->win, 10, 10, 0xFFFFFF, time);
+	free(time);
 }

@@ -18,6 +18,32 @@
 #include <errno.h>
 #include <stdio.h>
 
+// printf("Object type2: %d\n", (*obj)->type);
+//(*obj)->var.up =  normalize(cross_vec3((*obj)->var.right,
+//(*obj)->var.forward));
+void	init_objvar(t_object **obj)
+{
+	if ((*obj)->type == SPHERE)
+	{
+		(*obj)->var.forward = vec3(0, 0, 1);
+		(*obj)->var.right = normalize(cross_vec3(get_up((*obj)->var.forward),
+					(*obj)->var.forward));
+		(*obj)->var.up = normalize(cross_vec3((*obj)->var.right,
+					vec3(0, 0, -1)));
+	}
+	else
+	{
+		(*obj)->var.forward = normalize(sub_vec3(vec3(0, 0, 0),
+					(*obj)->normal));
+		(*obj)->var.right = normalize(cross_vec3(get_up((*obj)->var.forward),
+					(*obj)->var.forward));
+		(*obj)->var.up = normalize(cross_vec3((*obj)->var.right,
+					(*obj)->var.forward));
+		(*obj)->var.right = normalize(cross_vec3((*obj)->var.up,
+					(*obj)->var.forward));
+	}
+}
+
 t_object	*ft_newobj(char **split)
 {
 	t_object	*head;
@@ -64,6 +90,7 @@ t_light	*ft_newlight(char **split)
 	head->ratio = ft_atof(split[2]);
 	head->color = get_color(split[3]);
 	head->next = NULL;
+	head->previous = NULL;
 	return (head);
 }
 
@@ -82,4 +109,5 @@ void	ft_lightadd_back(t_light **lst, t_light *new)
 		tmp = tmp->next;
 	}
 	tmp->next = new;
+	new->previous = tmp;
 }

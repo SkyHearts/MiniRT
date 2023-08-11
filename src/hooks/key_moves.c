@@ -6,14 +6,12 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 18:21:13 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/09 13:40:12 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/10 19:18:01 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "../../inc/minirt.h"
-#include <fcntl.h>
-#include <errno.h>
 #include <stdio.h>
 
 // 'A' and 'D' key (0) (2) Move right and left directions
@@ -93,22 +91,28 @@ void	move3(int keysym, t_mlx *rt)
 void	rotation1(int keysym, t_mlx *rt)
 {
 	t_vec3	*dir;
+	t_vec3	*n;
 
 	dir = &(rt->scene.camera.direction);
+	n = &(rt->scene.active_object->normal);
 	if (keysym == 123)
 	{
 		if (rt->scene.active_object == NULL && rt->mode == 1)
-			rt->scene.camera.direction = vec3(dir->x * cos(0.0174533) + dir->z
-					* sin(0.0174533), dir->y, dir->x * -sin(0.0174533)
-					+ dir->z * cos(0.0174533));
+			(*dir) = vec3(dir->x * cos(DEG1) + dir->z * sin(DEG1),
+					dir->y, dir->x * -sin(DEG1) + dir->z * cos(DEG1));
+		else
+			(*n) = vec3((*n).x * cos(DEG5) + (*n).z * sin(DEG5), (*n).y,
+					(*n).x * -sin(DEG5) + (*n).z * cos(DEG5));
 		rt->rotated = TRUE;
 	}
 	else if (keysym == 124)
 	{
 		if (rt->scene.active_object == NULL && rt->mode == 1)
-			rt->scene.camera.direction = vec3(dir->x * cos(-0.0174533) + dir->z
-					* sin(-0.0174533), dir->y, dir->x * -sin(-0.0174533)
-					+ dir->z * cos(-0.0174533));
+			(*dir) = vec3(dir->x * cos(-DEG1) + dir->z * sin(-DEG1),
+					dir->y, dir->x * -sin(-DEG1) + dir->z * cos(-DEG1));
+		else
+			(*n) = vec3((*n).x * cos(-DEG5) + (*n).z * sin(-DEG5), (*n).y,
+					(*n).x * -sin(-DEG5) + (*n).z * cos(-DEG5));
 		rt->rotated = TRUE;
 	}
 }
@@ -118,22 +122,28 @@ void	rotation1(int keysym, t_mlx *rt)
 void	rotation2(int keysym, t_mlx *rt)
 {
 	t_vec3	*dir;
+	t_vec3	*n;
 
 	dir = &(rt->scene.camera.direction);
+	n = &(rt->scene.active_object->normal);
 	if (keysym == 126)
 	{
 		if (rt->scene.active_object == NULL && rt->mode == 1)
-			rt->scene.camera.direction = vec3(dir->x, dir->y * cos(0.0174533)
-					- dir->z * sin(0.0174533), dir->y * sin(0.0174533)
-					+ dir->z * cos(0.0174533));
+			(*dir) = vec3(dir->x, dir->y * cos(DEG1) - dir->z
+					* sin(DEG1), dir->y * sin(DEG1) + dir->z * cos(DEG1));
+		else
+			(*n) = vec3((*n).x, (*n).y * cos(DEG5) - (*n).z * sin(DEG5),
+					(*n).y * sin(DEG5) + (*n).z * cos(DEG5));
 		rt->rotated = TRUE;
 	}
 	else if (keysym == 125)
 	{
 		if (rt->scene.active_object == NULL && rt->mode == 1)
-			rt->scene.camera.direction = vec3(dir->x, dir->y * cos(-0.0174533)
-					- dir->z * sin(-0.0174533), dir->y * sin(-0.0174533)
-					+ dir->z * cos(-0.0174533));
+			(*dir) = vec3(dir->x, dir->y * cos(-DEG1) - dir->z
+					* sin(-DEG1), dir->y * sin(-DEG1) + dir->z * cos(-DEG1));
+		else
+			(*n) = vec3((*n).x, (*n).y * cos(-DEG5) - (*n).z * sin(-DEG5),
+					(*n).y * sin(-DEG5) + (*n).z * cos(-DEG5));
 		rt->rotated = TRUE;
 	}
 }

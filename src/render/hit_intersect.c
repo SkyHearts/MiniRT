@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/08/10 13:02:54 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/10 22:03:26 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,7 @@ double	hit_sphere(t_object *obj, t_ray r, t_hit_record *rec, int record)
 			sphere.t1 = sphere.t0;
 		obj->t = fmin(sphere.t1, sphere.t0);
 	}
-	if (rec->t > obj->t && record)
-	{
-		rec->t = obj->t;
-		rec->poi = get_intersect(r, obj->t);
-		rec->normal = get_obj_normal2(r, obj, rec, rec->poi);
-		rec->obj = obj;
-		rec->iscap = 0;
-	}
+	update_rec(obj, r, rec, record);
 	return (TRUE);
 }
 
@@ -65,14 +58,7 @@ double	hit_plane(t_object *obj, t_ray r, t_hit_record *rec, int record)
 		return (FALSE);
 	else
 		obj->t = ret;
-	if (rec->t > obj->t && record)
-	{
-		rec->poi = get_intersect(r, obj->t);
-		rec->normal = get_obj_normal2(r, obj, rec, rec->poi);
-		rec->t = obj->t;
-		rec->obj = obj;
-		rec->iscap = 0;
-	}
+	update_rec(obj, r, rec, record);
 	return (TRUE);
 }
 
@@ -90,8 +76,8 @@ double	top_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record)
 	double	ret;
 	t_vec3	plane;
 
-	//if (record == 0 && dot_vec3(r.direction, obj->normal) < 0)
-	//	return (FALSE);
+	//if (dot_vec3(r.direction, obj->normal) < 0)
+	//	obj->normal = mul_double_vec3(-1, obj->normal);
 	top = add_vec3(obj->position, mul_double_vec3(obj->height, obj->normal));
 	denom = dot_vec3(r.direction, obj->normal);
 	if (fabs(denom) < 1e-6)
@@ -101,21 +87,13 @@ double	top_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record)
 		return (FALSE);
 	else
 		obj->t = ret;
-	plane = sub_vec3(add_vec3(r.origin, mul_double_vec3(obj->t, r.direction)), top);
+	plane = sub_vec3(add_vec3(r.origin, mul_double_vec3(obj->t,
+					r.direction)), top);
 	if (dot_vec3(plane, plane) > (obj->radius * obj->radius))
 		return (FALSE);
-	//if (length(sub_vec3(get_intersect(r, obj->t), top)) > obj->radius)
-	//	return (FALSE);
-	if (rec->t > obj->t && record)
-	{
-		rec->t = obj->t;
-		rec->poi = get_intersect(r, obj->t);
-		rec->normal = get_obj_normal2(r, obj, rec, rec->poi);
-		rec->cap_normal = mul_double_vec3(1, obj->normal);
-		rec->t = obj->t;
-		rec->obj = obj;
-		rec->iscap = 1;
-	}
+	if (length(sub_vec3(get_intersect(r, obj->t), top)) > obj->radius)
+		return (FALSE);
+	update_rec2(obj, r, rec, record);
 	return (TRUE);
 }
 
@@ -135,39 +113,22 @@ double	btm_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record)
 		return (FALSE);
 	else
 		obj->t = ret;
-	plane = sub_vec3(add_vec3(r.origin, mul_double_vec3(obj->t, r.direction)), obj->position);
+	plane = sub_vec3(add_vec3(r.origin, mul_double_vec3(obj->t,
+					r.direction)), obj->position);
 	if (dot_vec3(plane, plane) > (obj->radius * obj->radius))
 		return (FALSE);
-	//if (length(sub_vec3(get_intersect(r, obj->t), obj->position)) > obj->radius)
-	//	return (FALSE);
-	if (rec->t > obj->t && record)
-	{
-		rec->t = obj->t;
-		rec->poi = get_intersect(r, obj->t);
-		rec->normal = get_obj_normal2(r, obj, rec, rec->poi);
-		rec->cap_normal = mul_double_vec3(-1, obj->normal);
-		rec->obj = obj;
-		rec->iscap = 1;
-	}
+	if (length(sub_vec3(get_intersect(r, obj->t), obj->position)) > obj->radius)
+		return (FALSE);
+	update_rec2(obj, r, rec, record);
 	return (TRUE);
 }
 
-double	hit_cylinder2(t_object *obj, t_ray r, t_hit_record *rec, int record)
+double	hit_cylinder(t_object *obj, t_ray r, t_hit_record *rec, int record)
 {
 	t_cylinder2	cy;
-
-	cy.top = add_vec3(obj->position, mul_double_vec3(obj->height, obj->normal));
-	
 	//top_cap2(obj, r, rec, record);
 	//btm_cap2(obj, r, rec, record);
-	cy.oc = sub_vec3(r.origin, obj->position);
-	cy.a = dot_vec3(r.direction, r.direction) - (dot_vec3(r.direction,
-				obj->normal) * dot_vec3(r.direction, obj->normal));
-	cy.b = 2.0 * (dot_vec3(r.direction, cy.oc) - (dot_vec3(r.direction,
-					obj->normal) * dot_vec3(cy.oc, obj->normal)));
-	cy.c = dot_vec3(cy.oc, cy.oc) - (dot_vec3(cy.oc, obj->normal)
-			* dot_vec3(cy.oc, obj->normal)) - (obj->radius * obj->radius);
-	cy.discriminant = cy.b * cy.b - 4 * cy.a * cy.c;
+	assign_cylinder(&cy, obj, r);
 	if (cy.discriminant < 0)
 		return (FALSE);
 	else
@@ -176,27 +137,20 @@ double	hit_cylinder2(t_object *obj, t_ray r, t_hit_record *rec, int record)
 		cy.t1 = (-cy.b + sqrt(cy.discriminant)) / (2.0 * cy.a);
 		if (cy.t0 < 0 && cy.t1 < 0)
 			return (FALSE);
-		else if (cy.t0 > 0.0 && cy.t1 > 0.0)
-			obj->t = fmin(cy.t1, cy.t0);
 		else if (cy.t0 < 0.0)
 			cy.t0 = cy.t1;
 		else if (cy.t1 < 0.0)
 			cy.t1 = cy.t0;
 		obj->t = fmin(cy.t1, cy.t0);
 	}
-	if (dot_vec3(obj->normal, sub_vec3(add_vec3(r.origin, mul_double_vec3(obj->t, r.direction)), cy.top)) > 0)
-		//return (FALSE);
+	if (dot_vec3(obj->normal, sub_vec3(add_vec3(r.origin,
+					mul_double_vec3(obj->t, r.direction)), cy.top)) > 0)
 		return (top_cap2(obj, r, rec, record));
-	if (dot_vec3(obj->normal, sub_vec3(add_vec3(r.origin, mul_double_vec3(obj->t, r.direction)), obj->position)) < 0)
 		//return (FALSE);
+	if (dot_vec3(obj->normal, sub_vec3(add_vec3(r.origin,
+					mul_double_vec3(obj->t, r.direction)), obj->position)) < 0)
 		return (btm_cap2(obj, r, rec, record));
-	if (rec->t > obj->t && record)
-	{
-		rec->t = obj->t;
-		rec->poi = get_intersect(r, obj->t);
-		rec->normal = get_obj_normal2(r, obj, rec, rec->poi);
-		rec->obj = obj;
-		rec->iscap = 0;
-	}
+		//return (FALSE);
+	update_rec(obj, r, rec, record);
 	return (TRUE);
 }

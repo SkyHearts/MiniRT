@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 13:28:01 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/09 20:13:38 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/11 14:27:10 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,10 @@ t_vec3	get_obj_normal2(t_ray r, t_object *object, t_hit_record *rec, t_vec3 poi)
 	{
 		height = dot_vec3(normalize(object->normal), sub_vec3(poi, object->position));
 		normal = normalize(sub_vec3(poi, add_vec3(object->position, mul_double_vec3(height, object->normal))));
-		if (dot_vec3(r.direction, normal) > 0.0)
-			normal = mul_double_vec3(-1, normal);
+		//if (dot_vec3(r.direction, normal) > 0.0 && rec->iscap)
+		//	normal = mul_double_vec3(1, rec->cap_normal);
+		//if (dot_vec3(r.direction, normal) > 0.0)
+		//	normal = mul_double_vec3(-1, normal);
 	}
 	return (normal);
 }
@@ -95,7 +97,7 @@ int	hit_object(t_ray r, t_object *obj, t_hit_record *rec, int record)
 		else if (current_obj->type == 1)
 			hit = hit_plane(current_obj, r, rec, record);
 		else if (current_obj->type == 2)
-			hit = hit_cylinder2(current_obj, r, rec, record);
+			hit = hit_cylinder(current_obj, r, rec, record);
 		//if (current_obj->type == 2)
 		//	hit = top_cap2(current_obj, r, rec, record);
 		//if (current_obj->type == 2)
