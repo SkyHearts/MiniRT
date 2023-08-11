@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:37:39 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/09 15:22:54 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/11 14:02:37 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,7 @@ typedef struct s_hit_record
 	t_vec3		poi;
 	t_vec3		cap_normal;
 	int			iscap;
-
-	// shadow
-	t_vec3	light_direction;
-	double	intensity;
-	int		validIllum;
-	color	illum_color;
+	t_vec3		light_direction;
 }	t_hit_record;
 
 typedef struct s_sphere

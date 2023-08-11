@@ -2,6 +2,10 @@
 	"files.associations": {
 		"ft_printf.h": "c",
 		"minirt.h": "c",
-		"ios": "c"
+		"ios": "c",
+		"algorithm": "c",
+		"chrono": "c",
+		"limits": "c",
+		"ratio": "c"
 	}
 }

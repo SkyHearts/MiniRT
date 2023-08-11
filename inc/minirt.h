@@ -28,6 +28,7 @@
 # define EPS 1e-6
 # define DEG1 0.0174533
 # define DEG5 0.0872665
+#define SPECULAR_STRENGTH 0.5
 
 typedef enum s_key
 {
@@ -62,22 +63,22 @@ typedef struct s_mlx
 //}				ts;
 
 // Parsing
-int			parse_scene(char *file, t_mlx *rt);
-int			parse_line(t_mlx *rt, char *line);
-int			add_ambient(char **split, t_mlx *rt);
-int			add_light(char **split, t_mlx *rt);
-int			add_camera(char **split, t_mlx *rt);
-void		init_cam(t_mlx *rt);
-t_light		*ft_newlight(char **split);
-void		ft_lightadd_back(t_light **lst, t_light *new);
+int				parse_scene(char *file, t_mlx *rt);
+int				parse_line(t_mlx *rt, char *line);
+int				add_ambient(char **split, t_mlx *rt);
+int				add_light(char **split, t_mlx *rt);
+int				add_camera(char **split, t_mlx *rt);
+void			init_cam(t_mlx *rt);
+t_light			*ft_newlight(char **split);
+void			ft_lightadd_back(t_light **lst, t_light *new);
 
 // Parsing obj
-int			add_obj(char **split, t_mlx *rt);
-t_object	*ft_newobj(char **split);
-void		ft_objadd_back(t_object **lst, t_object *new);
-void		add_sphere(char **split, t_object **obj);
-void		add_plane(char **split, t_object **obj);
-void		add_cylinder(char **split, t_object **obj);
+int				add_obj(char **split, t_mlx *rt);
+t_object		*ft_newobj(char **split);
+void			ft_objadd_back(t_object **lst, t_object *new);
+void			add_sphere(char **split, t_object **obj);
+void			add_plane(char **split, t_object **obj);
+void			add_cylinder(char **split, t_object **obj);
 
 //Parsing Utils
 int			split_len(char **split);
@@ -104,13 +105,13 @@ void		init_objvar(t_object **obj);
 void		reinit_objvar(t_object *obj);
 
 //Print scene
-void		print_vec(t_vec3 a);
-void		print_ambient(t_mlx	rt);
-void		print_cam(t_mlx	rt);
-void		print_light(t_mlx	rt);
-void		print_obj(t_mlx	rt);
-void		ft_printscene(t_mlx	rt);
-void		printvec_nl(t_vec3 vec);
+void			print_vec(t_vec3 a);
+void			print_ambient(t_mlx	rt);
+void			print_cam(t_mlx	rt);
+void			print_light(t_mlx	rt);
+void			print_obj(t_mlx	rt);
+void			ft_printscene(t_mlx	rt);
+void			printvec_nl(t_vec3 vec);
 
 //Hooks Events
 void		hooks_init(t_mlx *rt);
@@ -124,36 +125,42 @@ void		rotation2(int keysym, t_mlx *rt);
 void		light_move(int keysym, t_mlx *rt);
 
 //Print before render
-void		print_cam_debug(t_mlx *rt);
-void		print_matrix(t_mat44 matrix);
-double		time_stamp(void);
-void		framerate(t_mlx *rt);
+void			print_cam_debug(t_mlx *rt);
+void			print_matrix(t_mat44 matrix);
+double			time_stamp(void);
+void			framerate(t_mlx *rt);
 
 //hit interaction
-int			hit_object(t_ray r, t_object *obj, t_hit_record *rec, int record);
-double		hit_sphere(t_object *obj, t_ray r, t_hit_record *rec, int record);
-double		hit_plane(t_object *obj, t_ray r, t_hit_record *rec, int record);
-//double		hit_cylinder(t_object *obj, t_ray r);
-double		hit_cylinder(t_object *obj, t_ray r, t_hit_record *rec, int record);
+int				hit_object(t_ray r, t_object *obj, t_hit_record *rec, int record);
+double			hit_sphere(t_object *obj, t_ray r, t_hit_record *rec, int record);
+double			hit_plane(t_object *obj, t_ray r, t_hit_record *rec, int record);
+//double			hit_cylinder(t_object *obj, t_ray r);
+double			hit_cylinder(t_object *obj, t_ray r, t_hit_record *rec, int record);
 void		assign_cylinder(t_cylinder2 *cy, t_object *obj, t_ray r);
-double		top_cap(t_object *obj, t_ray r);
-double		top_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record);
-double		btm_cap(t_object *obj, t_ray r);
-double		btm_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record);
+double			top_cap(t_object *obj, t_ray r);
+double			top_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record);
+double			btm_cap(t_object *obj, t_ray r);
+double			btm_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record);
 void		update_rec(t_object *obj, t_ray r, t_hit_record *rec, int record);
 void		update_rec2(t_object *obj, t_ray r, t_hit_record *rec, int record);
-t_ray		get_ray(double u, double v, t_mlx *rt);
+t_ray			get_ray(double u, double v, t_mlx *rt);
+
+// color
+color			ray_color(t_scene *sc, t_ray camray);
+t_vec3 			get_shadow_origin(t_hit_record *rec);
+color			clamp_vec(color *col, t_vec3 min, double max);
+unsigned int	rgb2color(t_vec3 color);
 
 //hit utils
-t_vec3		get_intersect(t_ray r, double t);
-t_vec3		get_obj_normal2(t_ray r, t_object *object,
-				t_hit_record *rec, t_vec3 poi);
+t_vec3			get_intersect(t_ray r, double t);
+t_vec3			get_obj_normal2(t_ray r, t_object *object, t_hit_record *rec, t_vec3 poi);
 
 //Render
-int			init_img(t_mlx *rt);
-void		render(t_mlx *rt);
-void		destroy_img(t_mlx *rt);
+int				init_img(t_mlx *rt);
+void			render(t_mlx *rt);
+void			destroy_img(t_mlx *rt);
+void			img_mlx_pixel_put(t_mlx *rt, int x, int y, int color);
 
 //free functions
-void		free_all(t_mlx *rt);
+void			free_all(t_mlx *rt);
 #endif
