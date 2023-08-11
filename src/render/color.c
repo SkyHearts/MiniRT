@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 15:01:29 by sulim             #+#    #+#             */
-/*   Updated: 2023/08/11 14:55:29 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/11 18:23:32 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int	shade(t_scene *sc, t_hit_record rec, t_light *light, t_ray camray)
 
 	shadowray.direction = rec.light_direction;
 	shadowray.origin = get_shadow_origin(&rec);
-	if (hit_object(shadowray, sc->object, &shadow_rec, 1) > 0 && \
+	if (hit_object(shadowray, sc->object, &shadow_rec, 1) > EPS && \
 	dot_vec3(camray.direction, rec.normal) < 0.0 && shadow_rec.t < \
-	length(sub_vec3(light->position, rec.poi)))
+	length(sub_vec3(light->position, shadowray.origin)))
 		return (1);
 	return (0);
 }
@@ -33,7 +33,7 @@ t_vec3	get_specular(t_ray camray, t_hit_record	rec, t_light *current_light)
 	t_vec3			reflect_direction;
 	double			spec;
 
-	view_direction = normalize(sub_vec3(camray.direction, rec.obj->position));
+	view_direction = normalize(sub_vec3(camray.direction, rec.poi));
 	reflect_direction = reflect(mul_double_vec3(-1, rec.light_direction), \
 	mul_double_vec3(1, rec.normal));
 	spec = pow(fmax(dot_vec3(view_direction, reflect_direction), 0), 32);

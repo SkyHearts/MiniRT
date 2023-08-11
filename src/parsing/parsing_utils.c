@@ -91,13 +91,13 @@ double	ft_atof(char *num)
 		sign *= -1;
 		tmp++;
 	}
-	whole = atoi(tmp);
+	whole = ft_atoi(tmp);
 	while (*tmp != '.' && *tmp)
 		tmp++;
 	if ((*tmp))
 	{
 		decimal = ft_atoi(++tmp);
-		while (decimal > 1)
+		while (decimal >= 1)
 			decimal /= 10;
 	}
 	else

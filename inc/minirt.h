@@ -25,10 +25,10 @@
 # define DEFAULT_VAL 10
 # define FALSE 0
 # define TRUE 1
-# define EPS 1e-6
+# define EPS 1e-7
 # define DEG1 0.0174533
 # define DEG5 0.0872665
-#define SPECULAR_STRENGTH 0.5
+# define SPECULAR_STRENGTH 0.5
 
 typedef enum s_key
 {
@@ -136,13 +136,14 @@ double			hit_sphere(t_object *obj, t_ray r, t_hit_record *rec, int record);
 double			hit_plane(t_object *obj, t_ray r, t_hit_record *rec, int record);
 //double			hit_cylinder(t_object *obj, t_ray r);
 double			hit_cylinder(t_object *obj, t_ray r, t_hit_record *rec, int record);
-void		assign_cylinder(t_cylinder2 *cy, t_object *obj, t_ray r);
+void			assign_cylinder(t_cylinder2 *cy, t_object *obj, t_ray r);
 double			top_cap(t_object *obj, t_ray r);
 double			top_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record);
 double			btm_cap(t_object *obj, t_ray r);
 double			btm_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record);
-void		update_rec(t_object *obj, t_ray r, t_hit_record *rec, int record);
-void		update_rec2(t_object *obj, t_ray r, t_hit_record *rec, int record);
+void			update_rec(t_object *obj, t_ray r, t_hit_record *rec, int record);
+void			update_rec2(t_object *obj, t_ray r, t_hit_record *rec, int record);
+void			update_rec3(t_object *obj, t_ray r, t_hit_record *rec, int record);
 t_ray			get_ray(double u, double v, t_mlx *rt);
 
 // color
