@@ -1,5 +1,5 @@
 #Ambient	Intensity		Color
-A 			0.2			255,255,255
+A 			0.10001			255,255,255
 
 #Camera		Position		Orientation				FOV
 C 			0,-5,75 			0,0,-1 					90
