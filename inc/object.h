@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:37:39 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/10 22:37:28 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/11 10:09:21 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,6 @@ typedef struct s_hit_record
 	t_vec3		cap_normal;
 	int			iscap;
 	t_vec3		light_direction;
-
-	// double	intensity;
-	// color	illum_color;
 }	t_hit_record;
 
 typedef struct s_sphere

@@ -6,22 +6,23 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 15:01:29 by sulim             #+#    #+#             */
-/*   Updated: 2023/08/11 09:45:50 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/11 09:59:37 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minirt.h"
 #include <stdio.h>
 
-int shade(t_scene *sc, t_hit_record rec, t_light *light, t_ray camray)
+int	shade(t_scene *sc, t_hit_record rec, t_light *light, t_ray camray)
 {
 	t_ray			shadowray;
 	t_hit_record	shadow_rec;
 
 	shadowray.direction = rec.light_direction;
 	shadowray.origin = get_shadow_origin(&rec);
-
-	if (hit_object(shadowray, sc->object, &shadow_rec, 1) > 0 && dot_vec3(camray.direction, rec.normal) < 0.0 && shadow_rec.t < length(sub_vec3(light->position, rec.poi)))
+	if (hit_object(shadowray, sc->object, &shadow_rec, 1) > 0 && \
+	dot_vec3(camray.direction, rec.normal) < 0.0 && shadow_rec.t < \
+	length(sub_vec3(light->position, rec.poi)))
 		return (1);
 	return (0);
 }
@@ -59,7 +60,8 @@ t_vec3	calc_color(t_scene *sc, t_hit_record rec, t_vec3 amb, t_ray camray)
 			specular = get_specular(camray, rec, light);
 			ret = add_vec3(ret, amb);
 			if (cosine > 0)
-				ret = add_vec3(specular, mul_double_vec3(light->ratio, mul_double_vec3(fmax(0.0, cosine), rec.obj->color)));
+				ret = add_vec3(specular, mul_double_vec3(light->ratio, \
+				mul_double_vec3(fmax(0.0, cosine), rec.obj->color)));
 		}
 		light = light->next;
 	}
@@ -80,6 +82,7 @@ color	ray_color(t_scene *sc, t_ray camray)
 		pixel_color.color = calc_color(sc, rec, amb, camray);
 	}
 	else
-		pixel_color.color = mul_double_vec3(sc->ambient.ratio, sc->ambient.color);
+		pixel_color.color = mul_double_vec3(sc->ambient.ratio, \
+		sc->ambient.color);
 	return (clamp_vec(&pixel_color));
 }
