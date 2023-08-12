@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 15:01:29 by sulim             #+#    #+#             */
-/*   Updated: 2023/08/11 20:16:50 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/12 14:50:56 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,10 @@ t_vec3	calc_color(t_scene *sc, t_hit_record rec, t_vec3 amb, t_ray camray)
 	{
 		rec.light_direction = normalize(sub_vec3(light->position, rec.poi));
 		if (shade(sc, rec, light, camray))
+		{
 			ret.color = add_vec3(ret.color, amb);
+			min = add_vec3(ret.color, amb);
+		}
 		else
 		{
 			cosine = dot_vec3(rec.light_direction, rec.normal);
@@ -83,8 +86,8 @@ color	ray_color(t_scene *sc, t_ray camray)
 	min = vec3(0, 0, 0);
 	if (hit_object(camray, sc->object, &rec, 1) > 0)
 	{
-		if (rec.iscap)
-			printf("hitcap\n");
+		//if (rec.iscap)
+		//	printf("hitcap\n");
 		amb = mul_double_vec3(sc->ambient.ratio, mul_vec3(rec.obj->color, \
 		div_double_vec3(255, sc->ambient.color)));
 		pixel_color.color = calc_color(sc, rec, amb, camray);

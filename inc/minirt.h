@@ -28,6 +28,7 @@
 # define EPS 1e-7
 # define DEG1 0.0174533
 # define DEG5 0.0872665
+# define MLX_ERROR "MLX ERROR"
 # define SPECULAR_STRENGTH 0.5
 
 typedef enum s_key
@@ -54,8 +55,9 @@ typedef struct s_mlx
 	int			mode;
 	int			move;
 	int			rotated;
-	double		time;	//Personal use, deactivate for submitions
+	double		time;
 }				t_mlx;
+//Time variable Personal use, deactivate for submitions
 
 //typedef struct timestep
 //{
@@ -109,9 +111,12 @@ void		print_vec(t_vec3 a);
 void		print_ambient(t_mlx	rt);
 void		print_cam(t_mlx	rt);
 void		print_light(t_mlx	rt);
+void		print_sphere(t_object *obj);
+void		print_plane(t_object *obj);
+void		print_cylinder(t_object *obj);
 void		print_obj(t_mlx	rt);
 void		ft_printscene(t_mlx	rt);
-void		printvec_nl(t_vec3 vec);
+void		print_cam_debug(t_mlx *rt);
 
 //Hooks Events
 void		hooks_init(t_mlx *rt);

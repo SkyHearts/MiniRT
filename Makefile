@@ -11,13 +11,17 @@ MINILIB = -L$(MINILIBDIR) -lmlx -framework OpenGL -framework AppKit
 #XPATH_LINUX=minilibx-linux
 #XFLAGS_LINUX=-I$(XPATH_LINUX) -L$(XPATH_LINUX) -lmlx -lXext -lX11
 
-MINIRT_SRCS	=	main.c print_scene.c free.c
+MINIRT_SRCS	=	main.c free.c
 MINIRT_SRCS_DIR	= src/
 MINIRT_OBJS = $(addprefix $(MINIRT_SRCS_DIR), $(MINIRT_SRCS:.c=.o))
 
 PARSE_SRC = nodes.c nodes_utils.c nodes_utils2.c add_scene.c parsing.c parsing_utils.c parsing_utils2.c isspace_split.c 
 PARSE_DIR = src/parsing/
 PARSE_OBJS = $(addprefix $(PARSE_DIR), $(PARSE_SRC:.c=.o))
+
+PRINT_SRC = print_scene.c print_scene_utils.c print_cam.c
+PRINT_DIR = src/printdata/
+PRINT_OBJS = $(addprefix $(PRINT_DIR), $(PRINT_SRC:.c=.o))
 
 VECTORS_SRC = vector1.c vector2.c vector3.c vector4.c vector5.c
 VECTORS_DIR = src/vectors/
@@ -41,9 +45,9 @@ LIB             = -L$(LIBFT_DIR) -lft
 
 all:  ${NAME} 
 
-${NAME}:	${LIBFT_DIR}/${LIBFT_LIB} ${MINIRT_OBJS} ${PARSE_OBJS} ${HOOKS_OBJS} ${VECTORS_OBJS} ${RENDER_OBJS}
+${NAME}:	${LIBFT_DIR}/${LIBFT_LIB} ${MINIRT_OBJS} ${PARSE_OBJS} ${PRINT_OBJS} ${HOOKS_OBJS} ${VECTORS_OBJS} ${RENDER_OBJS}
 	@echo "Compiling minirt"
-	${CC} ${CFLAGS} ${MINIRT_OBJS} ${PARSE_OBJS} ${HOOKS_OBJS} ${VECTORS_OBJS} ${RENDER_OBJS} -o ${NAME} ${LIB} ${MINILIB}
+	${CC} ${CFLAGS} ${MINIRT_OBJS} ${PARSE_OBJS} ${PRINT_OBJS} ${HOOKS_OBJS} ${VECTORS_OBJS} ${RENDER_OBJS} -o ${NAME} ${LIB} ${MINILIB}
 #${XFLAGS_MACOS}
 	
 ${LIBFT_DIR}/${LIBFT_LIB}:

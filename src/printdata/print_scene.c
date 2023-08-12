@@ -6,22 +6,15 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:34:51 by jyim              #+#    #+#             */
-/*   Updated: 2023/07/22 15:36:36 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/12 13:35:30 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "../inc/minirt.h"
-#include "../inc/scene.h"
-#include <fcntl.h>
-#include <errno.h>
+#include "../../inc/minirt.h"
 #include <stdio.h>
 
-void	print_vec(t_vec3 a)
-{
-	printf("[%f,%f,%f]\t", a.x, a.y, a.z);
-}
-
+//print Ambient light data
 void	print_ambient(t_mlx	rt)
 {
 	printf("AMBIENT:\tRatio:%f\t\tcolor:", rt.scene.ambient.ratio);
@@ -29,6 +22,7 @@ void	print_ambient(t_mlx	rt)
 	printf("\n");
 }
 
+//print camera data
 void	print_cam(t_mlx	rt)
 {
 	printf("Camera:\t\tposition:");
@@ -38,12 +32,16 @@ void	print_cam(t_mlx	rt)
 	printf("\tFOV:%f\n", rt.scene.camera.vars.fov);
 }
 
+//print Lights data
 void	print_light(t_mlx	rt)
 {
+	int		i;
+	t_light	*light;
+
+	i = 0;
+	light = rt.scene.light;
 	if (rt.scene.light)
 	{
-		int i = 0;
-		t_light *light = rt.scene.light;
 		while (light != NULL)
 		{
 			printf("Light %d:\tposition:", ++i);
@@ -56,48 +54,26 @@ void	print_light(t_mlx	rt)
 		}
 	}
 }
-	//SPHERE = 0,
-	//PLANE = 1,
-	//CYLINDER = 2,
+
+//SPHERE = 0,
+//PLANE = 1,
+//CYLINDER = 2,
 void	print_obj(t_mlx	rt)
 {
+	t_object	*obj;
+
+	obj = rt.scene.object;
 	if (rt.scene.object)
 	{
-		t_object *obj = rt.scene.object;
 		while (obj != NULL)
 		{
 			printf("Object %d:\tType:", obj->index);
 			if (obj->type == 0)
-			{
-				printf("SPHERE:\tPosition:");
-				print_vec(obj->position);
-				printf("\tDiameter:%f",obj->diameter);
-				printf("\tRGB:");
-				print_vec(obj->color);
-				printf("\n");
-			}
+				print_sphere(obj);
 			else if (obj->type == 1)
-			{
-				printf("PLANE:\tPosition:");
-				print_vec(obj->position);
-				printf("\tNormal:");
-				print_vec(obj->normal);
-				printf("\tRGB:");
-				print_vec(obj->color);
-				printf("\n");
-			}
+				print_plane(obj);
 			else if (obj->type == 2)
-			{
-				printf("CYLINDER:\tPosition:");
-				print_vec(obj->position);
-				printf("\tNormal:");
-				print_vec(obj->normal);
-				printf("\tDiameter:%f",obj->diameter);
-				printf("\tHeight:%f",obj->height);
-				printf("\tRGB:");
-				print_vec(obj->color);
-				printf("\n");
-			}
+				print_cylinder(obj);
 			obj = obj->next;
 		}
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector5.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 10:44:51 by sulim             #+#    #+#             */
-/*   Updated: 2023/08/11 11:00:31 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/12 13:39:02 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,10 @@ t_mat44	worldtocam(t_mat44 ctw)
 	wtc.data[2][2] = ctw.data[2][2];
 	wtc.data[2][3] = -dot_vec3(forward, trans);
 	wtc.data[3][0] = 0;
-	wtc.data[3][1] = 0;
-	wtc.data[3][2] = 0;
-	wtc.data[3][3] = 1;
-	return (wtc);
+	return (wtc.data[3][1] = 0, wtc.data[3][2] = 0, wtc.data[3][3] = 1, wtc);
+}
+
+void	print_vec(t_vec3 a)
+{
+	printf("[%f,%f,%f]\t", a.x, a.y, a.z);
 }
