@@ -1,0 +1,12 @@
+##Ambient	Intensity		Color
+A 			0.2 			255,255,255
+
+##Camera	Position		Orientation				FOV
+C 			0,0,25 			0,0,-1 					45
+
+##Lights		Position		Intensity				Color
+L			0,-5,0		1						55,255,255
+
+##CONE		Position		orientation			Theta		Height		Color
+cn 			5,0,0 			0,1,0				15			3			255,255,125
+cy 			-5,5,0 			0,-1,0				10			3			0,255,125

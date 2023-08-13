@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 13:22:17 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/12 13:41:13 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/12 16:34:24 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,20 @@ void	print_cylinder(t_object *obj)
 	printf("\tNormal:");
 	print_vec(obj->normal);
 	printf("\tDiameter:%f", obj->diameter);
+	printf("\tHeight:%f", obj->height);
+	printf("\tRGB:");
+	print_vec(obj->color);
+	printf("\n");
+}
+
+//print CYLINDER obj data
+void	print_cone(t_object *obj)
+{
+	printf("Cone:\tPosition:");
+	print_vec(obj->position);
+	printf("\tNormal:");
+	print_vec(obj->normal);
+	printf("\tThetar:%f", obj->diameter);
 	printf("\tHeight:%f", obj->height);
 	printf("\tRGB:");
 	print_vec(obj->color);

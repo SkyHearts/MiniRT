@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:34:51 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/12 13:35:30 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/12 16:33:50 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ void	print_obj(t_mlx	rt)
 				print_plane(obj);
 			else if (obj->type == 2)
 				print_cylinder(obj);
+			else if (obj->type == 3)
+				print_cone(obj);
 			obj = obj->next;
 		}
 	}

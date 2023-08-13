@@ -25,7 +25,8 @@
 # define DEFAULT_VAL 10
 # define FALSE 0
 # define TRUE 1
-# define EPS 1e-7
+//# define EPS 1e-7
+# define EPS 0.00001
 # define DEG1 0.0174533
 # define DEG5 0.0872665
 # define MLX_ERROR "MLX ERROR"
@@ -117,6 +118,7 @@ void		print_cylinder(t_object *obj);
 void		print_obj(t_mlx	rt);
 void		ft_printscene(t_mlx	rt);
 void		print_cam_debug(t_mlx *rt);
+void		print_cone(t_object *obj);
 
 //Hooks Events
 void		hooks_init(t_mlx *rt);
@@ -147,6 +149,7 @@ double		top_cap(t_object *obj, t_ray r);
 double		top_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record);
 double		btm_cap(t_object *obj, t_ray r);
 double		btm_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record);
+double		hit_cone(t_object *obj, t_ray r, t_hit_record *rec, int record);
 void		update_rec(t_object *obj, t_ray r, t_hit_record *rec, int record);
 void		update_rec2(t_object *obj, t_ray r, t_hit_record *rec, int record);
 void		update_rec3(t_object *obj, t_ray r, t_hit_record *rec, int record);

@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 13:24:13 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/12 13:20:04 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/12 16:05:09 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	check_format(char **split)
 		if (len != 3)
 			return (printf("Incorrect number of parameters\n"), 1);
 	}
-	else if (!ft_strcmp(split[0], "cy"))
+	else if (!ft_strcmp(split[0], "cy") || !ft_strcmp(split[0], "cn"))
 	{
 		if (len != 6)
 			return (printf("Incorrect number of parameters\n"), 1);

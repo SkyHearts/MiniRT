@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 18:13:26 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/12 13:19:23 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/12 17:55:47 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static void	shootray(t_mlx *rt, t_ray ray)
 			hit_plane(tmplst, ray, &rec, 1);
 		else if (tmplst->type == 2)
 			hit_cylinder(tmplst, ray, &rec, 1);
+		else if (tmplst->type == 3)
+			hit_cone(tmplst, ray, &rec, 1);
 		tmplst = tmplst->next;
 	}
 	if (rec.t == INFINITY)

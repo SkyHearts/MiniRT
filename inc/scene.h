@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:13:12 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/10 18:58:29 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/12 16:32:21 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ typedef enum s_objtype
 	SPHERE = 0,
 	PLANE = 1,
 	CYLINDER = 2,
+	CONE = 3,
 }	t_objtype;
 
 typedef struct col
@@ -60,6 +61,8 @@ typedef struct s_object
 	double			diameter;
 	double			radius;
 	double			height;
+	double			deg;
+	double			rad;
 	t_var			var;
 	double			t;
 	struct s_object	*next;

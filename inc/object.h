@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:37:39 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/11 14:02:37 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/12 16:01:13 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ typedef struct s_plane
 //v = ray.dir, va = cylinder dir
 typedef struct s_cylinder
 {
-	t_vec3	top; //cylinder pos + (cylinder height * cylinder dir)
-	double	raynormal; //(v.va)
-	t_vec3	cyp; //ray dir - (raynormal * va)
-	t_vec3	delta_p; //ray origin - cylinder origin
+	t_vec3	top;
+	double	raynormal;
+	t_vec3	cyp;
+	t_vec3	delta_p;
 	double	a;
 	double	b;
 	double	c;
@@ -59,7 +59,7 @@ typedef struct s_cylinder
 
 typedef struct s_cylinder2
 {
-	t_vec3	top; //cylinder pos + (cylinder height * cylinder dir)
+	t_vec3	top;
 	t_vec3	oc;
 	double	a;
 	double	b;
@@ -68,4 +68,19 @@ typedef struct s_cylinder2
 	double	t1;
 	double	discriminant;
 }				t_cylinder2;
+
+typedef struct s_cone
+{
+	t_vec3	top;
+	t_vec3	oc;
+	double	theta;
+	double	rad;
+	double	a;
+	double	b;
+	double	c;
+	double	t0;
+	double	t1;
+	double	discriminant;
+}				t_cone;
+
 #endif

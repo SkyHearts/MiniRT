@@ -18,7 +18,7 @@
 
 void	init_mlx(t_mlx *rt)
 {
-	rt->element = ft_split("A C L sp pl cy", ' ');
+	rt->element = ft_split("A C L sp pl cy cn", ' ');
 	rt->win_height = 720;
 	rt->win_width = 1080;
 	rt->scene.camera.filled = 0;

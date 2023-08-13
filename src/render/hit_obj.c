@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 13:28:01 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/12 14:59:09 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/12 19:05:43 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ t_vec3	get_obj_normal2(t_ray r, t_object *obj, t_hit_record *rec, t_vec3 poi)
 	t_vec3	normal;
 	double	height;
 
+	height = 0;
+	normal = vec3(0, 0, 0);
 	if (obj->type == 0)
 	{
 		normal = normalize(sub_vec3(poi, obj->position));
@@ -34,7 +36,19 @@ t_vec3	get_obj_normal2(t_ray r, t_object *obj, t_hit_record *rec, t_vec3 poi)
 	}
 	else if (obj->type == 1)
 		normal = obj->normal;
-	if (obj->type == 2)
+	else if (obj->type == 2)
+	{
+		height = dot_vec3(normalize(obj->normal), sub_vec3(poi, obj->position));
+		normal = normalize(sub_vec3(poi, add_vec3(obj->position,
+						mul_double_vec3(height, obj->normal))));
+		if (dot_vec3(r.direction, rec->cap_normal) > 0.0 && rec->iscap)
+			normal = mul_double_vec3(-1, rec->cap_normal);
+		else if (rec->iscap)
+			normal = rec->cap_normal;
+		else if (dot_vec3(r.direction, normal) > 0.0)
+			normal = mul_double_vec3(-1, normal);
+	}
+	else if (obj->type == 3)
 	{
 		height = dot_vec3(normalize(obj->normal), sub_vec3(poi, obj->position));
 		normal = normalize(sub_vec3(poi, add_vec3(obj->position,
@@ -70,6 +84,8 @@ int	hit_object(t_ray r, t_object *obj, t_hit_record *rec, int record)
 			hit = hit_plane(current_obj, r, rec, record);
 		else if (current_obj->type == 2)
 			hit = hit_cylinder(current_obj, r, rec, record);
+		else if (current_obj->type == 3)
+			hit = hit_cone(current_obj, r, rec, record);
 		if (hit)
 			hitted = 1;
 		current_obj = current_obj->next;
