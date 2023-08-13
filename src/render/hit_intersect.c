@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 13:28:01 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/13 13:13:55 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/13 17:56:20 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,48 @@ double	cone_cap(t_object *obj, t_ray r, t_hit_record *rec, int record)
 	return (TRUE);
 }
 
+double	apex(t_object *obj, t_ray r, t_hit_record *rec, int record, t_cone cn, double h)
+{
+	double	radius;
+	double	denom;
+	double	ret;
+	//double t;
+	//(void)h;
+	t_vec3	plane;
+
+	denom = dot_vec3(r.direction, obj->normal);
+	if (fabs(denom) < 1e-6)
+		return (FALSE);
+	ret = dot_vec3(sub_vec3(obj->position, r.origin), obj->normal) / denom;
+	if (ret < 1e-6)
+		return (FALSE);
+	//else
+	//	obj->t = cn.t0;
+	plane = sub_vec3(add_vec3(r.origin, mul_double_vec3(ret,
+				r.direction)), obj->position);
+	radius = obj->height * tan(obj->rad);
+	if (h < EPS)
+		return (FALSE);
+	if (dot_vec3(plane, plane) > (radius * radius))
+		return (FALSE);
+	//if (length(sub_vec3(get_intersect(r, cn.t0), obj->position)) > radius)
+	//	return (FALSE);
+	//if (dot_vec3(r.direction, sub_vec3(get_intersect(r, obj->t), obj->position)) > 0.0)
+	obj->t = cn.t1;
+	if (obj->t < EPS)
+		return FALSE;
+	if (record)
+	{
+		rec->iscap = 0;
+		rec->t = obj->t;
+		rec->poi = get_intersect(r, obj->t);
+		rec->cap_normal = mul_double_vec3(1, obj->normal);
+		rec->normal = get_obj_normal2(r, obj, rec, rec->poi);
+		rec->obj = obj;
+	}
+	return (TRUE);
+}
+
 void	assign_cone(t_cone *cn, t_object *obj, t_ray r)
 {
 	cn->top = add_vec3(obj->position,
@@ -224,7 +266,9 @@ double	hit_cone(t_object *obj, t_ray r, t_hit_record *rec, int record)
 	poi = get_intersect(r, obj->t);
 	h = dot_vec3(normalize(obj->normal), sub_vec3(poi, obj->position));
 	if (h < EPS)
-		return (obj->t = fmax(cn.t1, cn.t0));
+	{
+		return (apex(obj, r, rec, record, cn, h));
+	}
 	if (h > obj->height)
 		return (cone_cap(obj, r, rec, record));
 	//if (dot_vec3(obj->normal, sub_vec3(get_intersect(r, obj->t), cn.top)) > 0)

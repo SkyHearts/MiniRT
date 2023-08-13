@@ -7,7 +7,14 @@
 		"chrono": "c",
 		"limits": "c",
 		"ratio": "c",
+<<<<<<< HEAD
 		"__node_handle": "c",
 		"stdio.h": "c"
+=======
+		"__locale": "c",
+		"__string": "c",
+		"string": "c",
+		"string_view": "c"
+>>>>>>> b2b12b6f74505dec05ae15769d4df6f2d2805e29
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/12 13:48:25 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/13 13:18:42 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,8 @@ void	render(t_mlx *rt)
 			double u = (double)x / (rt->win_width - 1);
 			double v = (double)y / (rt->win_height - 1);
 			camray = get_ray(u, v, rt);
-			//write ray data for debug
 			pixel_color = ray_color(&rt->scene, camray);
 			img_mlx_pixel_put(rt, x, y, rgb2color(pixel_color.color));
-			//img_mlx_pixel_put(rt, x, y, 0xffffff);
 			x += step;
 		}
 		y -= step;
