@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 15:01:29 by sulim             #+#    #+#             */
-/*   Updated: 2023/08/12 14:50:56 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/13 18:55:48 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_vec3	calc_color(t_scene *sc, t_hit_record rec, t_vec3 amb, t_ray camray)
 	color			ret;
 	double			cosine;
 	t_vec3			specular;
-	t_vec3			min;
+	//t_vec3			min;
 
 	ret.color = vec3(0, 0, 0);
 	light = sc->light;
@@ -54,20 +54,17 @@ t_vec3	calc_color(t_scene *sc, t_hit_record rec, t_vec3 amb, t_ray camray)
 	{
 		rec.light_direction = normalize(sub_vec3(light->position, rec.poi));
 		if (shade(sc, rec, light, camray))
-		{
 			ret.color = add_vec3(ret.color, amb);
-			min = add_vec3(ret.color, amb);
-		}
 		else
 		{
 			cosine = dot_vec3(rec.light_direction, rec.normal);
 			specular = get_specular(camray, rec, light);
+			ret.color = add_vec3(ret.color, amb);
 			if (cosine > 0)
 			{
-				min = add_vec3(ret.color, amb);
-				ret.color = add_vec3(specular, mul_double_vec3(light->ratio, \
-				mul_double_vec3(fmax(0.0, cosine), rec.obj->color)));
-				ret = clamp_vec(&ret, min, 255);
+				ret.color = add_vec3(ret.color, add_vec3(specular, mul_double_vec3(light->ratio, \
+				mul_double_vec3(fmax(0.0, cosine), rec.obj->color))));
+				ret = clamp_vec(&ret, vec3(0, 0, 0), 255);
 			}
 		}
 		light = light->next;

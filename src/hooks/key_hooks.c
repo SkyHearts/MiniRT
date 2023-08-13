@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 09:14:19 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/12 13:16:34 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/13 19:10:44 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,7 @@ int	frame_refresh(t_mlx *rt)
 		render(rt);
 		rt->move = FALSE;
 	}
-	else
-	{
-		render(rt);
-	}
+	//render(rt);
 	return (0);
 }
 

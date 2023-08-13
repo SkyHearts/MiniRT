@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 13:45:14 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/10 17:17:42 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/13 18:26:09 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	add_cylinder(char **split, t_object **obj)
 {
 	(*obj)->type = CYLINDER;
 	(*obj)->position = get_coordinate(split[1]);
-	(*obj)->normal = get_normal(split[2]);
+	(*obj)->normal = normalize(get_normal(split[2]));
 	(*obj)->diameter = ft_atof(split[3]);
 	(*obj)->radius = ft_atof(split[3]) / 2;
 	(*obj)->height = ft_atof(split[4]);

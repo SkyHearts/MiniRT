@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/12 13:48:25 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/13 19:07:17 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	render(t_mlx *rt)
 	while (y >= 0)
 	{
 		x = 0;
+		printf("\33[1F\33[2KScanlines remaining : %d\n", y);
 		while (x < rt->win_width)
 		{
 			t_ray	camray;
