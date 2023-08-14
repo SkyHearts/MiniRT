@@ -3,8 +3,7 @@ CC		= gcc
 FSAN	= -fsanitize=address
 CFLAGS	= -Wall -Wextra -Werror $(INCLUDES) -g3
 INCLUDES = -I inc -I ${LIBFT_DIR} ${FSAN}
-MINILIBDIR = minilibx/
-MINILIB = -L$(MINILIBDIR) -lmlx -framework OpenGL -framework AppKit
+MINILIB = -lmlx -framework OpenGL -framework AppKit
 
 #XPATH_MACOS=minilibx-opengl
 #XFLAGS_MACOS=-I$(XPATH_MACOS) -L$(XPATH_MACOS) -lmlx -framework OpenGL -framework Appkit
@@ -23,13 +22,13 @@ PRINT_SRC = print_scene.c print_scene_utils.c print_cam.c
 PRINT_DIR = src/printdata/
 PRINT_OBJS = $(addprefix $(PRINT_DIR), $(PRINT_SRC:.c=.o))
 
+RENDER_SRC = render.c render_utils.c color_utils.c color.c image.c hit_obj.c hit_intersect.c hit_utils.c
+RENDER_DIR = src/render/
+RENDER_OBJS = $(addprefix $(RENDER_DIR), $(RENDER_SRC:.c=.o))
+
 VECTORS_SRC = vector1.c vector2.c vector3.c vector4.c vector5.c
 VECTORS_DIR = src/vectors/
 VECTORS_OBJS = $(addprefix $(VECTORS_DIR), $(VECTORS_SRC:.c=.o))
-
-RENDER_SRC = render_utils.c render.c hit_obj.c hit_intersect.c hit_utils.c .c color_utils.c image.c
-RENDER_DIR = src/render/
-RENDER_OBJS = $(addprefix $(RENDER_DIR), $(RENDER_SRC:.c=.o))
 
 HOOKS_SRC = key_hooks.c key_moves.c key_moves2.c mouse_hooks.c fps.c
 HOOKS_DIR = src/hooks/
