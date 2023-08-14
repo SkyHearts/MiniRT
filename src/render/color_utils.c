@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   color_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 17:05:24 by sulim             #+#    #+#             */
-/*   Updated: 2023/08/11 20:00:37 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/14 13:07:09 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minirt.h"
 
-color	clamp_vec(color *col, t_vec3 min, double max)
+t_color	clamp_vec(t_color *col, t_vec3 min, double max)
 {
 	if (col->color.x < min.x)
 		col->color.x = min.x;

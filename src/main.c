@@ -50,13 +50,8 @@ int	main(int argc, char **argv)
 			printf("ERROR!\n");
 			return (1);
 		}
-		ft_printscene(rt); //to check parse inputs
+		ft_printscene(rt);
 		print_cam_debug(&rt);
-		//printf("Position(Main): ");
-		//printvec_nl(rt.scene.camera.position);
-		//printf("Direction(Main): ");
-		//printvec_nl(rt.scene.camera.direction);
-		//print_cam_debug(&rt);
 		render(&rt);
 		hooks_init(&rt);
 		mlx_loop(rt.mlx);
@@ -64,3 +59,9 @@ int	main(int argc, char **argv)
 	else
 		printf("Wrong number of argument/format! ./minirt <filename>");
 }
+		//to check parse inputs
+		//printf("Position(Main): ");
+		//printvec_nl(rt.scene.camera.position);
+		//printf("Direction(Main): ");
+		//printvec_nl(rt.scene.camera.direction);
+		//print_cam_debug(&rt);

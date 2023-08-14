@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/13 19:07:17 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/14 13:09:40 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,41 +44,46 @@ t_vec3	getlightdir(t_ray camray, t_light *light, t_hit_record *rec)
 	return (light_direction);
 }
 
+void	render_color(t_mlx *rt, t_counter count)
+{
+	t_ray		camray;
+	t_color		pixel_color;
+	double		u;
+	double		v;
+
+	u = (double)count.x / (rt->win_width - 1);
+	v = (double)count.y / (rt->win_height - 1);
+	camray = get_ray(u, v, rt);
+	pixel_color = ray_color(&rt->scene, camray);
+	img_mlx_pixel_put(rt, count.x, count.y, rgb2color(pixel_color.color));
+}
+
 void	render(t_mlx *rt)
 {
-	int			x;
-	int			y;
-	int			step;
+	t_counter	count;
 	t_object	*obj;
-	color		pixel_color;
 
 	if (rt->mode == 1)
-		step = 4;
+		count.step = 4;
 	else
-		step = 1;
-	y = rt->win_height - 1;
+		count.step = 1;
+	count.y = rt->win_height - 1;
 	ft_memset(rt->addr, 0, ((rt->win_height * rt->line_length) + (rt->win_width \
 	* (rt->bpp / 8))));
 	init_cam(rt);
 	obj = rt->scene.object;
-	while (y >= 0)
+	while (count.y >= 0)
 	{
-		x = 0;
-		printf("\33[1F\33[2KScanlines remaining : %d\n", y);
-		while (x < rt->win_width)
+		count.x = 0;
+		printf("\33[1F\33[2KScanlines remaining : %d\n", count.y);
+		while (count.x < rt->win_width)
 		{
-			t_ray	camray;
-
-			double u = (double)x / (rt->win_width - 1);
-			double v = (double)y / (rt->win_height - 1);
-			camray = get_ray(u, v, rt);
-			//write ray data for debug
-			pixel_color = ray_color(&rt->scene, camray);
-			img_mlx_pixel_put(rt, x, y, rgb2color(pixel_color.color));
-			//img_mlx_pixel_put(rt, x, y, 0xffffff);
-			x += step;
+			render_color(rt, count);
+			count.x += count.step;
 		}
-		y -= step;
+		count.y -= count.step;
 	}
 	mlx_put_image_to_window(rt->mlx, rt->win, rt->img, 0, 0);
 }
+			//write ray data for debug
+			//img_mlx_pixel_put(rt, x, y, 0xffffff);

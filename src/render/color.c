@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 15:01:29 by sulim             #+#    #+#             */
-/*   Updated: 2023/08/13 18:55:48 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/14 13:09:42 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,42 +40,45 @@ t_vec3	get_specular(t_ray camray, t_hit_record	rec, t_light *current_light)
 	return (mul_double_vec3((SPECULAR_STRENGTH * spec), current_light->color));
 }
 
+t_color	get_hit_color(t_vec3 specular, t_light *light, double cosine, \
+t_hit_record rec)
+{
+	rec.ret_color.color = add_vec3(rec.ret_color.color, add_vec3(specular, \
+	mul_double_vec3(light->ratio, \
+	mul_double_vec3(fmax(0.0, cosine), rec.obj->color))));
+	return (clamp_vec(&rec.ret_color, vec3(0, 0, 0), 255));
+}
+
 t_vec3	calc_color(t_scene *sc, t_hit_record rec, t_vec3 amb, t_ray camray)
 {
 	t_light			*light;
-	color			ret;
 	double			cosine;
 	t_vec3			specular;
-	//t_vec3			min;
 
-	ret.color = vec3(0, 0, 0);
+	rec.ret_color.color = vec3(0, 0, 0);
 	light = sc->light;
 	while (light != NULL)
 	{
 		rec.light_direction = normalize(sub_vec3(light->position, rec.poi));
 		if (shade(sc, rec, light, camray))
-			ret.color = add_vec3(ret.color, amb);
+			rec.ret_color.color = add_vec3(rec.ret_color.color, amb);
 		else
 		{
 			cosine = dot_vec3(rec.light_direction, rec.normal);
 			specular = get_specular(camray, rec, light);
-			ret.color = add_vec3(ret.color, amb);
+			rec.ret_color.color = add_vec3(rec.ret_color.color, amb);
 			if (cosine > 0)
-			{
-				ret.color = add_vec3(ret.color, add_vec3(specular, mul_double_vec3(light->ratio, \
-				mul_double_vec3(fmax(0.0, cosine), rec.obj->color))));
-				ret = clamp_vec(&ret, vec3(0, 0, 0), 255);
-			}
+				rec.ret_color = get_hit_color(specular, light, cosine, rec);
 		}
 		light = light->next;
 	}
-	return (ret.color);
+	return (rec.ret_color.color);
 }
 
-color	ray_color(t_scene *sc, t_ray camray)
+t_color	ray_color(t_scene *sc, t_ray camray)
 {
 	t_hit_record	rec;
-	color			pixel_color;
+	t_color			pixel_color;
 	t_vec3			amb;
 	t_vec3			min;
 
@@ -83,8 +86,6 @@ color	ray_color(t_scene *sc, t_ray camray)
 	min = vec3(0, 0, 0);
 	if (hit_object(camray, sc->object, &rec, 1) > 0)
 	{
-		//if (rec.iscap)
-		//	printf("hitcap\n");
 		amb = mul_double_vec3(sc->ambient.ratio, mul_vec3(rec.obj->color, \
 		div_double_vec3(255, sc->ambient.color)));
 		pixel_color.color = calc_color(sc, rec, amb, camray);

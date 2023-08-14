@@ -6,19 +6,19 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:21:05 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/03 15:53:19 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/14 12:44:13 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef CAMERA_H
 # define CAMERA_H
 
 # include "vector3.h"
 
+	//t_vec3			position;
+
 typedef struct s_camvar
 {
-	//t_vec3			position;
 	t_vec3			up;
 	t_vec3			right;
 	t_vec3			forward;
@@ -30,8 +30,9 @@ typedef struct s_camvar
 	double			view_h;
 	t_vec3			horizontal;
 	t_vec3			vertical;
-	t_vec3			llc; //lower left coner
+	t_vec3			llc;
 }				t_camvar;
+//lower left coner
 
 typedef struct s_camera
 {

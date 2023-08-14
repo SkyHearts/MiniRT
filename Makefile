@@ -27,7 +27,7 @@ VECTORS_SRC = vector1.c vector2.c vector3.c vector4.c vector5.c
 VECTORS_DIR = src/vectors/
 VECTORS_OBJS = $(addprefix $(VECTORS_DIR), $(VECTORS_SRC:.c=.o))
 
-RENDER_SRC = render_utils.c render.c hit_obj.c hit_intersect.c hit_utils.c color.c color_utils.c image.c
+RENDER_SRC = render_utils.c render.c hit_obj.c hit_intersect.c hit_utils.c .c color_utils.c image.c
 RENDER_DIR = src/render/
 RENDER_OBJS = $(addprefix $(RENDER_DIR), $(RENDER_SRC:.c=.o))
 

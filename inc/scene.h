@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scene.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:13:12 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/10 18:58:29 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/14 13:02:34 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ typedef enum s_objtype
 	CYLINDER = 2,
 }	t_objtype;
 
-typedef struct col
+typedef struct s_color
 {
 	t_vec3			color;
-}				color;
+}	t_color;
 
 typedef struct s_ambient
 {
