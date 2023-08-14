@@ -2,13 +2,12 @@
 	"files.associations": {
 		"ft_printf.h": "c",
 		"minirt.h": "c",
+		"ios": "c",
 		"algorithm": "c",
 		"chrono": "c",
 		"limits": "c",
 		"ratio": "c",
-		"__locale": "c",
-		"__string": "c",
-		"string": "c",
-		"string_view": "c"
+		"__node_handle": "c",
+		"stdio.h": "c"
 	}
 }

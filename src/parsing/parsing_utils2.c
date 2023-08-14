@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 13:24:13 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/09 14:16:27 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/12 13:20:04 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,4 +106,3 @@ int	check_ext(char *file)
 	printf("File error: Invalid file extention\n");
 	return (1);
 }
-

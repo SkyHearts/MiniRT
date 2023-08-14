@@ -22,6 +22,7 @@ void	init_mlx(t_mlx *rt)
 	rt->win_height = 720;
 	rt->win_width = 1080;
 	rt->scene.camera.filled = 0;
+	rt->scene.act_light = NULL;
 	rt->scene.light = NULL;
 	rt->scene.object = NULL;
 	rt->scene.active_object = NULL;
@@ -37,11 +38,11 @@ void	init_mlx(t_mlx *rt)
 
 int	main(int argc, char **argv)
 {
+	t_mlx	rt;
+	int		ret;
+
 	if (argc == 2)
 	{
-		t_mlx	rt;
-		int		ret;
-
 		init_mlx(&rt);
 		ret = parse_scene(argv[1], &rt);
 		if (ret == 1)

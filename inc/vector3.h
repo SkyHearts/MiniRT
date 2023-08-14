@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector3.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:28:55 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/11 10:31:29 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/12 13:37:17 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef struct s_vec3
 
 typedef struct s_mat44
 {
-	double data[4][4];
+	double	data[4][4];
 }				t_mat44;
 
 t_vec3	*create_vec3(double _x, double _y, double _z);
@@ -49,5 +49,6 @@ double	dot_vec3(t_vec3 vec1, t_vec3 vec2);
 t_vec3	cross_vec3(t_vec3 vec1, t_vec3 vec2);
 t_vec3	*pnormalize(t_vec3 vec);
 t_vec3	normalize(t_vec3 vec);
-
+void	printvec_nl(t_vec3 vec);
+void	print_vec(t_vec3 a);
 #endif

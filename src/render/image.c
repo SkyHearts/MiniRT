@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 11:09:43 by sulim             #+#    #+#             */
-/*   Updated: 2023/08/11 21:29:03 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/14 10:34:28 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,21 @@
 #include <errno.h>
 #include <stdio.h>
 
+void	exit_program(char *msg)
+{
+	printf("%s\n", msg);
+	exit(1);
+}
+
 int	init_img(t_mlx *rt)
 {
 	rt->img = mlx_new_image(rt->mlx, rt->win_width, rt->win_height);
 	if (!rt->img)
-		return (1);
+		exit_program(MLX_ERROR);
 	rt->addr = mlx_get_data_addr(rt->img, &rt->bpp,
 			&rt->line_length, &rt->endian);
 	if (!rt->addr)
-		return (1);
+		exit_program(MLX_ERROR);
 	return (0);
 }
 

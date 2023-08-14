@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 09:14:19 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/09 17:48:55 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/13 19:10:44 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 #include <errno.h>
 #include <stdio.h>
 
-
 // Release key: Exit, and edit/raytrace mdoe
 // Esc key (53) Free and exit
 // '1' key (18) switch between edit mode and raytracing mode
 //'~'  key deselect by setting active object as NULL
+// '<' (43) and '>' (47) key to ove between active light
 int	rel_key(int keysym, t_mlx *rt)
 {
 	if (keysym == 53)
@@ -40,6 +40,7 @@ int	rel_key(int keysym, t_mlx *rt)
 		if (rt->scene.active_object != NULL)
 			return (rt->scene.active_object = NULL, printf("Deselected\n"), 0);
 	}
+	iterate_light(keysym, rt);
 	return (0);
 }
 
@@ -65,6 +66,7 @@ int	press_key(int keysym, t_mlx *rt)
 		move3(keysym, rt);
 		rotation1(keysym, rt);
 		rotation2(keysym, rt);
+		light_move(keysym, rt);
 		rt->move = TRUE;
 	}
 	return (0);
@@ -76,19 +78,25 @@ int	close_mlx(t_mlx *rt)
 	exit(0);
 }
 
+//if (rt->rotated == TRUE && rt->scene.active_object != NULL)
+//{
+//	reinit_objvar(rt->scene.object);
+//	render(rt);
+//}
+//framerate(rt);
 int	frame_refresh(t_mlx *rt)
 {
-	if (rt->move == TRUE)
+	if (rt->rotated == TRUE && rt->scene.active_object != NULL)
+	{
+		reinit_objvar(rt->scene.object);
+		render(rt);
+	}
+	else if (rt->move == TRUE)
 	{
 		render(rt);
-		//framerate(rt);
 		rt->move = FALSE;
 	}
-	else
-	{
-		render(rt);
-	//	//framerate(rt);
-	}
+	//render(rt);
 	return (0);
 }
 

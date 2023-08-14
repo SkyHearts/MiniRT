@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 13:45:14 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/10 13:05:47 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/13 18:26:09 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	add_cylinder(char **split, t_object **obj)
 {
 	(*obj)->type = CYLINDER;
 	(*obj)->position = get_coordinate(split[1]);
-	(*obj)->normal = get_normal(split[2]);
+	(*obj)->normal = normalize(get_normal(split[2]));
 	(*obj)->diameter = ft_atof(split[3]);
 	(*obj)->radius = ft_atof(split[3]) / 2;
 	(*obj)->height = ft_atof(split[4]);
@@ -67,28 +67,14 @@ void	check_type_and_input(char **split, t_object **obj)
 		add_cylinder(split, obj);
 }
 
-// printf("Object type2: %d\n", (*obj)->type);
-//(*obj)->var.up =  normalize(cross_vec3((*obj)->var.right,
-//(*obj)->var.forward));
-void	init_objvar(t_object **obj)
+void	reinit_objvar(t_object *obj)
 {
-	if ((*obj)->type == SPHERE)
+	t_object	*objlst;
+
+	objlst = obj;
+	while (objlst != NULL)
 	{
-		(*obj)->var.forward = vec3(0, 0, 1);
-		(*obj)->var.right = normalize(cross_vec3(get_up((*obj)->var.forward),
-					(*obj)->var.forward));
-		(*obj)->var.up = normalize(cross_vec3((*obj)->var.right,
-					vec3(0, 0, -1)));
-	}
-	else
-	{
-		(*obj)->var.forward = normalize(sub_vec3(vec3(0, 0, 0),
-					(*obj)->normal));
-		(*obj)->var.right = normalize(cross_vec3(get_up((*obj)->var.forward),
-					(*obj)->var.forward));
-		(*obj)->var.up = normalize(cross_vec3((*obj)->var.right,
-					(*obj)->var.forward));
-		(*obj)->var.right = normalize(cross_vec3((*obj)->var.up,
-					(*obj)->var.forward));
+		init_objvar(&objlst);
+		objlst = objlst->next;
 	}
 }

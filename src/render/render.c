@@ -6,7 +6,7 @@
 /*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:07:08 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/11 21:28:02 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/14 10:41:19 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,26 +31,6 @@ double	degtorad(double theta)
 
 	rad = theta * (M_PI / 180);
 	return (rad);
-}
-
-void	print_cam_debug(t_mlx *rt)
-{
-	printf("CAMERA BEFORE RENDER\n");
-	printf("Position: ");
-	printvec_nl((*rt).scene.camera.position);
-	printf("Forward: ");
-	printvec_nl(rt->scene.camera.vars.forward);
-	printf("Right: ");
-	printvec_nl(rt->scene.camera.vars.right);
-	printf("Up: ");
-	printvec_nl(rt->scene.camera.vars.up);
-	printf("Aspect Ratio: %f\n", rt->scene.camera.vars.aspect_r);
-	printf("fov: %f\n", rt->scene.camera.vars.fov);
-	printf("h: %f\n", rt->scene.camera.vars.h);
-	printf("View_h: %f\n", rt->scene.camera.vars.view_h);
-	printf("View_w: %f\n", rt->scene.camera.vars.view_w);
-	printf("Lower Left Coner: ");
-	printvec_nl(rt->scene.camera.vars.llc);
 }
 
 t_vec3	getlightdir(t_ray camray, t_light *light, t_hit_record *rec)
@@ -84,6 +64,7 @@ void	render(t_mlx *rt)
 	while (y >= 0)
 	{
 		x = 0;
+		printf("\33[1F\33[2KScanlines remaining : %d\n", y);
 		while (x < rt->win_width)
 		{
 			t_ray	camray;
