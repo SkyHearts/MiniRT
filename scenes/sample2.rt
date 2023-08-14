@@ -5,7 +5,8 @@ A 			0.5             50,100,255
 C 				0,0,5             0,0,-1          		66
 
 ##Lights		Position		Intensity				Color
-L 				-4,-3,1 		1.0        				 255,255,255
+L 				-4,-3,1 		1.0       				 255,255,255
+L 				1,-5,-6 		0.1        				 255,255,255
 
 ##SPHERE		Position		Diameter				Color
 sp 				0,0,0          0.5            		 	0,255,0
