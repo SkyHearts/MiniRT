@@ -5,15 +5,15 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/08/13 13:23:44 by jyim             ###   ########.fr       */
+/*   Created: 2023/08/10 17:05:24 by sulim             #+#    #+#             */
+/*   Updated: 2023/08/15 12:39:44 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../../inc/minirt.h"
 
-color	clamp_vec(color *col, t_vec3 min, double max)
+t_color	clamp_vec(t_color *col, t_vec3 min, double max)
 {
 	if (col->color.x < min.x)
 		col->color.x = min.x;

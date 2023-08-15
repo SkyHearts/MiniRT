@@ -1,0 +1,20 @@
+##Ambient	Intensity		Color
+A 			0.5             50,100,255
+
+##Camera		Position		Orientation				FOV
+C 				0,0,5             0,0,-1          		66
+
+##Lights		Position		Intensity				Color
+L 				-4,-3,1 		1.0       				 255,255,255
+L 				1,-5,-6 		0.1        				 255,255,255
+
+##SPHERE		Position		Diameter				Color
+sp 				0,0,0          0.5            		 	0,255,0
+sp 				0,50.5,-1       100            		 	150,150,0
+sp 				-1,-1,-2        1          		    170,50,50
+
+##Cylinder	Position		Normal			Diameter	Height		Color
+cy			-1,-2,-5       0.7,-0.2,1        2             2          255,0,255
+cy			2,-1,-5         -0.7,-0.2,1      2             2          255,30,0
+cy 			4,-1.5,-3          -0.7,-0.2,-1      	 2         5          0,120,255
+

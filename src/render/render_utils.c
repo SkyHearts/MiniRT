@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
+/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 11:21:49 by sulim             #+#    #+#             */
-/*   Updated: 2023/08/11 21:25:33 by sulim            ###   ########.fr       */
+/*   Updated: 2023/08/15 12:39:04 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,12 @@ t_ray	get_ray(double u, double v, t_mlx *rt)
 	return (ray);
 }
 
+	//t_mat44 translation;
+	//t_mat44 rotation;
 void	init_cam(t_mlx *rt)
 {
 	t_camera	*camray;
+
 
 	camray = &(rt->scene.camera);
 	if (rt->rotated)
@@ -65,3 +68,11 @@ void	init_cam(t_mlx *rt)
 	div_double_vec3(2.0, camray->vars.horizontal)), div_double_vec3(2.0, \
 	camray->vars.vertical)), camray->vars.forward);
 }
+	//camray->vars.aspect_r = (double)rt->win_width / (double)rt->win_height;
+	//camray->vars.h = tan((degtorad(camray->vars.fov)/2));
+	//camray->vars.view_h = 2.0 * camray->vars.h;
+	//camray->vars.view_w = camray->vars.aspect_r * camray->vars.view_h;
+
+	//get_translation(camray->position, &translation);
+	//get_rotation(camray, &rotation);
+	//camray->camtoworld = add_mat(translation, rotation);

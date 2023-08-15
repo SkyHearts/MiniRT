@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hooks.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: sulim <sulim@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 09:14:19 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/12 13:16:34 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/14 14:57:25 by sulim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	rel_key(int keysym, t_mlx *rt)
 		if (rt->mode == 0)
 			return (printf("Edit mode\n"), rt->mode = 1, 0);
 		else
-			return (printf("Phong mode\n"), rt->mode = 0, 0);
+			return (printf("Phong mode\n"), rt->mode = 0, render(rt), 0);
 	}
 	else if (keysym == 50)
 	{
@@ -96,12 +96,9 @@ int	frame_refresh(t_mlx *rt)
 		render(rt);
 		rt->move = FALSE;
 	}
-	else
-	{
-		render(rt);
-	}
 	return (0);
 }
+	//render(rt);
 
 void	hooks_init(t_mlx *rt)
 {

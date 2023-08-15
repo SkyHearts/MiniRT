@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:13:12 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/12 16:32:21 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/15 12:43:34 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ typedef enum s_objtype
 	CONE = 3,
 }	t_objtype;
 
-typedef struct col
+typedef struct s_color
 {
 	t_vec3			color;
-}				color;
+}	t_color;
 
 typedef struct s_ambient
 {

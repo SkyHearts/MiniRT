@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:37:39 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/13 13:22:17 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/15 12:44:24 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ typedef struct s_hit_record
 	t_vec3		cap_normal;
 	int			iscap;
 	t_vec3		light_direction;
-	t_vec3		min;
-	color		ret;
+	t_color		ret_color;
 }	t_hit_record;
 
 typedef struct s_sphere
@@ -45,6 +44,11 @@ typedef struct s_plane
 }				t_plane;
 
 //v = ray.dir, va = cylinder dir
+//cylinder pos + (cylinder height * cylinder dir)
+//(v.va)
+//ray dir - (raynormal * va)
+//ray origin - cylinder origin
+//cylinder pos + (cylinder height * cylinder dir)
 typedef struct s_cylinder
 {
 	t_vec3	top;
@@ -56,8 +60,8 @@ typedef struct s_cylinder
 	double	c;
 	double	t0;
 	double	t1;
-	double  discriminant;
-}				t_cylinder;
+	double	discriminant;
+}	t_cylinder;
 
 typedef struct s_cylinder2
 {
