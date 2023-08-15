@@ -126,7 +126,7 @@ void			print_cylinder(t_object *obj);
 void			print_obj(t_mlx	rt);
 void			ft_printscene(t_mlx	rt);
 void			print_cam_debug(t_mlx *rt);
-void		print_cone(t_object *obj);
+void			print_cone(t_object *obj);
 
 //Hooks Events
 void			hooks_init(t_mlx *rt);
@@ -161,17 +161,19 @@ double			top_cap(t_object *obj, t_ray r);
 double			top_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record);
 double			btm_cap(t_object *obj, t_ray r);
 double			btm_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record);
-double		apex(t_object *obj, t_ray r, t_hit_record *rec,t_cone *cn);
-double		cone_cap(t_object *obj, t_ray r, t_hit_record *rec, int record);
-double		hit_cone(t_object *obj, t_ray r, t_hit_record *rec, int record);
+double			apex(t_object *obj, t_ray r, t_hit_record *rec, t_cone *cn);
+double			cone_cap(t_object *obj, t_ray r, t_hit_record *rec, int record);
+double			hit_cone(t_object *obj, t_ray r, t_hit_record *rec, int record);
 void			update_rec(t_object *obj, t_ray r, t_hit_record *rec, int \
 record);
 void			update_rec2(t_object *obj, t_ray r, t_hit_record *rec, int \
 record);
 void			update_rec3(t_object *obj, t_ray r, t_hit_record *rec, int \
 record);
-void		update_rec4(t_object *obj, t_ray r, t_hit_record *rec, int record);
-t_vec3		get_cone_normal(t_ray r, t_object *obj, t_hit_record *rec, t_vec3 poi);
+void			update_rec4(t_object *obj, t_ray r, t_hit_record *rec, int \
+record);
+t_vec3			get_cone_normal(t_ray r, t_object *obj, t_hit_record *rec, \
+t_vec3 poi);
 t_ray			get_ray(double u, double v, t_mlx *rt);
 
 // color
