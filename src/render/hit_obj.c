@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 13:28:01 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/13 13:21:36 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/15 12:35:45 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_vec3	get_obj_normal2(t_ray r, t_object *obj, t_hit_record *rec, t_vec3 poi)
 	}
 	else if (obj->type == 1)
 		normal = obj->normal;
-	else if (obj->type == 2)
+	if (obj->type == 2)
 	{
 		height = dot_vec3(normalize(obj->normal), sub_vec3(poi, obj->position));
 		normal = normalize(sub_vec3(poi, add_vec3(obj->position,
@@ -48,13 +48,8 @@ t_vec3	get_obj_normal2(t_ray r, t_object *obj, t_hit_record *rec, t_vec3 poi)
 		else if (dot_vec3(r.direction, normal) > 0.0)
 			normal = mul_double_vec3(-1, normal);
 	}
-	else if (obj->type == 3)
-	{
-		height = dot_vec3(normalize(obj->normal), sub_vec3(poi, obj->position));
-		normal = normalize(sub_vec3(poi, add_vec3(obj->position, mul_double_vec3(height, obj->normal))));
-		if (dot_vec3(r.direction, normal) > 0.0)
-			normal = mul_double_vec3(-1, normal);
-	}
+	if (obj->type == 3)
+		normal = get_cone_normal(r, obj, rec, poi);
 	return (normal);
 }
 

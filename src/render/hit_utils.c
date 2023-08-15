@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 17:56:02 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/12 18:49:51 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/15 12:17:55 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,19 @@ void	update_rec3(t_object *obj, t_ray r, t_hit_record *rec, int record)
 		rec->poi = get_intersect(r, obj->t);
 		rec->cap_normal = mul_double_vec3(-1, obj->normal);
 		rec->normal = get_obj_normal2(r, obj, rec, rec->poi);
+		rec->obj = obj;
+	}
+}
+
+void	update_rec4(t_object *obj, t_ray r, t_hit_record *rec, int record)
+{
+	if (rec->t > obj->t && record)
+	{
+		rec->iscap = 1;
+		rec->t = obj->t;
+		rec->poi = get_intersect(r, obj->t);
+		rec->cap_normal = mul_double_vec3(1, obj->normal);
+		rec->normal = mul_double_vec3(1, obj->normal);
 		rec->obj = obj;
 	}
 }

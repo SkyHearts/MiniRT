@@ -2,22 +2,19 @@
 A 			0.2 			255,255,255
 
 ##Camera		Position		Orientation				FOV
-C 			0,0,20 			0,0,-1 					45
+C 			0,0,15 			0,0,-1 					45
 
 ##Lights		Position		Intensity				Color
 L			0,-1.5,0		1						55,255,255
 
 ##PLANE		Position		Normal					Color
-pl 			0.0,5.0,0.0 	0.0,-1.0,0.0 			200,125,225
-pl 			0.0,-7.0,0.0 	0.0,1.0,0.0 			100,255,125
-pl 			15.0,0.0,0.0 	-1.0,0.0,0.0 			200,150,100
-pl 			-15.0,0.0,0.0 	1.0,0.0,0.0 			200,150,100
+#pl 			0.0,5.0,0.0 	0.0,-1.0,0.0 			200,125,225
 
 ##Cylinder	Position		Normal		Diameter	Height		Color
-cy 			7.5,0,0 		0,-1,0 		5			3			255,255,0
+cy 			5,0,0 		0,-1,0 		5			3			100,255,150
 
 ##SPHERE		Position		Diameter				Color
-sp 				-7.5,-1.5,0 		6						255,0,0
+sp 				-5.0,-1.5,0 		6					0,255,125
 
 ##CONE		Position		orientation			Theta		Height		Color
-cn			0,-3,0 		0,1,0 		30			3				255,255,100
+cn			0,-25,0 		0,1,0 		70			50				255,255,0

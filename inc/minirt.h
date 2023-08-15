@@ -30,8 +30,8 @@
 # define DEFAULT_VAL 10
 # define FALSE 0
 # define TRUE 1
-# define EPS 1e-6
-//# define EPS 0.00001
+//# define EPS 1e-6
+# define EPS 0.00001
 # define DEG1 0.0174533
 # define DEG5 0.0872665
 # define MLX_ERROR "MLX ERROR"
@@ -154,10 +154,14 @@ double		top_cap(t_object *obj, t_ray r);
 double		top_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record);
 double		btm_cap(t_object *obj, t_ray r);
 double		btm_cap2(t_object *obj, t_ray r, t_hit_record *rec, int record);
+double		apex(t_object *obj, t_ray r, t_hit_record *rec,t_cone *cn);
+double		cone_cap(t_object *obj, t_ray r, t_hit_record *rec, int record);
 double		hit_cone(t_object *obj, t_ray r, t_hit_record *rec, int record);
 void		update_rec(t_object *obj, t_ray r, t_hit_record *rec, int record);
 void		update_rec2(t_object *obj, t_ray r, t_hit_record *rec, int record);
 void		update_rec3(t_object *obj, t_ray r, t_hit_record *rec, int record);
+void		update_rec4(t_object *obj, t_ray r, t_hit_record *rec, int record);
+t_vec3		get_cone_normal(t_ray r, t_object *obj, t_hit_record *rec, t_vec3 poi);
 t_ray		get_ray(double u, double v, t_mlx *rt);
 
 // color
