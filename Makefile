@@ -1,4 +1,4 @@
-NAME	= minirt
+NAME	= miniRT
 CC		= gcc
 FSAN	= -fsanitize=address
 CFLAGS	= -Wall -Wextra -Werror $(INCLUDES) -g3
@@ -14,7 +14,7 @@ MINIRT_SRCS	=	main.c free.c
 MINIRT_SRCS_DIR	= src/
 MINIRT_OBJS = $(addprefix $(MINIRT_SRCS_DIR), $(MINIRT_SRCS:.c=.o))
 
-PARSE_SRC = nodes.c nodes_utils.c nodes_utils2.c add_scene.c parsing.c parsing_utils.c parsing_utils2.c isspace_split.c 
+PARSE_SRC = nodes.c nodes_utils.c nodes_utils2.c nodes_utils3.c add_scene.c parsing.c parsing_utils.c parsing_utils2.c isspace_split.c 
 PARSE_DIR = src/parsing/
 PARSE_OBJS = $(addprefix $(PARSE_DIR), $(PARSE_SRC:.c=.o))
 
@@ -57,6 +57,7 @@ clean:
 	@make clean -C ${LIBFT_DIR}
 	@rm -rf ${MINIRT_OBJS}
 	@rm -rf ${PARSE_OBJS}
+	@rm -rf ${PRINT_OBJS}
 	@rm -rf ${HOOKS_OBJS}
 	@rm -rf ${VECTORS_OBJS}
 	@rm -rf ${RENDER_OBJS}

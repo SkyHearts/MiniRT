@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 13:28:01 by jyim              #+#    #+#             */
-/*   Updated: 2023/08/15 12:05:55 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/15 13:49:28 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,4 +158,3 @@ double	hit_cylinder(t_object *obj, t_ray r, t_hit_record *rec, int record)
 	//	return (TRUE);
 	//if (btm_cap2(obj, r, rec, record))
 	//	return (TRUE);
-

@@ -25,8 +25,8 @@
 # define DEFAULT_VAL 10
 # define FALSE 0
 # define TRUE 1
-//# define EPS 1e-6
-# define EPS 0.00001
+# define EPS 1e-7
+//# define EPS 0.001
 # define DEG1 0.0174533
 # define DEG5 0.0872665
 # define MLX_ERROR "MLX ERROR"
@@ -89,6 +89,7 @@ void			ft_objadd_back(t_object **lst, t_object *new);
 void			add_sphere(char **split, t_object **obj);
 void			add_plane(char **split, t_object **obj);
 void			add_cylinder(char **split, t_object **obj);
+void			add_cone(char **split, t_object **obj);
 
 //Parsing Utils
 int				split_len(char **split);

@@ -6,7 +6,7 @@
 /*   By: jyim <jyim@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 11:21:49 by sulim             #+#    #+#             */
-/*   Updated: 2023/08/15 12:39:04 by jyim             ###   ########.fr       */
+/*   Updated: 2023/08/15 13:46:20 by jyim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ t_ray	get_ray(double u, double v, t_mlx *rt)
 void	init_cam(t_mlx *rt)
 {
 	t_camera	*camray;
-
 
 	camray = &(rt->scene.camera);
 	if (rt->rotated)
