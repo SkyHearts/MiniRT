@@ -10,5 +10,5 @@ https://mrl.cs.nyu.edu/~dzorin/rend05/lecture2.pdf
 
 ## Image outputs
 <img src="https://github.com/SkyHearts/MiniRT/blob/master/images/42_logo.png" width="640" height="480">
-<img src="https://github.com/SkyHearts/MiniRT/blob/master/images/Scen1.png" width="640" height="480">
-<img src="https://github.com/SkyHearts/MiniRT/blob/master/images/Scen2.png" width="640" height="480">
+<img src="https://github.com/SkyHearts/MiniRT/blob/master/images/Scene1.png" width="640" height="480">
+<img src="https://github.com/SkyHearts/MiniRT/blob/master/images/Scene2.png" width="640" height="480">
