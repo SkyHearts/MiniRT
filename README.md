@@ -4,7 +4,7 @@ A simple raytracing program written in c language and mlx library.
 
 ## References
 
-raytracing.github.io/books/RayTracingInOneWeekend.html  
+https://www.raytracing.github.io/books/RayTracingInOneWeekend.html  
 https://www.scratchapixel.com/  
 https://mrl.cs.nyu.edu/~dzorin/rend05/lecture2.pdf
 
